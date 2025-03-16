@@ -42,9 +42,13 @@ const Courses = () => {
     if (filter.difficulty_level) params.difficulty_level = filter.difficulty_level;
     if (filter.search) params.search = filter.search;
     
-    params.page = pagination.page.toString();
-    params.sortBy = pagination.sortBy || 'created_at';
-    params.sortOrder = pagination.sortOrder || 'desc';
+    const currentPage = pagination.page || 1;
+    const sortBy = pagination.sortBy || 'created_at';
+    const sortOrder = pagination.sortOrder || 'desc';
+    
+    params.page = currentPage.toString();
+    params.sortBy = sortBy;
+    params.sortOrder = sortOrder;
     
     setSearchParams(params);
   }, [filter, pagination, setSearchParams]);
@@ -79,6 +83,11 @@ const Courses = () => {
       </div>
     );
   }
+
+  // Ensure pagination values are defined with fallbacks
+  const currentPage = pagination.page || 1;
+  const currentSortBy = pagination.sortBy || 'created_at';
+  const currentSortOrder = pagination.sortOrder || 'desc';
 
   return (
     <div className="container mx-auto py-8 px-4">
@@ -121,7 +130,7 @@ const Courses = () => {
               <option value="advanced">Advanced</option>
             </select>
             <select
-              value={`${pagination.sortBy}_${pagination.sortOrder}`}
+              value={`${currentSortBy}_${currentSortOrder}`}
               onChange={(e) => {
                 const [sortBy, sortOrder] = e.target.value.split('_');
                 setPagination(prev => ({ 
@@ -154,8 +163,8 @@ const Courses = () => {
             <div className="mt-8 flex justify-center">
               <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
                 <button
-                  onClick={() => handlePageChange(pagination.page - 1)}
-                  disabled={pagination.page <= 1}
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage <= 1}
                   className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-surface-300 dark:border-surface-600 bg-white dark:bg-surface-800 text-sm font-medium text-surface-500 dark:text-surface-400 hover:bg-surface-50 dark:hover:bg-surface-700 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <span className="sr-only">Previous</span>
@@ -169,7 +178,7 @@ const Courses = () => {
                     key={i + 1}
                     onClick={() => handlePageChange(i + 1)}
                     className={`relative inline-flex items-center px-4 py-2 border border-surface-300 dark:border-surface-600 text-sm font-medium ${
-                      pagination.page === i + 1
+                      currentPage === i + 1
                         ? 'z-10 bg-primary-50 dark:bg-primary-900 border-primary-500 dark:border-primary-500 text-primary-600 dark:text-primary-200'
                         : 'bg-white dark:bg-surface-800 text-surface-500 dark:text-surface-400 hover:bg-surface-50 dark:hover:bg-surface-700'
                     }`}
@@ -179,8 +188,8 @@ const Courses = () => {
                 ))}
                 
                 <button
-                  onClick={() => handlePageChange(pagination.page + 1)}
-                  disabled={pagination.page >= data.totalPages}
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage >= data.totalPages}
                   className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-surface-300 dark:border-surface-600 bg-white dark:bg-surface-800 text-sm font-medium text-surface-500 dark:text-surface-400 hover:bg-surface-50 dark:hover:bg-surface-700 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <span className="sr-only">Next</span>

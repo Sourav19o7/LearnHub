@@ -71,7 +71,7 @@ const AppRoutes = () => {
         <Route
           element={
             <PrivateRoute>
-              <DashboardLayout userRole = "STUDENT" />
+              <DashboardLayout userRole="STUDENT" />
             </PrivateRoute>
           }
         >
@@ -104,7 +104,7 @@ const AppRoutes = () => {
         <Route
           element={
             <AdminRoute>
-              <DashboardLayout userRole ="ADMIN" />
+              <DashboardLayout userRole="ADMIN" />
             </AdminRoute>
           }
         >
@@ -113,14 +113,10 @@ const AppRoutes = () => {
           <Route path="/admin/courses" element={<AllCourses />} />
         </Route>
 
-        {/* Redirect /dashboard based on role */}
+        {/* Redirect to appropriate dashboard based on role - Make this a catch-all for /role-dashboard */}
         <Route
-          path="/dashboard"
-          element={
-            <PrivateRoute>
-              <Dashboard />
-            </PrivateRoute>
-          }
+          path="/role-dashboard"
+          element={<RoleBasedDashboardRedirect />}
         />
 
         {/* Not Found */}
@@ -131,11 +127,11 @@ const AppRoutes = () => {
 };
 
 // This component determines the correct dashboard to redirect to based on user role
-const Dashboard = () => {
+const RoleBasedDashboardRedirect = () => {
   // This would come from your auth context
   const userRole = localStorage.getItem('userRole') || 'student';
 
-  switch (userRole) {
+  switch (userRole.toLowerCase()) {
     case 'admin':
       return <Navigate to="/admin/dashboard" replace />;
     case 'instructor':

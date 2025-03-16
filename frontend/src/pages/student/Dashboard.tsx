@@ -221,10 +221,10 @@ const StudentDashboard = () => {
                 recentAssignments.map((assignment) => (
                   <div key={assignment.id} className="p-4">
                     <h3 className="text-sm font-medium text-surface-900 dark:text-white">
-                      {assignment.assignment?.title}
+                      {assignment?.title}
                     </h3>
                     <p className="text-xs text-surface-600 dark:text-surface-400 mt-1">
-                      {assignment.assignment?.course?.title}
+                      {assignment?.course?.title}
                     </p>
                     <div className="flex justify-between items-center mt-2">
                       <span className={`text-xs px-2 py-1 rounded-full ${
@@ -235,7 +235,7 @@ const StudentDashboard = () => {
                         {assignment.status.charAt(0).toUpperCase() + assignment.status.slice(1)}
                       </span>
                       <Link
-                        to={`/dashboard/assignments/${assignment.assignment_id}`}
+                        to={`/dashboard/assignments/${assignment.id}`}
                         className="text-xs font-medium text-primary-600 dark:text-primary-400 hover:text-primary-500 dark:hover:text-primary-300"
                       >
                         View

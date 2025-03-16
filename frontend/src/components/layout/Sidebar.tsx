@@ -30,7 +30,7 @@ const Sidebar = ({ role, isMobile, isOpen, onClose }: SidebarProps) => {
     const items = [];
 
     // Student navigation
-    if (role === 'student' || role === 'admin') {
+    if (role === 'STUDENT' || role === 'ADMIN') {
       items.push(
         {
           name: 'Dashboard',
@@ -60,7 +60,7 @@ const Sidebar = ({ role, isMobile, isOpen, onClose }: SidebarProps) => {
     }
 
     // Instructor navigation
-    if (role === 'instructor' || role === 'admin') {
+    if (role === 'INSTRUCTOR' || role === 'ADMIN') {
       items.push(
         {
           name: 'Instructor Dashboard',
@@ -90,7 +90,7 @@ const Sidebar = ({ role, isMobile, isOpen, onClose }: SidebarProps) => {
     }
 
     // Admin navigation
-    if (role === 'admin') {
+    if (role === 'ADMIN') {
       items.push(
         {
           name: 'Admin Dashboard',

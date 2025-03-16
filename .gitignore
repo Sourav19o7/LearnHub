@@ -1,2 +1,13 @@
-./backend/env
-./frontend/env
+# Ignore environment variables
+.env
+backend/.env
+frontend/.env
+
+# Ignore dependencies
+node_modules/
+backend/node_modules/
+frontend/node_modules/
+
+# Ignore logs and system files
+*.log
+.DS_Store
