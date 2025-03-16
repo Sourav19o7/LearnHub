@@ -38,20 +38,18 @@ interface UserFormValues {
 }
 
 const userSchema = Yup.object().shape({
-  first_name: Yup.string().required('First name is required'),
-  last_name: Yup.string().required('Last name is required'),
-  email: Yup.string().email('Invalid email').required('Email is required'),
-  role: Yup.string()
-    .oneOf(['student', 'instructor', 'admin'], 'Invalid role')
-    .required('Role is required'),
-  password: Yup.string().when('isEditing', {
-    is: false,
-    then: Yup.string()
-      .required('Password is required')
-      .min(8, 'Password must be at least 8 characters'),
-    otherwise: Yup.string(),
-  }),
-});
+    first_name: Yup.string().required('First name is required'),
+    last_name: Yup.string().required('Last name is required'),
+    email: Yup.string().email('Invalid email').required('Email is required'),
+    role: Yup.string()
+      .oneOf(['student', 'instructor', 'admin'], 'Invalid role')
+      .required('Role is required'),
+    password: Yup.string().when('isEditing', (isEditing, schema) => {
+      return isEditing 
+        ? schema 
+        : schema.required('Password is required').min(8, 'Password must be at least 8 characters');
+    }),
+  });
 
 const UserManagement = () => {
   const queryClient = useQueryClient();

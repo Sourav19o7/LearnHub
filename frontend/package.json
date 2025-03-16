@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
-        "@headlessui/react": "^1.7.17",
+        "@headlessui/react": "^1.7.19",
         "@heroicons/react": "^2.0.18",
         "@supabase/auth-helpers-react": "^0.4.2",
         "@supabase/supabase-js": "^2.39.0",

@@ -71,7 +71,7 @@ const AppRoutes = () => {
         <Route
           element={
             <PrivateRoute>
-              <DashboardLayout userRole="student" />
+              <DashboardLayout userRole = "STUDENT" />
             </PrivateRoute>
           }
         >
@@ -87,7 +87,7 @@ const AppRoutes = () => {
         <Route
           element={
             <InstructorRoute>
-              <DashboardLayout userRole="instructor" />
+              <DashboardLayout userRole="INSTRUCTOR" />
             </InstructorRoute>
           }
         >
@@ -104,7 +104,7 @@ const AppRoutes = () => {
         <Route
           element={
             <AdminRoute>
-              <DashboardLayout userRole="admin" />
+              <DashboardLayout userRole ="ADMIN" />
             </AdminRoute>
           }
         >
