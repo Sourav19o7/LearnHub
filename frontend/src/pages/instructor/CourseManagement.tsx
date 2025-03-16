@@ -86,6 +86,10 @@ const CourseManagement = () => {
     );
   }
 
+  // Ensure pagination values are defined with fallbacks
+  const currentPage = pagination.page || 1;
+  const limit = pagination.limit || 10;
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
@@ -303,9 +307,9 @@ const CourseManagement = () => {
             <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
               <div>
                 <p className="text-sm text-surface-700 dark:text-surface-300">
-                  Showing <span className="font-medium">{(pagination.page - 1) * pagination.limit + 1}</span> to{' '}
+                  Showing <span className="font-medium">{(currentPage - 1) * limit + 1}</span> to{' '}
                   <span className="font-medium">
-                    {Math.min(pagination.page * pagination.limit, data?.total || 0)}
+                    {Math.min(currentPage * limit, data?.total || 0)}
                   </span>{' '}
                   of <span className="font-medium">{data?.total || 0}</span> results
                 </p>
@@ -313,8 +317,8 @@ const CourseManagement = () => {
               <div>
                 <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
                   <button
-                    onClick={() => handlePageChange(pagination.page - 1)}
-                    disabled={pagination.page === 1}
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
                     className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-surface-300 dark:border-surface-600 bg-white dark:bg-surface-800 text-sm font-medium text-surface-700 dark:text-surface-300 hover:bg-surface-50 dark:hover:bg-surface-700 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <span className="sr-only">Previous</span>
@@ -328,7 +332,7 @@ const CourseManagement = () => {
                       key={i + 1}
                       onClick={() => handlePageChange(i + 1)}
                       className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
-                        pagination.page === i + 1
+                        currentPage === i + 1
                           ? 'z-10 bg-primary-50 dark:bg-primary-900 border-primary-500 dark:border-primary-500 text-primary-600 dark:text-primary-200'
                           : 'bg-white dark:bg-surface-800 border-surface-300 dark:border-surface-600 text-surface-700 dark:text-surface-300 hover:bg-surface-50 dark:hover:bg-surface-700'
                       }`}
@@ -338,8 +342,8 @@ const CourseManagement = () => {
                   ))}
                   
                   <button
-                    onClick={() => handlePageChange(pagination.page + 1)}
-                    disabled={pagination.page === totalPages}
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
                     className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-surface-300 dark:border-surface-600 bg-white dark:bg-surface-800 text-sm font-medium text-surface-700 dark:text-surface-300 hover:bg-surface-50 dark:hover:bg-surface-700 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <span className="sr-only">Next</span>

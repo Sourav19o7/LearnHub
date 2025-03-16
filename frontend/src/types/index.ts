@@ -24,6 +24,7 @@ export enum UserRole {
     instructor_id: string;
     instructor?: UserProfile;
     price?: number;
+    enrollment_count : number,
     is_published: boolean;
     category: string;
     tags?: string[];
@@ -68,6 +69,9 @@ export enum UserRole {
     submissions?: AssignmentSubmission[];
     created_at: string;
     updated_at: string;
+    submitted_at : string,
+    course : Course,
+    status : string
   }
   
   export interface AssignmentSubmission {
@@ -105,6 +109,30 @@ export enum UserRole {
     updated_at: string;
   }
   
+  export 
+
+  interface CourseFormValues {
+    title: string;
+    description: string;
+    category: string;
+    difficulty_level: string;
+    price: number;
+    duration_weeks: number;
+    is_published: boolean;
+    cover_image?: File | null;
+    sections: {
+      id : string,
+      title: string;
+      lessons: {
+        id : string,
+        title: string;
+        content: string;
+        video_url?: string;
+        is_preview: boolean;
+      }[];
+    }[];
+  }
+
   export interface StudyMaterial {
     id: string;
     course_id: string;

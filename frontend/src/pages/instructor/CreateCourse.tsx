@@ -13,6 +13,7 @@ import {
 } from '@heroicons/react/24/outline';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { CourseFormValues } from '@/types';
 
 const courseCategories = [
   { value: 'programming', label: 'Programming & Development' },
@@ -33,26 +34,6 @@ const difficultyLevels = [
   { value: 'advanced', label: 'Advanced' },
 ];
 
-interface CourseFormValues {
-  title: string;
-  description: string;
-  category: string;
-  difficulty_level: string;
-  price: number;
-  duration_weeks: number;
-  is_published: boolean;
-  cover_image?: File | null;
-  sections: {
-    title: string;
-    lessons: {
-      title: string;
-      content: string;
-      video_url?: string;
-      is_preview: boolean;
-    }[];
-  }[];
-}
-
 const initialValues: CourseFormValues = {
   title: '',
   description: '',
@@ -64,9 +45,11 @@ const initialValues: CourseFormValues = {
   cover_image: null,
   sections: [
     {
+      id : '',
       title: 'Getting Started',
       lessons: [
         {
+          id : '',
           title: 'Introduction',
           content: '',
           video_url: '',
@@ -469,8 +452,12 @@ const CreateCourse = () => {
                                 type="text"
                                 placeholder="Section Title"
                                 className={`shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border ${
-                                  typeof errors.sections?.[sectionIndex] !== 'string' && 
-                                  errors.sections?.[sectionIndex]?.title &&
+                                  errors.sections && 
+                                  Array.isArray(errors.sections) === false &&
+                                  typeof errors.sections === 'object' && 
+                                  errors.sections[sectionIndex] &&
+                                  typeof errors.sections[sectionIndex] !== 'string' &&
+                                  (errors.sections[sectionIndex] as any).title &&
                                   touched.sections?.[sectionIndex]?.title
                                     ? 'border-error-300 dark:border-error-700'
                                     : 'border-surface-300 dark:border-surface-700'
@@ -532,9 +519,15 @@ const CreateCourse = () => {
                                               name={`sections.${sectionIndex}.lessons.${lessonIndex}.title`}
                                               id={`sections.${sectionIndex}.lessons.${lessonIndex}.title`}
                                               className={`shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border ${
-                                                typeof errors.sections?.[sectionIndex] !== 'string' &&
-                                                typeof errors.sections?.[sectionIndex]?.lessons?.[lessonIndex] !== 'string' &&
-                                                errors.sections?.[sectionIndex]?.lessons?.[lessonIndex]?.title &&
+                                                errors.sections && 
+                                                Array.isArray(errors.sections) === false &&
+                                                typeof errors.sections === 'object' && 
+                                                errors.sections[sectionIndex] &&
+                                                typeof errors.sections[sectionIndex] !== 'string' &&
+                                                (errors.sections[sectionIndex] as any).lessons && 
+                                                (errors.sections[sectionIndex] as any).lessons[lessonIndex] &&
+                                                typeof (errors.sections[sectionIndex] as any).lessons[lessonIndex] !== 'string' &&
+                                                (errors.sections[sectionIndex] as any).lessons[lessonIndex].title &&
                                                 touched.sections?.[sectionIndex]?.lessons?.[lessonIndex]?.title
                                                   ? 'border-error-300 dark:border-error-700'
                                                   : 'border-surface-300 dark:border-surface-700'
