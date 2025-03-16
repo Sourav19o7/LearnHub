@@ -207,7 +207,7 @@ export const updateEnrollmentProgress = asyncHandler(async (req: Request, res: R
       .eq('id', last_lesson_id)
       .single();
     
-    if (lessonError || !lesson || lesson.section.course_id !== enrollment.course_id) {
+    if (lessonError || !lesson || lesson.section[0].course_id !== enrollment.course_id) {
       throw new ApiError(400, 'Invalid lesson ID');
     }
     

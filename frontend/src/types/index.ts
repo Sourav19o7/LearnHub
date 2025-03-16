@@ -40,6 +40,7 @@ export enum UserRole {
     order_index: number;
     created_at: string;
     updated_at: string;
+    lessons : Lesson[]
   }
   
   export interface Lesson {

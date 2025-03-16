@@ -482,7 +482,7 @@ const UserProfile = () => {
                       </dt>
                       <dd className="mt-1 text-surface-900 dark:text-white">
                         {userProfile.website ? (
-                          
+                          <a
                             href={userProfile.website}
                             target="_blank"
                             rel="noopener noreferrer"

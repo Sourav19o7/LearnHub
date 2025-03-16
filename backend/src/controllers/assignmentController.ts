@@ -167,7 +167,7 @@ export const updateAssignment = asyncHandler(async (req: Request, res: Response)
     throw new ApiError(500, `Failed to fetch assignment: ${fetchError.message}`);
   }
   
-  if (assignment.course.instructor_id !== userId) {
+  if (assignment.course[0].instructor_id !== userId) {
     throw new ApiError(403, 'Not authorized to update this assignment');
   }
   
@@ -229,7 +229,7 @@ export const deleteAssignment = asyncHandler(async (req: Request, res: Response)
     throw new ApiError(500, `Failed to fetch assignment: ${fetchError.message}`);
   }
   
-  if (assignment.course.instructor_id !== userId) {
+  if (assignment.course[0].instructor_id !== userId) {
     throw new ApiError(403, 'Not authorized to delete this assignment');
   }
   
@@ -408,7 +408,7 @@ export const gradeSubmission = asyncHandler(async (req: Request, res: Response) 
     throw new ApiError(500, `Failed to fetch assignment: ${assignmentError.message}`);
   }
   
-  if (assignment.course.instructor_id !== userId) {
+  if (assignment.course[0].instructor_id !== userId) {
     throw new ApiError(403, 'Not authorized to grade submissions for this assignment');
   }
   
@@ -487,7 +487,7 @@ export const getSubmissions = asyncHandler(async (req: Request, res: Response) =
     throw new ApiError(500, `Failed to fetch assignment: ${assignmentError.message}`);
   }
   
-  const isInstructor = assignment.course.instructor_id === userId;
+  const isInstructor = assignment.course[0].instructor_id === userId;
   
   // If not instructor, check if user is trying to view their own submission
   if (!isInstructor) {

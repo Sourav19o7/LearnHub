@@ -323,7 +323,7 @@ const AssignmentManagement = () => {
                         {({ field }: any) => (
                           <ReactQuill
                             value={field.value}
-                            onChange={(content) => setFieldValue('description', content)}
+                            onChange={(content : string) => setFieldValue('description', content)}
                             theme="snow"
                             className="bg-white dark:bg-surface-800 text-surface-900 dark:text-white rounded-md"
                           />
@@ -680,7 +680,7 @@ const AssignmentManagement = () => {
                             {({ field }: any) => (
                               <ReactQuill
                                 value={field.value}
-                                onChange={(content) => setFieldValue('feedback', content)}
+                                onChange={(content : string) => setFieldValue('feedback', content)}
                                 theme="snow"
                                 className="bg-white dark:bg-surface-800 text-surface-900 dark:text-white rounded-md"
                               />

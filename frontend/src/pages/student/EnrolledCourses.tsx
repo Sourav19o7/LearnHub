@@ -9,7 +9,7 @@ import {
   ClockIcon,
   ArrowRightIcon,
   CalendarIcon,
-  FilterIcon,
+  FunnelIcon,
 } from '@heroicons/react/24/outline';
 
 const EnrolledCourses = () => {
@@ -64,7 +64,7 @@ const EnrolledCourses = () => {
               <option value="completed">Completed</option>
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-surface-500 dark:text-surface-400">
-              <FilterIcon className="h-4 w-4" />
+              <FunnelIcon className="h-4 w-4" />
             </div>
           </div>
           <div className="relative">
@@ -78,7 +78,7 @@ const EnrolledCourses = () => {
               <option value="progress">Progress</option>
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-surface-500 dark:text-surface-400">
-              <FilterIcon className="h-4 w-4" />
+              <FunnelIcon className="h-4 w-4" />
             </div>
           </div>
         </div>

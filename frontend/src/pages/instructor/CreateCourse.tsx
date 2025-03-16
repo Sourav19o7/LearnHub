@@ -145,7 +145,7 @@ const CreateCourse = () => {
           await api.post(`/courses/${courseId}/sections/${sectionId}/lessons`, {
             title: lesson.title,
             content: lesson.content,
-            video_url: lesson.video_url,
+            video_url: lesson.video_url || '',
             is_preview: lesson.is_preview,
           });
         }
@@ -469,6 +469,7 @@ const CreateCourse = () => {
                                 type="text"
                                 placeholder="Section Title"
                                 className={`shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border ${
+                                  typeof errors.sections?.[sectionIndex] !== 'string' && 
                                   errors.sections?.[sectionIndex]?.title &&
                                   touched.sections?.[sectionIndex]?.title
                                     ? 'border-error-300 dark:border-error-700'
@@ -531,6 +532,8 @@ const CreateCourse = () => {
                                               name={`sections.${sectionIndex}.lessons.${lessonIndex}.title`}
                                               id={`sections.${sectionIndex}.lessons.${lessonIndex}.title`}
                                               className={`shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border ${
+                                                typeof errors.sections?.[sectionIndex] !== 'string' &&
+                                                typeof errors.sections?.[sectionIndex]?.lessons?.[lessonIndex] !== 'string' &&
                                                 errors.sections?.[sectionIndex]?.lessons?.[lessonIndex]?.title &&
                                                 touched.sections?.[sectionIndex]?.lessons?.[lessonIndex]?.title
                                                   ? 'border-error-300 dark:border-error-700'
@@ -653,11 +656,10 @@ const CreateCourse = () => {
                             })
                           }
                           className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
-                          >
-                            <PlusCircleIcon className="h-5 w-5 mr-1" />
-                            Add Section
-                          </button>
-                        </div>
+                        >
+                          <PlusCircleIcon className="h-5 w-5 mr-1" />
+                          Add Section
+                        </button>
                       </div>
                     </div>
                   )}
