@@ -1,0 +1,135 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-surface-50 text-surface-900 dark:bg-surface-950 dark:text-surface-100;
+    font-family: 'Lexend', sans-serif;
+    margin: 0;
+    transition: background-color 0.3s ease;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold;
+  }
+
+  button {
+    @apply rounded transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-primary-400 dark:focus:ring-offset-surface-900;
+  }
+
+  /* Material Design-like button variants */
+  .btn {
+    @apply rounded px-4 py-2 font-medium transition-all duration-200 ease-in-out;
+  }
+
+  .btn-filled {
+    @apply btn bg-primary-600 text-white hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-400;
+  }
+
+  .btn-outlined {
+    @apply btn border border-primary-600 text-primary-600 hover:bg-primary-50 dark:border-primary-500 dark:text-primary-400 dark:hover:bg-primary-900/50;
+  }
+
+  .btn-text {
+    @apply btn text-primary-600 hover:bg-primary-50 dark:text-primary-400 dark:hover:bg-primary-900/50;
+  }
+
+  /* Material Design-like card */
+  .card {
+    @apply rounded-lg bg-white p-6 shadow-md dark:bg-surface-900 dark:shadow-dark-md;
+  }
+
+  /* Material Design elevation shadows */
+  .elevation-1 {
+    @apply shadow dark:shadow-dark;
+  }
+
+  .elevation-2 {
+    @apply shadow-md dark:shadow-dark-md;
+  }
+
+  .elevation-3 {
+    @apply shadow-lg dark:shadow-dark-lg;
+  }
+
+  .elevation-4 {
+    @apply shadow-xl dark:shadow-dark-xl;
+  }
+
+  .elevation-5 {
+    @apply shadow-2xl dark:shadow-dark-2xl;
+  }
+
+  /* Form elements */
+  input, select, textarea {
+    @apply rounded-md border border-surface-300 bg-white px-3 py-2 shadow-sm 
+    focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 
+    dark:border-surface-700 dark:bg-surface-800 dark:text-surface-100 
+    dark:focus:border-primary-400 dark:focus:ring-primary-400;
+  }
+
+  /* Animation utilities */
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  .animate-slide-in {
+    animation: slideIn 0.3s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  /* Navigation active item indicator */
+  .nav-indicator {
+    @apply absolute inset-y-0 left-0 w-1 bg-primary-600 dark:bg-primary-500;
+  }
+
+  /* Container paddings */
+  .container-padding {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Material Design-like chips */
+  .chip {
+    @apply inline-flex items-center rounded-full px-3 py-1 text-sm font-medium;
+  }
+
+  .chip-primary {
+    @apply chip bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200;
+  }
+
+  .chip-success {
+    @apply chip bg-success-100 text-success-800 dark:bg-success-900 dark:text-success-200;
+  }
+
+  .chip-warning {
+    @apply chip bg-warning-100 text-warning-800 dark:bg-warning-900 dark:text-warning-200;
+  }
+
+  .chip-error {
+    @apply chip bg-error-100 text-error-800 dark:bg-error-900 dark:text-error-200;
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-surface-200 dark:bg-surface-800;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply rounded bg-surface-400 hover:bg-surface-500 dark:bg-surface-600 dark:hover:bg-surface-500;
+  }
+}
