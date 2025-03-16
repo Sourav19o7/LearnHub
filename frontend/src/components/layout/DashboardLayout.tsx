@@ -26,8 +26,8 @@ const DashboardLayout = ({ userRole }: DashboardLayoutProps) => {
       {/* Desktop sidebar */}
       <Sidebar role={userRole} isMobile={false} isOpen={true} />
       
-      {/* Main content */}
-      <div className="flex flex-col w-0 flex-1 overflow-hidden">
+      {/* Main content - with ml-64 to offset the sidebar width */}
+      <div className="flex flex-col w-0 flex-1 md:ml-64 overflow-hidden">
         <DashboardNavbar
           openSidebar={() => setSidebarOpen(true)}
         />

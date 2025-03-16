@@ -28,3 +28,34 @@
 2025-03-17 02:38:33:3833 [31merror[39m: [31mError fetching courses: relation "public.courses" does not exist[39m
 2025-03-17 02:38:37:3837 [31merror[39m: [31mError fetching courses: relation "public.courses" does not exist[39m
 2025-03-17 02:38:38:3838 [31merror[39m: [31mError fetching courses: relation "public.courses" does not exist[39m
+2025-03-17 02:47:36:4736 [31merror[39m: [31mError fetching courses: relation "public.courses" does not exist[39m
+2025-03-17 02:47:38:4738 [31merror[39m: [31mError fetching courses: relation "public.courses" does not exist[39m
+2025-03-17 02:47:48:4748 [31merror[39m: [31mError fetching courses: relation "public.courses" does not exist[39m
+2025-03-17 02:47:49:4749 [31merror[39m: [31mError fetching courses: relation "public.courses" does not exist[39m
+2025-03-17 02:52:04:524 [31merror[39m: [31mEnrollment fetch error: Could not find a relationship between 'enrollments' and 'courses' in the schema cache[39m
+2025-03-17 02:52:04:524 [31merror[39m: [31mEnrollment fetch error: Could not find a relationship between 'enrollments' and 'courses' in the schema cache[39m
+2025-03-17 02:52:05:525 [31merror[39m: [31mEnrollment fetch error: Could not find a relationship between 'enrollments' and 'courses' in the schema cache[39m
+2025-03-17 02:52:16:5216 [31merror[39m: [31mEnrollment fetch error: Could not find a relationship between 'enrollments' and 'courses' in the schema cache[39m
+2025-03-17 02:52:17:5217 [31merror[39m: [31mEnrollment fetch error: Could not find a relationship between 'enrollments' and 'courses' in the schema cache[39m
+2025-03-17 02:52:23:5223 [31merror[39m: [31mError fetching courses: relation "public.courses" does not exist[39m
+2025-03-17 02:52:24:5224 [31merror[39m: [31mError fetching courses: relation "public.courses" does not exist[39m
+2025-03-17 02:52:29:5229 [31merror[39m: [31mError fetching courses: relation "public.courses" does not exist[39m
+2025-03-17 02:52:30:5230 [31merror[39m: [31mError fetching courses: relation "public.courses" does not exist[39m
+2025-03-17 02:52:30:5230 [31merror[39m: [31mError fetching courses: relation "public.courses" does not exist[39m
+2025-03-17 02:52:32:5232 [31merror[39m: [31mError fetching courses: relation "public.courses" does not exist[39m
+2025-03-17 02:52:33:5233 [31merror[39m: [31mEnrollment fetch error: Could not find a relationship between 'enrollments' and 'courses' in the schema cache[39m
+2025-03-17 02:52:35:5235 [31merror[39m: [31mEnrollment fetch error: Could not find a relationship between 'enrollments' and 'courses' in the schema cache[39m
+2025-03-17 02:52:46:5246 [31merror[39m: [31mError fetching course: Could not find a relationship between 'courses' and 'profiles' in the schema cache[39m
+2025-03-17 02:52:46:5246 [31merror[39m: [31mError fetching course sections: relation "public.sections" does not exist[39m
+2025-03-17 02:52:46:5246 [31merror[39m: [31mEnrollment fetch error: Could not find a relationship between 'enrollments' and 'courses' in the schema cache[39m
+2025-03-17 02:52:47:5247 [31merror[39m: [31mError fetching course: Could not find a relationship between 'courses' and 'profiles' in the schema cache[39m
+2025-03-17 02:52:47:5247 [31merror[39m: [31mError fetching course sections: relation "public.sections" does not exist[39m
+2025-03-17 02:52:48:5248 [31merror[39m: [31mEnrollment fetch error: Could not find a relationship between 'enrollments' and 'courses' in the schema cache[39m
+2025-03-17 02:52:49:5249 [31merror[39m: [31mEnrollment fetch error: Could not find a relationship between 'enrollments' and 'courses' in the schema cache[39m
+2025-03-17 02:57:39:5739 [31merror[39m: [31mEnrollment fetch error: Could not find a relationship between 'enrollments' and 'courses' in the schema cache[39m
+2025-03-17 03:11:35:1135 [31merror[39m: [31mError fetching courses: relation "public.courses" does not exist[39m
+2025-03-17 03:11:36:1136 [31merror[39m: [31mError fetching courses: relation "public.courses" does not exist[39m
+2025-03-17 03:13:39:1339 [31merror[39m: [31mError fetching courses: relation "public.courses" does not exist[39m
+2025-03-17 03:13:40:1340 [31merror[39m: [31mError fetching courses: relation "public.courses" does not exist[39m
+2025-03-17 03:14:17:1417 [31merror[39m: [31mEnrollment fetch error: Could not find a relationship between 'enrollments' and 'courses' in the schema cache[39m
+2025-03-17 03:14:18:1418 [31merror[39m: [31mEnrollment fetch error: Could not find a relationship between 'enrollments' and 'courses' in the schema cache[39m
