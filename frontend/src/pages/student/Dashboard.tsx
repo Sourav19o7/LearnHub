@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import api from '../../lib/api';
 import { useAuth } from '../../context/AuthContext';
 import LoadingScreen from '../../components/common/LoadingScreen';
-import { Course, Enrollment, Assignment } from '../../types';
+import { Enrollment, Assignment } from '../../types';
 import {
   BookOpenIcon,
   ClipboardDocumentCheckIcon,
@@ -15,6 +14,8 @@ import {
 
 const StudentDashboard = () => {
   const { profile, isAuthenticated, user } = useAuth();
+
+  console.log(profile, isAuthenticated, user)
 
   // Fetch user's enrollments using the 'me' endpoint
   const { data: enrollmentsData, isLoading: isLoadingEnrollments } = useQuery(
@@ -41,7 +42,7 @@ const StudentDashboard = () => {
   );
 
   // Fetch user's stats using the 'me' endpoint
-  const { data: statsData, isLoading: isLoadingStats } = useQuery(
+  const { isLoading: isLoadingStats } = useQuery(
     ['user-stats', user?.id],
     async () => {
       const response = await api.get('/users/me/stats');
@@ -53,12 +54,12 @@ const StudentDashboard = () => {
   );
 
   const isLoading = isLoadingEnrollments || isLoadingAssignments || isLoadingStats;
+  console.log("Loading states:", { isLoadingEnrollments, isLoadingAssignments, isLoadingStats });
 
   if (isLoading) return <LoadingScreen />;
 
   const enrollments: Enrollment[] = enrollmentsData?.data || [];
   const assignments: Assignment[] = assignmentsData?.data || [];
-  const stats = statsData?.data || {};
 
   // Get in-progress courses (not completed)
   const inProgressCourses = enrollments

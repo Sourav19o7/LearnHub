@@ -430,6 +430,8 @@ export const getUserStats = asyncHandler(async (req: Request, res: Response) => 
   }
   
   const supabase = getSupabase();
+
+  console.log(targetId)
   
   // Get user profile
   const { data: profile, error: profileError } = await supabase
