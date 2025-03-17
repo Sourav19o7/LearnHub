@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import api from '../../lib/api';
+import { useAuth } from '../../context/AuthContext';
 import LoadingScreen from '../../components/common/LoadingScreen';
 import { Enrollment } from '../../types';
 import {
@@ -15,17 +16,37 @@ import {
 const EnrolledCourses = () => {
   const [filter, setFilter] = useState<'all' | 'in-progress' | 'completed'>('all');
   const [sortBy, setSortBy] = useState<'recent' | 'title' | 'progress'>('recent');
+  const { isAuthenticated, user } = useAuth();
 
-  // Fetch enrollments
-  const { data: enrollmentsData, isLoading } = useQuery(
-    ['enrollments'],
+  // Fetch enrollments using the 'me' endpoint
+  const { data: enrollmentsData, isLoading, error } = useQuery(
+    ['enrollments', filter, sortBy, user?.id],
     async () => {
-      const response = await api.get('/enrollments');
+      // Use the 'me' endpoint instead of '/enrollments'
+      const response = await api.get('/users/me/enrollments');
       return response.data;
+    },
+    {
+      enabled: isAuthenticated // Only run if authenticated
     }
   );
 
   if (isLoading) return <LoadingScreen />;
+
+  if (error) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-surface-900 dark:text-white mb-4">
+            Error Loading Enrollments
+          </h2>
+          <p className="text-surface-600 dark:text-surface-400">
+            An error occurred while loading your enrolled courses. Please try again later.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   const enrollments: Enrollment[] = enrollmentsData?.data || [];
 

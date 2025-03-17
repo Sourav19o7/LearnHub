@@ -59,3 +59,111 @@
 2025-03-17 03:13:40:1340 [31merror[39m: [31mError fetching courses: relation "public.courses" does not exist[39m
 2025-03-17 03:14:17:1417 [31merror[39m: [31mEnrollment fetch error: Could not find a relationship between 'enrollments' and 'courses' in the schema cache[39m
 2025-03-17 03:14:18:1418 [31merror[39m: [31mEnrollment fetch error: Could not find a relationship between 'enrollments' and 'courses' in the schema cache[39m
+2025-03-17 12:58:20:5820 [31merror[39m: [31mError fetching courses: relation "public.courses" does not exist[39m
+2025-03-17 12:58:21:5821 [31merror[39m: [31mError fetching courses: relation "public.courses" does not exist[39m
+2025-03-17 13:20:59:2059 [31merror[39m: [31mError fetching courses: relation "public.courses" does not exist[39m
+2025-03-17 13:21:00:210 [31merror[39m: [31mError fetching courses: relation "public.courses" does not exist[39m
+2025-03-17 13:26:59:2659 [31merror[39m: [31mEnrollment fetch error: Could not find a relationship between 'enrollments' and 'courses' in the schema cache[39m
+2025-03-17 13:27:00:270 [31merror[39m: [31mEnrollment fetch error: Could not find a relationship between 'enrollments' and 'courses' in the schema cache[39m
+2025-03-17 13:48:03:483 [31merror[39m: [31mDatabase connection test failed: relation "public.profiles" does not exist[39m
+2025-03-17 13:48:03:483 [31merror[39m: [31mError code: 42P01[39m
+2025-03-17 13:48:03:483 [31merror[39m: [31mError details: null[39m
+2025-03-17 13:51:28:5128 [31merror[39m: [31mDatabase connection test failed: relation "public.profiles" does not exist[39m
+2025-03-17 13:51:28:5128 [31merror[39m: [31mError code: 42P01[39m
+2025-03-17 13:51:28:5128 [31merror[39m: [31mError details: null[39m
+2025-03-17 13:52:48:5248 [31merror[39m: [31mDatabase connection test failed: relation "public.profiles" does not exist[39m
+2025-03-17 13:52:48:5248 [31merror[39m: [31mError code: 42P01[39m
+2025-03-17 13:52:48:5248 [31merror[39m: [31mError details: null[39m
+2025-03-17 13:53:13:5313 [31merror[39m: [31mDatabase connection test failed: relation "public.profiles" does not exist[39m
+2025-03-17 13:53:13:5313 [31merror[39m: [31mError code: 42P01[39m
+2025-03-17 13:53:13:5313 [31merror[39m: [31mError details: null[39m
+2025-03-17 13:58:28:5828 [31merror[39m: [31mError querying table "profiles": relation "public.profiles" does not exist[39m
+2025-03-17 13:58:28:5828 [31merror[39m: [31mError code: 42P01[39m
+2025-03-17 13:58:28:5828 [31merror[39m: [31mError details: null[39m
+2025-03-17 13:58:28:5828 [31merror[39m: [31mDatabase connection test failed for some tables[39m
+2025-03-17 13:59:16:5916 [31merror[39m: [31mError querying table "profiles": relation "public.profiles" does not exist[39m
+2025-03-17 13:59:16:5916 [31merror[39m: [31mError code: 42P01[39m
+2025-03-17 13:59:16:5916 [31merror[39m: [31mError details: null[39m
+2025-03-17 13:59:16:5916 [31merror[39m: [31mDatabase connection test failed for some tables[39m
+2025-03-17 13:59:20:5920 [31merror[39m: [31mError querying table "profiles": relation "public.profiles" does not exist[39m
+2025-03-17 13:59:20:5920 [31merror[39m: [31mError code: 42P01[39m
+2025-03-17 13:59:20:5920 [31merror[39m: [31mError details: null[39m
+2025-03-17 13:59:20:5920 [31merror[39m: [31mDatabase connection test failed for some tables[39m
+2025-03-17 13:59:37:5937 [31merror[39m: [31mError querying table "profiles": relation "public.profiles" does not exist[39m
+2025-03-17 13:59:37:5937 [31merror[39m: [31mError code: 42P01[39m
+2025-03-17 13:59:37:5937 [31merror[39m: [31mError details: null[39m
+2025-03-17 13:59:37:5937 [31merror[39m: [31mDatabase connection test failed for some tables[39m
+2025-03-17 13:59:48:5948 [31merror[39m: [31mError querying table "profiles": relation "public.profiles" does not exist[39m
+2025-03-17 13:59:48:5948 [31merror[39m: [31mError code: 42P01[39m
+2025-03-17 13:59:48:5948 [31merror[39m: [31mError details: null[39m
+2025-03-17 13:59:48:5948 [31merror[39m: [31mDatabase connection test failed for some tables[39m
+2025-03-17 13:59:55:5955 [31merror[39m: [31mError querying table "profiles": relation "public.profiles" does not exist[39m
+2025-03-17 13:59:55:5955 [31merror[39m: [31mError code: 42P01[39m
+2025-03-17 13:59:55:5955 [31merror[39m: [31mError details: null[39m
+2025-03-17 13:59:55:5955 [31merror[39m: [31mDatabase connection test failed for some tables[39m
+2025-03-17 14:00:32:032 [31merror[39m: [31mError querying table "profiles": relation "public.profiles" does not exist[39m
+2025-03-17 14:00:32:032 [31merror[39m: [31mError code: 42P01[39m
+2025-03-17 14:00:32:032 [31merror[39m: [31mError details: null[39m
+2025-03-17 14:00:32:032 [31merror[39m: [31mError querying table "courses": relation "public.courses" does not exist[39m
+2025-03-17 14:00:32:032 [31merror[39m: [31mError code: 42P01[39m
+2025-03-17 14:00:32:032 [31merror[39m: [31mError details: null[39m
+2025-03-17 14:00:33:033 [31merror[39m: [31mError querying table "sections": relation "public.sections" does not exist[39m
+2025-03-17 14:00:33:033 [31merror[39m: [31mError code: 42P01[39m
+2025-03-17 14:00:33:033 [31merror[39m: [31mError details: null[39m
+2025-03-17 14:00:33:033 [31merror[39m: [31mError querying table "lessons": relation "public.lessons" does not exist[39m
+2025-03-17 14:00:33:033 [31merror[39m: [31mError code: 42P01[39m
+2025-03-17 14:00:33:033 [31merror[39m: [31mError details: null[39m
+2025-03-17 14:00:33:033 [31merror[39m: [31mError querying table "enrollments": relation "public.enrollments" does not exist[39m
+2025-03-17 14:00:33:033 [31merror[39m: [31mError code: 42P01[39m
+2025-03-17 14:00:33:033 [31merror[39m: [31mError details: null[39m
+2025-03-17 14:00:33:033 [31merror[39m: [31mError querying table "assignments": relation "public.assignments" does not exist[39m
+2025-03-17 14:00:33:033 [31merror[39m: [31mError code: 42P01[39m
+2025-03-17 14:00:33:033 [31merror[39m: [31mError details: null[39m
+2025-03-17 14:00:33:033 [31merror[39m: [31mError querying table "assignment_submissions": relation "public.assignment_submissions" does not exist[39m
+2025-03-17 14:00:33:033 [31merror[39m: [31mError code: 42P01[39m
+2025-03-17 14:00:33:033 [31merror[39m: [31mError details: null[39m
+2025-03-17 14:00:33:033 [31merror[39m: [31mError querying table "course_reviews": relation "public.course_reviews" does not exist[39m
+2025-03-17 14:00:33:033 [31merror[39m: [31mError code: 42P01[39m
+2025-03-17 14:00:33:033 [31merror[39m: [31mError details: null[39m
+2025-03-17 14:00:33:033 [31merror[39m: [31mError querying table "study_materials": relation "public.study_materials" does not exist[39m
+2025-03-17 14:00:33:033 [31merror[39m: [31mError code: 42P01[39m
+2025-03-17 14:00:33:033 [31merror[39m: [31mError details: null[39m
+2025-03-17 14:00:33:033 [31merror[39m: [31mError querying table "lesson_progress": relation "public.lesson_progress" does not exist[39m
+2025-03-17 14:00:33:033 [31merror[39m: [31mError code: 42P01[39m
+2025-03-17 14:00:33:033 [31merror[39m: [31mError details: null[39m
+2025-03-17 14:00:33:033 [31merror[39m: [31mDatabase connection test failed for some tables[39m
+2025-03-17 14:01:20:120 [31merror[39m: [31mError querying table "profiles": relation "public.profiles" does not exist[39m
+2025-03-17 14:01:20:120 [31merror[39m: [31mError code: 42P01[39m
+2025-03-17 14:01:20:120 [31merror[39m: [31mError details: null[39m
+2025-03-17 14:01:20:120 [31merror[39m: [31mError querying table "courses": relation "public.courses" does not exist[39m
+2025-03-17 14:01:20:120 [31merror[39m: [31mError code: 42P01[39m
+2025-03-17 14:01:20:120 [31merror[39m: [31mError details: null[39m
+2025-03-17 14:01:21:121 [31merror[39m: [31mError querying table "sections": relation "public.sections" does not exist[39m
+2025-03-17 14:01:21:121 [31merror[39m: [31mError code: 42P01[39m
+2025-03-17 14:01:21:121 [31merror[39m: [31mError details: null[39m
+2025-03-17 14:01:21:121 [31merror[39m: [31mError querying table "lessons": relation "public.lessons" does not exist[39m
+2025-03-17 14:01:21:121 [31merror[39m: [31mError code: 42P01[39m
+2025-03-17 14:01:21:121 [31merror[39m: [31mError details: null[39m
+2025-03-17 14:01:21:121 [31merror[39m: [31mError querying table "enrollments": relation "public.enrollments" does not exist[39m
+2025-03-17 14:01:21:121 [31merror[39m: [31mError code: 42P01[39m
+2025-03-17 14:01:21:121 [31merror[39m: [31mError details: null[39m
+2025-03-17 14:01:21:121 [31merror[39m: [31mError querying table "assignments": relation "public.assignments" does not exist[39m
+2025-03-17 14:01:21:121 [31merror[39m: [31mError code: 42P01[39m
+2025-03-17 14:01:21:121 [31merror[39m: [31mError details: null[39m
+2025-03-17 14:01:21:121 [31merror[39m: [31mError querying table "assignment_submissions": relation "public.assignment_submissions" does not exist[39m
+2025-03-17 14:01:21:121 [31merror[39m: [31mError code: 42P01[39m
+2025-03-17 14:01:21:121 [31merror[39m: [31mError details: null[39m
+2025-03-17 14:01:21:121 [31merror[39m: [31mError querying table "course_reviews": relation "public.course_reviews" does not exist[39m
+2025-03-17 14:01:21:121 [31merror[39m: [31mError code: 42P01[39m
+2025-03-17 14:01:21:121 [31merror[39m: [31mError details: null[39m
+2025-03-17 14:01:21:121 [31merror[39m: [31mError querying table "study_materials": relation "public.study_materials" does not exist[39m
+2025-03-17 14:01:21:121 [31merror[39m: [31mError code: 42P01[39m
+2025-03-17 14:01:21:121 [31merror[39m: [31mError details: null[39m
+2025-03-17 14:01:21:121 [31merror[39m: [31mError querying table "lesson_progress": relation "public.lesson_progress" does not exist[39m
+2025-03-17 14:01:21:121 [31merror[39m: [31mError code: 42P01[39m
+2025-03-17 14:01:21:121 [31merror[39m: [31mError details: null[39m
+2025-03-17 14:01:21:121 [31merror[39m: [31mDatabase connection test failed for some tables[39m
+2025-03-17 15:18:53:1853 [31merror[39m: [31mError fetching user profile: JSON object requested, multiple (or no) rows returned[39m
+2025-03-17 15:18:54:1854 [31merror[39m: [31mError fetching user profile: JSON object requested, multiple (or no) rows returned[39m
+2025-03-17 15:18:54:1854 [31merror[39m: [31mError fetching user profile: JSON object requested, multiple (or no) rows returned[39m
+2025-03-17 15:18:55:1855 [31merror[39m: [31mError fetching user profile: JSON object requested, multiple (or no) rows returned[39m

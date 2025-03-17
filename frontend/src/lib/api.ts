@@ -1,5 +1,11 @@
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import { getSession } from './auth';
+
+// Extend AxiosInstance with our custom methods
+interface CustomAxiosInstance extends AxiosInstance {
+  checkHealth: () => Promise<any>;
+  checkDatabaseHealth: () => Promise<any>;
+}
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:4000/api';
 
@@ -8,27 +14,52 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-});
+}) as CustomAxiosInstance;
 
 // Add a request interceptor to include auth token
 api.interceptors.request.use(
   async (config) => {
-    const session = await getSession();
-    if (session?.access_token) {
-      config.headers.Authorization = `Bearer ${session.access_token}`;
+    try {
+      const session = await getSession();
+      
+      if (session?.access_token) {
+        config.headers.Authorization = `Bearer ${session.access_token}`;
+      } else {
+        console.warn('No access token available for API request');
+      }
+      
+      // For debugging only - remove in production
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`API Request to: ${config.url}`);
+      }
+      
+      return config;
+    } catch (error) {
+      console.error('Error in request interceptor:', error);
+      return config; // Return config anyway to avoid blocking the request
     }
-    return config;
   },
   (error) => {
+    console.error('Request interceptor error:', error);
     return Promise.reject(error);
   }
 );
 
 // Add a response interceptor for error handling
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    // For debugging only - remove in production
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`API Response from ${response.config.url}: Status ${response.status}`);
+    }
+    return response;
+  },
   async (error) => {
     const originalRequest = error.config;
+    
+    // For debugging
+    console.error(`API Error: ${error.response?.status} on ${originalRequest.url}`, 
+      error.response?.data?.message || error.message);
     
     // If the error is due to an expired token and we haven't retried yet
     if (error.response?.status === 401 && !originalRequest._retry) {
@@ -54,5 +85,27 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+// Utility function to make health check request
+api.checkHealth = async () => {
+  try {
+    const response = await api.get('/health');
+    return response.data;
+  } catch (error) {
+    console.error('API Health check failed:', error);
+    return { status: 'error', message: 'API server unreachable' };
+  }
+};
+
+// Utility function to make database health check request
+api.checkDatabaseHealth = async () => {
+  try {
+    const response = await api.get('/health/db');
+    return response.data;
+  } catch (error) {
+    console.error('Database health check failed:', error);
+    return { status: 'error', message: 'Database connection failed' };
+  }
+};
 
 export default api;

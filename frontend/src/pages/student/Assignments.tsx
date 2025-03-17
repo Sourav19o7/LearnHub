@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import api from '../../lib/api';
+import { useAuth } from '../../context/AuthContext';
 import LoadingScreen from '../../components/common/LoadingScreen';
 import {
   ClockIcon,
@@ -26,14 +27,27 @@ interface Assignment {
 
 const Assignments = () => {
   const [filter, setFilter] = useState<'all' | 'pending' | 'submitted' | 'graded'>('all');
+  const { user, isAuthenticated } = useAuth();
 
-  // Fetch assignments
+  // Fetch assignments using 'me' endpoint
   const { data, isLoading, error } = useQuery(
-    ['assignments', filter],
+    ['assignments', filter, user?.id],
     async () => {
       const params = filter !== 'all' ? { status: filter } : undefined;
-      const response = await api.get('/assignments', { params });
+      // Use the users/me/assignments endpoint instead
+      const response = await api.get('/users/me/assignments', { params });
       return response.data;
+    },
+    {
+      // Only run query if we're authenticated
+      enabled: isAuthenticated,
+      // Retry fewer times for auth issues
+      retry: (failureCount, error: any) => {
+        if (error?.response?.status === 401 || error?.response?.status === 403) {
+          return false; // Don't retry auth errors
+        }
+        return failureCount < 3;
+      }
     }
   );
 

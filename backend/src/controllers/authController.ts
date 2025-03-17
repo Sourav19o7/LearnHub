@@ -193,7 +193,7 @@ export const updatePassword = asyncHandler(async (req: Request, res: Response) =
   
   // First verify current password by trying to sign in
   const { error: signInError } = await supabase.auth.signInWithPassword({
-    email: req.user.email,
+    email: req.user && req.user.email ? req.user.email : '',
     password: current_password
   });
   

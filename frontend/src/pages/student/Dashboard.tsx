@@ -14,32 +14,41 @@ import {
 } from '@heroicons/react/24/outline';
 
 const StudentDashboard = () => {
-  const { profile } = useAuth();
+  const { profile, isAuthenticated, user } = useAuth();
 
-  // Fetch user's enrollments
+  // Fetch user's enrollments using the 'me' endpoint
   const { data: enrollmentsData, isLoading: isLoadingEnrollments } = useQuery(
-    ['enrollments'],
+    ['enrollments', user?.id],
     async () => {
-      const response = await api.get('/enrollments');
+      const response = await api.get('/users/me/enrollments');
       return response.data;
+    },
+    {
+      enabled: isAuthenticated // Only run if we're authenticated
     }
   );
 
-  // Fetch user's assignments
+  // Fetch user's assignments using the 'me' endpoint
   const { data: assignmentsData, isLoading: isLoadingAssignments } = useQuery(
-    ['assignments'],
+    ['assignments', user?.id],
     async () => {
-      const response = await api.get(`/users/${profile?.id}/assignments`);
+      const response = await api.get('/users/me/assignments');
       return response.data;
+    },
+    {
+      enabled: isAuthenticated // Only run if we're authenticated
     }
   );
 
-  // Fetch user's stats
+  // Fetch user's stats using the 'me' endpoint
   const { data: statsData, isLoading: isLoadingStats } = useQuery(
-    ['user-stats'],
+    ['user-stats', user?.id],
     async () => {
-      const response = await api.get(`/users/${profile?.id}/stats`);
+      const response = await api.get('/users/me/stats');
       return response.data;
+    },
+    {
+      enabled: isAuthenticated // Only run if we're authenticated
     }
   );
 

@@ -183,16 +183,94 @@ export const deleteUser = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 
+// @desc    Get user's assignments (submissions)
+// @route   GET /api/users/:id/assignments or /api/users/me/assignments
+// @access  Private (Self or Admin)
+export const getUserAssignments = asyncHandler(async (req: Request, res: Response) => {
+  // Check if we're on a /me route or if the ID is "me"
+  const isMeRoute = req.originalUrl.includes('/me/');
+  const isIdMe = req.params.id === 'me';
+  
+  // Get the actual user ID we want to work with
+  let targetId: string;
+  
+  if (isMeRoute || isIdMe) {
+    // Use the authenticated user
+    if (!req.user?.id) {
+      throw new ApiError(401, 'User not authenticated');
+    }
+    targetId = req.user.id;
+  } else {
+    // Use the ID from the URL params
+    targetId = req.params.id;
+    
+    // Check authorization - only allow access to own data or admin access
+    const userId = req.user?.id;
+    
+    if (targetId !== userId && req.user?.role !== UserRole.ADMIN) {
+      throw new ApiError(403, 'Not authorized to access this data');
+    }
+  }
+  
+  const supabase = getSupabase();
+  
+  // Get user's assignment submissions with assignment and course details
+  const { data, error } = await supabase
+    .from('assignment_submissions')
+    .select(`
+      *,
+      assignment:assignments(
+        id,
+        title,
+        description,
+        due_date,
+        points,
+        course:courses(id, title)
+      )
+    `)
+    .eq('user_id', targetId)
+    .order('submitted_at', { ascending: false });
+  
+  if (error) {
+    logger.error(`Error fetching user assignments: ${error.message}`);
+    throw new ApiError(500, `Failed to fetch user assignments: ${error.message}`);
+  }
+  
+  res.status(200).json({
+    success: true,
+    count: data.length,
+    data
+  });
+});
+
+
 // @desc    Get user's courses (created if instructor, enrolled if student)
-// @route   GET /api/users/:id/courses
+// @route   GET /api/users/:id/courses or /api/users/me/courses
 // @access  Private (Self or Admin)
 export const getUserCourses = asyncHandler(async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const userId = req.user?.id;
+  // Check if we're on a /me route or if the ID is "me"
+  const isMeRoute = req.originalUrl.includes('/me/');
+  const isIdMe = req.params.id === 'me';
   
-  // Check if user is requesting own data or is admin
-  if (id !== userId && req.user?.role !== UserRole.ADMIN) {
-    throw new ApiError(403, 'Not authorized to access this data');
+  // Get the actual user ID we want to work with
+  let targetId: string;
+  
+  if (isMeRoute || isIdMe) {
+    // Use the authenticated user
+    if (!req.user?.id) {
+      throw new ApiError(401, 'User not authenticated');
+    }
+    targetId = req.user.id;
+  } else {
+    // Use the ID from the URL params
+    targetId = req.params.id;
+    
+    // Check authorization - only allow access to own data or admin access
+    const userId = req.user?.id;
+    
+    if (targetId !== userId && req.user?.role !== UserRole.ADMIN) {
+      throw new ApiError(403, 'Not authorized to access this data');
+    }
   }
   
   const supabase = getSupabase();
@@ -201,7 +279,7 @@ export const getUserCourses = asyncHandler(async (req: Request, res: Response) =
   const { data: profile, error: profileError } = await supabase
     .from('profiles')
     .select('role')
-    .eq('id', id)
+    .eq('id', targetId)
     .single();
   
   if (profileError) {
@@ -220,7 +298,7 @@ export const getUserCourses = asyncHandler(async (req: Request, res: Response) =
     const { data: courses, error } = await supabase
       .from('courses')
       .select('*')
-      .eq('instructor_id', id)
+      .eq('instructor_id', targetId)
       .order('created_at', { ascending: false });
     
     if (error) {
@@ -237,7 +315,7 @@ export const getUserCourses = asyncHandler(async (req: Request, res: Response) =
         *,
         course:courses(*)
       `)
-      .eq('user_id', id)
+      .eq('user_id', targetId)
       .order('enrolled_at', { ascending: false });
     
     if (error) {
@@ -262,59 +340,33 @@ export const getUserCourses = asyncHandler(async (req: Request, res: Response) =
   });
 });
 
-// @desc    Get user's assignments (submissions)
-// @route   GET /api/users/:id/assignments
-// @access  Private (Self or Admin)
-export const getUserAssignments = asyncHandler(async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const userId = req.user?.id;
-  
-  // Check if user is requesting own data or is admin
-  if (id !== userId && req.user?.role !== UserRole.ADMIN) {
-    throw new ApiError(403, 'Not authorized to access this data');
-  }
-  
-  const supabase = getSupabase();
-  
-  // Get user's assignment submissions with assignment and course details
-  const { data, error } = await supabase
-    .from('assignment_submissions')
-    .select(`
-      *,
-      assignment:assignments(
-        id,
-        title,
-        description,
-        due_date,
-        points,
-        course:courses(id, title)
-      )
-    `)
-    .eq('user_id', id)
-    .order('submitted_at', { ascending: false });
-  
-  if (error) {
-    logger.error(`Error fetching user assignments: ${error.message}`);
-    throw new ApiError(500, `Failed to fetch user assignments: ${error.message}`);
-  }
-  
-  res.status(200).json({
-    success: true,
-    count: data.length,
-    data
-  });
-});
-
 // @desc    Get user's enrollments
-// @route   GET /api/users/:id/enrollments
+// @route   GET /api/users/:id/enrollments or /api/users/me/enrollments
 // @access  Private (Self or Admin)
 export const getUserEnrollments = asyncHandler(async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const userId = req.user?.id;
+  // Check if we're on a /me route or if the ID is "me"
+  const isMeRoute = req.originalUrl.includes('/me/');
+  const isIdMe = req.params.id === 'me';
   
-  // Check if user is requesting own data or is admin
-  if (id !== userId && req.user?.role !== UserRole.ADMIN) {
-    throw new ApiError(403, 'Not authorized to access this data');
+  // Get the actual user ID we want to work with
+  let targetId: string;
+  
+  if (isMeRoute || isIdMe) {
+    // Use the authenticated user
+    if (!req.user?.id) {
+      throw new ApiError(401, 'User not authenticated');
+    }
+    targetId = req.user.id;
+  } else {
+    // Use the ID from the URL params
+    targetId = req.params.id;
+    
+    // Check authorization - only allow access to own data or admin access
+    const userId = req.user?.id;
+    
+    if (targetId !== userId && req.user?.role !== UserRole.ADMIN) {
+      throw new ApiError(403, 'Not authorized to access this data');
+    }
   }
   
   const supabase = getSupabase();
@@ -333,7 +385,7 @@ export const getUserEnrollments = asyncHandler(async (req: Request, res: Respons
         instructor:profiles(id, first_name, last_name)
       )
     `)
-    .eq('user_id', id)
+    .eq('user_id', targetId)
     .order('enrolled_at', { ascending: false });
   
   if (error) {
@@ -349,15 +401,32 @@ export const getUserEnrollments = asyncHandler(async (req: Request, res: Respons
 });
 
 // @desc    Get user's stats (enrollments, completions, assignments, etc.)
-// @route   GET /api/users/:id/stats
+// @route   GET /api/users/:id/stats or /api/users/me/stats
 // @access  Private (Self or Admin)
 export const getUserStats = asyncHandler(async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const userId = req.user?.id;
+  // Check if we're on a /me route or if the ID is "me"
+  const isMeRoute = req.originalUrl.includes('/me/');
+  const isIdMe = req.params.id === 'me';
   
-  // Check if user is requesting own data or is admin
-  if (id !== userId && req.user?.role !== UserRole.ADMIN) {
-    throw new ApiError(403, 'Not authorized to access this data');
+  // Get the actual user ID we want to work with
+  let targetId: string;
+  
+  if (isMeRoute || isIdMe) {
+    // Use the authenticated user
+    if (!req.user?.id) {
+      throw new ApiError(401, 'User not authenticated');
+    }
+    targetId = req.user.id;
+  } else {
+    // Use the ID from the URL params
+    targetId = req.params.id;
+    
+    // Check authorization - only allow access to own data or admin access
+    const userId = req.user?.id;
+    
+    if (targetId !== userId && req.user?.role !== UserRole.ADMIN) {
+      throw new ApiError(403, 'Not authorized to access this data');
+    }
   }
   
   const supabase = getSupabase();
@@ -366,7 +435,7 @@ export const getUserStats = asyncHandler(async (req: Request, res: Response) => 
   const { data: profile, error: profileError } = await supabase
     .from('profiles')
     .select('role')
-    .eq('id', id)
+    .eq('id', targetId)
     .single();
   
   if (profileError) {
@@ -389,7 +458,7 @@ export const getUserStats = asyncHandler(async (req: Request, res: Response) => 
     const { data: enrollmentsData, error: enrollmentsError } = await supabase
       .from('enrollments')
       .select('id, completed_at', { count: 'exact' })
-      .eq('user_id', id);
+      .eq('user_id', targetId);
     
     if (enrollmentsError) {
       logger.error(`Error fetching enrollment stats: ${enrollmentsError.message}`);
@@ -402,7 +471,7 @@ export const getUserStats = asyncHandler(async (req: Request, res: Response) => 
     const { data: submissionsData, error: submissionsError } = await supabase
       .from('assignment_submissions')
       .select('id, status, grade', { count: 'exact' })
-      .eq('user_id', id);
+      .eq('user_id', targetId);
     
     if (submissionsError) {
       logger.error(`Error fetching submission stats: ${submissionsError.message}`);
@@ -425,7 +494,7 @@ export const getUserStats = asyncHandler(async (req: Request, res: Response) => 
     const { data: coursesData, error: coursesError } = await supabase
       .from('courses')
       .select('id, is_published', { count: 'exact' })
-      .eq('instructor_id', id);
+      .eq('instructor_id', targetId);
     
     if (coursesError) {
       logger.error(`Error fetching course stats: ${coursesError.message}`);

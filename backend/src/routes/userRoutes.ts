@@ -13,6 +13,13 @@ import {
 
 const router = express.Router();
 
+// Special 'me' routes - no special handling needed now
+// The controllers now check for /me/ in the URL or "me" as the id parameter
+router.get('/me/assignments', protect, getUserAssignments);
+router.get('/me/courses', protect, getUserCourses);
+router.get('/me/enrollments', protect, getUserEnrollments);
+router.get('/me/stats', protect, getUserStats);
+
 // User management routes (admin only)
 router.route('/')
   .get(protect, isAdmin, getUsers);
