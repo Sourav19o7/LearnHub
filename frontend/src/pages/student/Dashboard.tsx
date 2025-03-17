@@ -13,6 +13,7 @@ import {
 } from '@heroicons/react/24/outline';
 
 const StudentDashboard = () => {
+  console.log("StudentDashboard.tsx");
   const { profile, isAuthenticated, user } = useAuth();
 
   console.log(profile, isAuthenticated, user)

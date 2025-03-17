@@ -6,11 +6,12 @@ import { UserRole } from '../../types';
 import { useTheme } from '../../context/ThemeContext';
 
 interface DashboardLayoutProps {
-  userRole: keyof typeof UserRole;
+  userRole: UserRole;
 }
 
 const DashboardLayout = ({ userRole }: DashboardLayoutProps) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { isDark } = useTheme();
 
   return (

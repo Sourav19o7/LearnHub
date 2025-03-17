@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { UserRole } from './types';
 import MainLayout from './components/layout/MainLayout';
 import AuthLayout from './components/layout/AuthLayout';
 import DashboardLayout from './components/layout/DashboardLayout';
@@ -7,6 +8,8 @@ import PrivateRoute from './components/auth/PrivateRoute';
 import InstructorRoute from './components/auth/InstructorRoute';
 import AdminRoute from './components/auth/AdminRoute';
 import LoadingScreen from './components/common/LoadingScreen';
+import { useAuth } from './context/AuthContext';
+
 
 // Auth Pages
 const Login = lazy(() => import('./pages/auth/Login'));
@@ -46,7 +49,11 @@ const AllCourses = lazy(() => import('./pages/admin/AllCourses'));
 // Not Found
 const NotFound = lazy(() => import('./pages/NotFound'));
 
+
 const AppRoutes = () => {
+  const { profile } = useAuth();
+  console.log("Profile",profile);
+
   return (
     <Suspense fallback={<LoadingScreen />}>
       <Routes>
@@ -71,7 +78,7 @@ const AppRoutes = () => {
         <Route
           element={
             <PrivateRoute>
-              <DashboardLayout userRole="STUDENT" />
+              <DashboardLayout userRole={UserRole.STUDENT} />
             </PrivateRoute>
           }
         >
@@ -87,7 +94,7 @@ const AppRoutes = () => {
         <Route
           element={
             <InstructorRoute>
-              <DashboardLayout userRole="INSTRUCTOR" />
+              <DashboardLayout userRole={UserRole.INSTRUCTOR} />
             </InstructorRoute>
           }
         >
@@ -104,7 +111,7 @@ const AppRoutes = () => {
         <Route
           element={
             <AdminRoute>
-              <DashboardLayout userRole="ADMIN" />
+              <DashboardLayout userRole={UserRole.ADMIN} />
             </AdminRoute>
           }
         >
@@ -113,7 +120,7 @@ const AppRoutes = () => {
           <Route path="/admin/courses" element={<AllCourses />} />
         </Route>
 
-        {/* Redirect to appropriate dashboard based on role - Make this a catch-all for /role-dashboard */}
+        {/* Redirect to appropriate dashboard based on role */}
         <Route
           path="/role-dashboard"
           element={<RoleBasedDashboardRedirect />}
@@ -128,15 +135,14 @@ const AppRoutes = () => {
 
 // This component determines the correct dashboard to redirect to based on user role
 const RoleBasedDashboardRedirect = () => {
-  // This would come from your auth context
-  const userRole = localStorage.getItem('userRole') || 'student';
+  const { profile } = useAuth();
 
-  switch (userRole.toLowerCase()) {
-    case 'admin':
+  switch (profile?.role) {
+    case UserRole.ADMIN:
       return <Navigate to="/admin/dashboard" replace />;
-    case 'instructor':
+    case UserRole.INSTRUCTOR:
       return <Navigate to="/instructor/dashboard" replace />;
-    case 'student':
+    case UserRole.STUDENT:
     default:
       return <Navigate to="/dashboard" replace />;
   }

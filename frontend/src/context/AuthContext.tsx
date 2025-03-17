@@ -13,7 +13,9 @@ interface AuthContextType {
   isStudent: boolean;
   isInstructor: boolean;
   isAdmin: boolean;
-  refreshProfile: () => Promise<void>;
+  refreshProfile: () => Promise<UserProfile | null>;
+  logout: () => Promise<void>;
+  debugSession: () => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -25,7 +27,9 @@ const AuthContext = createContext<AuthContextType>({
   isStudent: false,
   isInstructor: false,
   isAdmin: false,
-  refreshProfile: async () => {},
+  refreshProfile: async () => null,
+  logout: async () => {},
+  debugSession: () => {},
 });
 
 export function useAuth() {
@@ -38,12 +42,70 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const refreshProfile = async () => {
+  // Comprehensive session debugging function
+  const debugSession = () => {
+    console.group('🔐 Supabase Session Debug');
+    
+    // Session details
+    console.log('Full Session Object:', session);
+    
+    if (session) {
+      console.group('Session Details');
+      console.log('Access Token:', session.access_token);
+      console.log('Refresh Token:', session.refresh_token);
+      console.log('Expires At:', session.expires_at ? new Date(session.expires_at * 1000).toLocaleString() : 'N/A');
+      console.log('Token Type:', session.token_type);
+      console.groupEnd();
+    }
+    
+    // User details
+    console.group('User Details');
+    console.log('User Object:', user);
     if (user) {
+      console.log('User ID:', user.id);
+      console.log('User Email:', user.email);
+      console.log('User Metadata:', user.user_metadata);
+      console.log('App Metadata:', user.app_metadata);
+    }
+    console.groupEnd();
+    
+    // Profile details
+    console.group('Profile Details');
+    console.log('User Profile:', profile);
+    if (profile) {
+      console.log('Role:', profile.role);
+      console.log('Name:', `${profile.first_name} ${profile.last_name}`);
+    }
+    console.groupEnd();
+    
+    console.groupEnd();
+  };
+
+  const refreshProfile = async (): Promise<UserProfile | null> => {
+    console.log('Refreshing profile');
+    if (!user) return null;
+
+    try {
       const profileData = await getUserProfile();
+      console.log('Profile data:', profileData);
       if (profileData) {
         setProfile(profileData as UserProfile);
+        return profileData as UserProfile;
       }
+      return null;
+    } catch (error) {
+      console.error('Error refreshing profile:', error);
+      return null;
+    }
+  };
+
+  const logout = async () => {
+    try {
+      console.log('Logging out...');
+      await supabase.auth.signOut();
+      console.log('Logout successful');
+    } catch (error) {
+      console.error('Logout error:', error);
     }
   };
 
@@ -53,13 +115,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setIsLoading(true);
       try {
         const { data: { session: currentSession } } = await supabase.auth.getSession();
-        setSession(currentSession);
+        
+        console.log('Initial Session Check:', currentSession);
         
         if (currentSession?.user) {
+          setSession(currentSession);
           setUser(currentSession.user);
-          const profileData = await getUserProfile();
-          if (profileData) {
-            setProfile(profileData as UserProfile);
+          
+          try {
+            const profileData = await getUserProfile();
+            if (profileData) {
+              setProfile(profileData as UserProfile);
+            }
+          } catch (profileError) {
+            console.error('Error fetching profile:', profileError);
           }
         }
       } catch (error) {
@@ -74,13 +143,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // Subscribe to auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, newSession) => {
+        console.log('Auth State Change Event:', event);
+        console.log('New Session:', newSession);
+        
         setSession(newSession);
         setUser(newSession?.user ?? null);
         
         if (newSession?.user) {
-          const profileData = await getUserProfile();
-          if (profileData) {
-            setProfile(profileData as UserProfile);
+          try {
+            const profileData = await getUserProfile();
+            if (profileData) {
+              setProfile(profileData as UserProfile);
+            }
+          } catch (profileError) {
+            console.error('Error fetching profile on auth state change:', profileError);
           }
         } else {
           setProfile(null);
@@ -110,6 +186,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     isInstructor,
     isAdmin,
     refreshProfile,
+    logout,
+    debugSession,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

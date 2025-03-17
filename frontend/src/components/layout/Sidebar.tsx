@@ -16,7 +16,7 @@ import Logo from '../common/Logo';
 import { UserRole } from '../../types';
 
 interface SidebarProps {
-  role: keyof typeof UserRole;
+  role: UserRole;
   isMobile: boolean;
   isOpen: boolean;
   onClose?: () => void;
@@ -30,7 +30,7 @@ const Sidebar = ({ role, isMobile, isOpen, onClose }: SidebarProps) => {
     const items = [];
 
     // Student navigation
-    if (role === 'STUDENT' || role === 'ADMIN') {
+    if (role === UserRole.STUDENT || role === UserRole.ADMIN) {
       items.push(
         {
           name: 'Dashboard',
@@ -60,7 +60,7 @@ const Sidebar = ({ role, isMobile, isOpen, onClose }: SidebarProps) => {
     }
 
     // Instructor navigation
-    if (role === 'INSTRUCTOR' || role === 'ADMIN') {
+    if (role === UserRole.INSTRUCTOR || role === UserRole.ADMIN) {
       items.push(
         {
           name: 'Instructor Dashboard',
@@ -90,7 +90,7 @@ const Sidebar = ({ role, isMobile, isOpen, onClose }: SidebarProps) => {
     }
 
     // Admin navigation
-    if (role === 'ADMIN') {
+    if (role === UserRole.ADMIN) {
       items.push(
         {
           name: 'Admin Dashboard',

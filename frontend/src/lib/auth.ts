@@ -1,5 +1,6 @@
 import supabase from './supabase';
 import { Session, User } from '@supabase/supabase-js';
+import { UserRole } from '../types';
 
 // Get current session
 export const getSession = async (): Promise<Session | null> => {
@@ -171,23 +172,62 @@ export const updatePassword = async (
   }
 };
 
-// Get user profile
+// Get user profile with automatic profile creation
 export const getUserProfile = async () => {
   const user = await getCurrentUser();
-  if (!user) return null;
+  if (!user) {
+    console.error('No authenticated user found');
+    return null;
+  } else {
+    console.log('User found:', user);
+  }
 
-  const { data, error } = await supabase
+  // First, try to fetch existing profile
+  const { data: existingProfile, error: fetchError } = await supabase
     .from('profiles')
     .select('*')
     .eq('id', user.id)
     .single();
 
-  if (error) {
-    console.error('Error fetching profile:', error.message);
-    return null;
+  // If profile exists, return it
+  if (existingProfile) {
+    return existingProfile;
   }
 
-  return data;
+  // If no profile, create one
+  try {
+    // Extract first and last name from user metadata or email
+    const first_name = user.user_metadata?.first_name || 
+      (user.email?.split('@')[0] || 'User');
+    const last_name = user.user_metadata?.last_name || '';
+
+    const newProfile = {
+      id: user.id,
+      email: user.email || '',
+      first_name,
+      last_name,
+      role: UserRole.STUDENT, // Default role
+      avatar_url: user.user_metadata?.avatar_url || null,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    };
+
+    const { data: createdProfile, error: createError } = await supabase
+      .from('profiles')
+      .insert(newProfile)
+      .select()
+      .single();
+
+    if (createError) {
+      console.error('Error creating profile:', createError);
+      return null;
+    }
+
+    return createdProfile;
+  } catch (error) {
+    console.error('Unexpected error creating profile:', error);
+    return null;
+  }
 };
 
 // Update user profile
@@ -197,7 +237,10 @@ export const updateUserProfile = async (profile: any) => {
 
   const { data, error } = await supabase
     .from('profiles')
-    .update(profile)
+    .update({
+      ...profile,
+      updated_at: new Date().toISOString()
+    })
     .eq('id', user.id)
     .select()
     .single();
