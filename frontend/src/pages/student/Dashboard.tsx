@@ -11,22 +11,49 @@ import {
   AcademicCapIcon,
   ClockIcon,
 } from '@heroicons/react/24/outline';
+import { useEffect, useState } from 'react';
 
 const StudentDashboard = () => {
   console.log("StudentDashboard.tsx");
   const { profile, isAuthenticated, user } = useAuth();
+  
+  // Create a fallback profile for display if the real profile is null
+  const [displayName, setDisplayName] = useState("Student");
+  
+  useEffect(() => {
+    // Set display name from user metadata if profile is null
+    if (!profile && user?.user_metadata) {
+      const firstName = user.user_metadata.first_name || '';
+      const lastName = user.user_metadata.last_name || '';
+      if (firstName || lastName) {
+        setDisplayName(`${firstName} ${lastName}`.trim());
+      } else if (user.email) {
+        // Use email as fallback
+        setDisplayName(user.email.split('@')[0]);
+      }
+    } else if (profile) {
+      setDisplayName(`${profile.first_name} ${profile.last_name}`.trim());
+    }
+  }, [profile, user]);
 
-  console.log(profile, isAuthenticated, user)
+  console.log(profile, isAuthenticated, user);
 
   // Fetch user's enrollments using the 'me' endpoint
   const { data: enrollmentsData, isLoading: isLoadingEnrollments } = useQuery(
     ['enrollments', user?.id],
     async () => {
-      const response = await api.get('/users/me/enrollments');
-      return response.data;
+      try {
+        const response = await api.get('/users/me/enrollments');
+        return response.data;
+      } catch (error) {
+        console.error('Error fetching enrollments:', error);
+        return { data: [] }; // Return empty data on error
+      }
     },
     {
-      enabled: isAuthenticated // Only run if we're authenticated
+      enabled: isAuthenticated, // Only run if we're authenticated
+      retry: 1,                // Limit retries to avoid excessive API calls on error
+      refetchOnWindowFocus: false  // Disable automatic refetching
     }
   );
 
@@ -34,11 +61,18 @@ const StudentDashboard = () => {
   const { data: assignmentsData, isLoading: isLoadingAssignments } = useQuery(
     ['assignments', user?.id],
     async () => {
-      const response = await api.get('/users/me/assignments');
-      return response.data;
+      try {
+        const response = await api.get('/users/me/assignments');
+        return response.data;
+      } catch (error) {
+        console.error('Error fetching assignments:', error);
+        return { data: [] }; // Return empty data on error
+      }
     },
     {
-      enabled: isAuthenticated // Only run if we're authenticated
+      enabled: isAuthenticated, // Only run if we're authenticated
+      retry: 1,
+      refetchOnWindowFocus: false
     }
   );
 
@@ -46,18 +80,39 @@ const StudentDashboard = () => {
   const { isLoading: isLoadingStats } = useQuery(
     ['user-stats', user?.id],
     async () => {
-      const response = await api.get('/users/me/stats');
-      return response.data;
+      try {
+        const response = await api.get('/users/me/stats');
+        return response.data;
+      } catch (error) {
+        console.error('Error fetching stats:', error);
+        return { data: {} }; // Return empty data on error
+      }
     },
     {
-      enabled: isAuthenticated // Only run if we're authenticated
+      enabled: isAuthenticated, // Only run if we're authenticated
+      retry: 1,
+      refetchOnWindowFocus: false
     }
   );
 
   const isLoading = isLoadingEnrollments || isLoadingAssignments || isLoadingStats;
   console.log("Loading states:", { isLoadingEnrollments, isLoadingAssignments, isLoadingStats });
 
-  if (isLoading) return <LoadingScreen />;
+  // Add a timeout to prevent infinite loading
+  const [forceShowContent, setForceShowContent] = useState(false);
+  
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (isLoading) {
+        console.log("Loading timeout reached - showing dashboard anyway");
+        setForceShowContent(true);
+      }
+    }, 5000); // 5 second timeout
+    
+    return () => clearTimeout(timer);
+  }, [isLoading]);
+
+  if (isLoading && !forceShowContent) return <LoadingScreen />;
 
   const enrollments: Enrollment[] = enrollmentsData?.data || [];
   const assignments: Assignment[] = assignmentsData?.data || [];
@@ -69,12 +124,12 @@ const StudentDashboard = () => {
 
   // Get recently completed assignments
   const recentAssignments = assignments
-    .sort((a, b) => new Date(b.submitted_at).getTime() - new Date(a.submitted_at).getTime())
+    .sort((a, b) => new Date(b.submitted_at || '').getTime() - new Date(a.submitted_at || '').getTime())
     .slice(0, 5);
 
   // Calculate overall progress percentage across all courses
   const overallProgress = enrollments.length > 0
-    ? enrollments.reduce((sum, enrollment) => sum + enrollment.progress_percentage, 0) / enrollments.length
+    ? enrollments.reduce((sum, enrollment) => sum + (enrollment.progress_percentage || 0), 0) / enrollments.length
     : 0;
 
   return (
@@ -82,7 +137,7 @@ const StudentDashboard = () => {
       {/* Welcome section */}
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-surface-900 dark:text-white mb-2">
-          Welcome back, {profile?.first_name}!
+          Welcome back, {displayName}!
         </h1>
         <p className="text-surface-600 dark:text-surface-400">
           Here's an overview of your learning progress.
@@ -180,11 +235,11 @@ const StudentDashboard = () => {
                         <div className="w-full bg-surface-200 dark:bg-surface-700 rounded-full h-2 mb-2">
                           <div
                             className="bg-primary-600 dark:bg-primary-500 h-2 rounded-full"
-                            style={{ width: `${enrollment.progress_percentage}%` }}
+                            style={{ width: `${enrollment.progress_percentage || 0}%` }}
                           />
                         </div>
                         <div className="flex justify-between text-xs text-surface-600 dark:text-surface-400">
-                          <span>{enrollment.progress_percentage}% complete</span>
+                          <span>{enrollment.progress_percentage || 0}% complete</span>
                           <Link
                             to={`/dashboard/courses/${enrollment.course_id}`}
                             className="font-medium text-primary-600 dark:text-primary-400 hover:text-primary-500 dark:hover:text-primary-300"
@@ -243,7 +298,7 @@ const StudentDashboard = () => {
                           ? 'bg-success-100 text-success-800 dark:bg-success-900/50 dark:text-success-300'
                           : 'bg-warning-100 text-warning-800 dark:bg-warning-900/50 dark:text-warning-300'
                       }`}>
-                        {assignment.status.charAt(0).toUpperCase() + assignment.status.slice(1)}
+                        {assignment.status?.charAt(0).toUpperCase() + assignment.status?.slice(1) || 'Pending'}
                       </span>
                       <Link
                         to={`/dashboard/assignments/${assignment.id}`}

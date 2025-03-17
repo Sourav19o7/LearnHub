@@ -151,6 +151,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         
         if (newSession?.user) {
           try {
+            console.log('New Session Profile:', newSession?.user);
             const profileData = await getUserProfile();
             if (profileData) {
               setProfile(profileData as UserProfile);
@@ -171,10 +172,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
   }, []);
 
-  const isAuthenticated = !!user && !!session;
-  const isStudent = profile?.role === UserRole.STUDENT;
-  const isInstructor = profile?.role === UserRole.INSTRUCTOR;
-  const isAdmin = profile?.role === UserRole.ADMIN;
+// Change this section at the end of your AuthContext.tsx
+const isAuthenticated = !!user && !!session;
+
+// Add more flexible role checking
+const userRole = profile?.role || '';
+const isAdmin = userRole.toLowerCase() === UserRole.ADMIN.toLowerCase();
+const isInstructor = userRole.toLowerCase() === UserRole.INSTRUCTOR.toLowerCase();
+// If authenticated and not admin or instructor, default to student
+const isStudent = isAuthenticated && !isAdmin && !isInstructor;
 
   const value = {
     session,

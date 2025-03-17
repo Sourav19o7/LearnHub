@@ -14,7 +14,10 @@ export const getSession = async (): Promise<Session | null> => {
 
 // Get current user
 export const getCurrentUser = async (): Promise<User | null> => {
+  console.log('Getting current user...');
   const { data: { user }, error } = await supabase.auth.getUser();
+  console.log('Current User:', user);
+  console.log('Current Error:', error);
   if (error) {
     console.error('Error getting user:', error.message);
     return null;
@@ -175,6 +178,7 @@ export const updatePassword = async (
 // Get user profile with automatic profile creation
 export const getUserProfile = async () => {
   const user = await getCurrentUser();
+  console.log('Current User:', user);
   if (!user) {
     console.error('No authenticated user found');
     return null;

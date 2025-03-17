@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router-dom';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import LoadingScreen from '../common/LoadingScreen';
 
@@ -9,12 +9,21 @@ interface PrivateRouteProps {
 }
 
 const PrivateRoute = ({ children, redirectTo = '/login' }: PrivateRouteProps) => {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, debugSession } = useAuth();
+
+  // Add debug logging
+  useEffect(() => {
+    console.log('PrivateRoute - Auth State:', { isAuthenticated, isLoading });
+    debugSession();
+  }, [isAuthenticated, isLoading, debugSession]);
 
   if (isLoading) {
+    console.log('PrivateRoute - Rendering LoadingScreen due to isLoading=true');
     return <LoadingScreen />;
   }
 
+  console.log('PrivateRoute - Auth check complete. Authenticated:', isAuthenticated);
+  
   return isAuthenticated ? <>{children}</> : <Navigate to={redirectTo} />;
 };
 
