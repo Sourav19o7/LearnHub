@@ -171,3 +171,11 @@
 2025-03-17 15:32:14:3214 [31merror[39m: [31mError fetching user profile: JSON object requested, multiple (or no) rows returned[39m
 2025-03-17 15:32:14:3214 [31merror[39m: [31mError fetching user profile: JSON object requested, multiple (or no) rows returned[39m
 2025-03-17 15:32:15:3215 [31merror[39m: [31mError fetching user profile: JSON object requested, multiple (or no) rows returned[39m
+2025-03-17 16:23:01:231 [31merror[39m: [31mError fetching course: invalid input syntax for type uuid: "undefined"[39m
+2025-03-17 16:23:02:232 [31merror[39m: [31mError fetching course: invalid input syntax for type uuid: "undefined"[39m
+2025-03-17 16:23:25:2325 [31merror[39m: [31mError fetching course: invalid input syntax for type uuid: "undefined"[39m
+2025-03-17 16:23:27:2327 [31merror[39m: [31mError fetching course: invalid input syntax for type uuid: "undefined"[39m
+2025-03-17 16:23:29:2329 [31merror[39m: [31mError fetching course: invalid input syntax for type uuid: "undefined"[39m
+2025-03-17 16:23:30:2330 [31merror[39m: [31mError fetching course: invalid input syntax for type uuid: "undefined"[39m
+2025-03-17 16:23:48:2348 [31merror[39m: [31mError fetching course: invalid input syntax for type uuid: "undefined"[39m
+2025-03-17 16:23:49:2349 [31merror[39m: [31mError fetching course: invalid input syntax for type uuid: "undefined"[39m

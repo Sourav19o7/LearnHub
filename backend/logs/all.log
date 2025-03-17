@@ -810,3 +810,100 @@
 2025-03-17 15:42:14:4214 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
 2025-03-17 15:42:14:4214 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
 2025-03-17 15:42:14:4214 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-17 16:20:54:2054 [32minfo[39m: [32mInitializing Supabase connection...[39m
+2025-03-17 16:20:54:2054 [32minfo[39m: [32mInitializing Supabase client with URL: https://uvaqjtxtbgyq...[39m
+2025-03-17 16:20:54:2054 [32minfo[39m: [32mTesting database connection...[39m
+2025-03-17 16:20:54:2054 [32minfo[39m: [32mTesting connection to table: profiles[39m
+2025-03-17 16:20:54:2054 [32minfo[39m: [32mSuccessfully connected to table: profiles[39m
+2025-03-17 16:20:54:2054 [32minfo[39m: [32mTesting connection to table: courses[39m
+2025-03-17 16:20:54:2054 [32minfo[39m: [32mSuccessfully connected to table: courses[39m
+2025-03-17 16:20:54:2054 [32minfo[39m: [32mTesting connection to table: sections[39m
+2025-03-17 16:20:54:2054 [32minfo[39m: [32mSuccessfully connected to table: sections[39m
+2025-03-17 16:20:54:2054 [32minfo[39m: [32mTesting connection to table: lessons[39m
+2025-03-17 16:20:54:2054 [32minfo[39m: [32mSuccessfully connected to table: lessons[39m
+2025-03-17 16:20:54:2054 [32minfo[39m: [32mTesting connection to table: enrollments[39m
+2025-03-17 16:20:54:2054 [32minfo[39m: [32mSuccessfully connected to table: enrollments[39m
+2025-03-17 16:20:54:2054 [32minfo[39m: [32mTesting connection to table: assignments[39m
+2025-03-17 16:20:54:2054 [32minfo[39m: [32mSuccessfully connected to table: assignments[39m
+2025-03-17 16:20:54:2054 [32minfo[39m: [32mTesting connection to table: assignment_submissions[39m
+2025-03-17 16:20:55:2055 [32minfo[39m: [32mSuccessfully connected to table: assignment_submissions[39m
+2025-03-17 16:20:55:2055 [32minfo[39m: [32mTesting connection to table: course_reviews[39m
+2025-03-17 16:20:55:2055 [32minfo[39m: [32mSuccessfully connected to table: course_reviews[39m
+2025-03-17 16:20:55:2055 [32minfo[39m: [32mTesting connection to table: study_materials[39m
+2025-03-17 16:20:55:2055 [32minfo[39m: [32mSuccessfully connected to table: study_materials[39m
+2025-03-17 16:20:55:2055 [32minfo[39m: [32mTesting connection to table: lesson_progress[39m
+2025-03-17 16:20:55:2055 [32minfo[39m: [32mSuccessfully connected to table: lesson_progress[39m
+2025-03-17 16:20:55:2055 [32minfo[39m: [32mDatabase connection test successful for all 10 tables[39m
+2025-03-17 16:20:55:2055 [32minfo[39m: [32mSupabase client initialized successfully[39m
+2025-03-17 16:20:55:2055 [32minfo[39m: [32mSupabase connection established successfully.[39m
+2025-03-17 16:20:55:2055 [32minfo[39m: [32mServer running on port 4000 in development mode[39m
+2025-03-17 16:20:55:2055 [32minfo[39m: [32mHealth endpoint available at http://localhost:4000/api/health[39m
+2025-03-17 16:20:55:2055 [32minfo[39m: [32mDatabase health check available at http://localhost:4000/api/health/db[39m
+2025-03-17 16:22:05:225 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-17 16:22:05:225 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-17 16:22:05:225 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-17 16:22:19:2219 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-17 16:22:20:2220 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-17 16:22:24:2224 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-17 16:22:26:2226 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-17 16:22:26:2226 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-17 16:22:26:2226 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-17 16:22:28:2228 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-17 16:22:45:2245 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-17 16:22:45:2245 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-17 16:22:45:2245 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-17 16:22:46:2246 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-17 16:22:47:2247 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-17 16:22:54:2254 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-17 16:22:55:2255 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-17 16:22:56:2256 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-17 16:22:56:2256 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-17 16:22:56:2256 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-17 16:23:01:231 [31merror[39m: [31mError fetching course: invalid input syntax for type uuid: "undefined"[39m
+2025-03-17 16:23:02:232 [31merror[39m: [31mError fetching course: invalid input syntax for type uuid: "undefined"[39m
+2025-03-17 16:23:25:2325 [31merror[39m: [31mError fetching course: invalid input syntax for type uuid: "undefined"[39m
+2025-03-17 16:23:27:2327 [31merror[39m: [31mError fetching course: invalid input syntax for type uuid: "undefined"[39m
+2025-03-17 16:23:29:2329 [31merror[39m: [31mError fetching course: invalid input syntax for type uuid: "undefined"[39m
+2025-03-17 16:23:30:2330 [31merror[39m: [31mError fetching course: invalid input syntax for type uuid: "undefined"[39m
+2025-03-17 16:23:45:2345 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-17 16:23:45:2345 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-17 16:23:48:2348 [31merror[39m: [31mError fetching course: invalid input syntax for type uuid: "undefined"[39m
+2025-03-17 16:23:49:2349 [31merror[39m: [31mError fetching course: invalid input syntax for type uuid: "undefined"[39m
+2025-03-17 16:43:13:4313 [32minfo[39m: [32mInitializing Supabase connection...[39m
+2025-03-17 16:43:13:4313 [32minfo[39m: [32mInitializing Supabase client with URL: https://uvaqjtxtbgyq...[39m
+2025-03-17 16:43:13:4313 [32minfo[39m: [32mTesting database connection...[39m
+2025-03-17 16:43:13:4313 [32minfo[39m: [32mTesting connection to table: profiles[39m
+2025-03-17 16:43:14:4314 [32minfo[39m: [32mSuccessfully connected to table: profiles[39m
+2025-03-17 16:43:14:4314 [32minfo[39m: [32mTesting connection to table: courses[39m
+2025-03-17 16:43:14:4314 [32minfo[39m: [32mSuccessfully connected to table: courses[39m
+2025-03-17 16:43:14:4314 [32minfo[39m: [32mTesting connection to table: sections[39m
+2025-03-17 16:43:14:4314 [32minfo[39m: [32mSuccessfully connected to table: sections[39m
+2025-03-17 16:43:14:4314 [32minfo[39m: [32mTesting connection to table: lessons[39m
+2025-03-17 16:43:14:4314 [32minfo[39m: [32mSuccessfully connected to table: lessons[39m
+2025-03-17 16:43:14:4314 [32minfo[39m: [32mTesting connection to table: enrollments[39m
+2025-03-17 16:43:14:4314 [32minfo[39m: [32mSuccessfully connected to table: enrollments[39m
+2025-03-17 16:43:14:4314 [32minfo[39m: [32mTesting connection to table: assignments[39m
+2025-03-17 16:43:14:4314 [32minfo[39m: [32mSuccessfully connected to table: assignments[39m
+2025-03-17 16:43:14:4314 [32minfo[39m: [32mTesting connection to table: assignment_submissions[39m
+2025-03-17 16:43:14:4314 [32minfo[39m: [32mSuccessfully connected to table: assignment_submissions[39m
+2025-03-17 16:43:14:4314 [32minfo[39m: [32mTesting connection to table: course_reviews[39m
+2025-03-17 16:43:14:4314 [32minfo[39m: [32mSuccessfully connected to table: course_reviews[39m
+2025-03-17 16:43:14:4314 [32minfo[39m: [32mTesting connection to table: study_materials[39m
+2025-03-17 16:43:14:4314 [32minfo[39m: [32mSuccessfully connected to table: study_materials[39m
+2025-03-17 16:43:14:4314 [32minfo[39m: [32mTesting connection to table: lesson_progress[39m
+2025-03-17 16:43:14:4314 [32minfo[39m: [32mSuccessfully connected to table: lesson_progress[39m
+2025-03-17 16:43:14:4314 [32minfo[39m: [32mDatabase connection test successful for all 10 tables[39m
+2025-03-17 16:43:14:4314 [32minfo[39m: [32mSupabase client initialized successfully[39m
+2025-03-17 16:43:14:4314 [32minfo[39m: [32mSupabase connection established successfully.[39m
+2025-03-17 16:43:14:4314 [32minfo[39m: [32mServer running on port 4000 in development mode[39m
+2025-03-17 16:43:14:4314 [32minfo[39m: [32mHealth endpoint available at http://localhost:4000/api/health[39m
+2025-03-17 16:43:14:4314 [32minfo[39m: [32mDatabase health check available at http://localhost:4000/api/health/db[39m
+2025-03-17 16:43:46:4346 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-17 16:43:46:4346 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-17 16:43:46:4346 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-17 16:43:49:4349 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-17 16:43:50:4350 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-17 16:46:11:4611 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-17 16:46:11:4611 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-17 16:46:11:4611 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-17 16:46:13:4613 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m

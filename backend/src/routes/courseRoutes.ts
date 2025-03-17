@@ -1,6 +1,10 @@
 import express from 'express';
 import { protect, isInstructor, isAdmin } from '../middleware/authMiddleware';
 import { 
+  // Instructor-specific routes
+  getInstructorCourses,
+  
+  // Course routes
   createCourse,
   getCourses,
   getCourseById,
@@ -8,6 +12,11 @@ import {
   deleteCourse,
   publishCourse,
   unpublishCourse,
+
+  // Special 'me' routes for courses
+  getMyCourses,
+
+  // Course-related content routes
   getCourseSections,
   createSection,
   updateSection,
@@ -21,6 +30,12 @@ import {
 } from '../controllers/courseController';
 
 const router = express.Router();
+
+// Special 'me' routes
+router.get('/me', protect, getMyCourses);
+
+// Instructor-specific routes
+router.get('/instructor', protect, isInstructor, getInstructorCourses);
 
 // Course routes
 router.route('/')
