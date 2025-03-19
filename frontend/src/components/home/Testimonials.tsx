@@ -61,20 +61,20 @@ const Testimonials = () => {
   };
 
   return (
-    <section className="py-12 bg-white overflow-hidden">
+    <section className="py-12 bg-white dark:bg-surface-800 overflow-hidden">
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative">
           <div className="text-center">
-            <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+            <h2 className="text-3xl font-extrabold text-surface-900 dark:text-white sm:text-4xl">
               What Our Students Say
             </h2>
-            <p className="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">
+            <p className="mt-3 max-w-2xl mx-auto text-xl text-surface-500 dark:text-surface-400 sm:mt-4">
               Join thousands of satisfied learners who have transformed their skills and careers with LearnHub.
             </p>
           </div>
 
           <div className="mt-12 max-w-lg mx-auto">
-            <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div className="bg-white dark:bg-surface-700 rounded-lg shadow-lg dark:shadow-md overflow-hidden">
               <div className="px-6 py-8 sm:px-10 sm:py-10">
                 <div 
                   key={testimonials[activeTestimonial].id}
@@ -93,22 +93,22 @@ const Testimonials = () => {
                       </svg>
                     </span>
                   </div>
-                  <blockquote className="mt-6 text-center text-gray-800">
+                  <blockquote className="mt-6 text-center text-surface-800 dark:text-surface-200">
                     <p className="text-lg italic">"{testimonials[activeTestimonial].content}"</p>
                   </blockquote>
-                  <div className="mt-4 font-medium text-gray-900">
+                  <div className="mt-4 font-medium text-surface-900 dark:text-white">
                     {testimonials[activeTestimonial].author.name}
                   </div>
-                  <div className="text-sm text-gray-500">
+                  <div className="text-sm text-surface-500 dark:text-surface-400">
                     {testimonials[activeTestimonial].author.role}
                   </div>
                 </div>
               </div>
 
-              <div className="flex border-t border-gray-200 divide-x divide-gray-200">
+              <div className="flex border-t border-surface-200 dark:border-surface-600 divide-x divide-surface-200 dark:divide-surface-600">
                 <button
                   onClick={prevTestimonial}
-                  className="flex-1 py-4 text-gray-500 hover:text-gray-700 font-medium flex items-center justify-center"
+                  className="flex-1 py-4 text-surface-500 dark:text-surface-400 hover:text-surface-700 dark:hover:text-surface-200 font-medium flex items-center justify-center"
                 >
                   <svg className="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -117,7 +117,7 @@ const Testimonials = () => {
                 </button>
                 <button
                   onClick={nextTestimonial}
-                  className="flex-1 py-4 text-gray-500 hover:text-gray-700 font-medium flex items-center justify-center"
+                  className="flex-1 py-4 text-surface-500 dark:text-surface-400 hover:text-surface-700 dark:hover:text-surface-200 font-medium flex items-center justify-center"
                 >
                   Next
                   <svg className="h-5 w-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -133,7 +133,7 @@ const Testimonials = () => {
                   key={idx}
                   type="button"
                   className={`h-2 w-2 rounded-full focus:outline-none ${
-                    idx === activeTestimonial ? 'bg-primary-600' : 'bg-gray-300'
+                    idx === activeTestimonial ? 'bg-primary-600 dark:bg-primary-500' : 'bg-surface-300 dark:bg-surface-600'
                   }`}
                   onClick={() => setActiveTestimonial(idx)}
                 ></button>

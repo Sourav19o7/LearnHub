@@ -5,11 +5,11 @@ const CTA = () => {
   const { isAuthenticated } = useAuth();
 
   return (
-    <div className="bg-primary-700">
+    <div className="bg-primary-700 dark:bg-primary-800">
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
         <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
           <span className="block">Ready to start learning?</span>
-          <span className="block text-primary-200">
+          <span className="block text-primary-200 dark:text-primary-300">
             Join thousands of students today.
           </span>
         </h2>
@@ -18,7 +18,7 @@ const CTA = () => {
             <div className="inline-flex rounded-md shadow">
               <Link
                 to="/dashboard"
-                className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-primary-600 bg-white hover:bg-primary-50"
+                className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-primary-600 dark:text-primary-500 bg-white dark:bg-surface-800 hover:bg-primary-50 dark:hover:bg-surface-700"
               >
                 Go to Dashboard
               </Link>
@@ -28,7 +28,7 @@ const CTA = () => {
               <div className="inline-flex rounded-md shadow">
                 <Link
                   to="/register"
-                  className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-primary-600 bg-white hover:bg-primary-50"
+                  className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-primary-600 dark:text-primary-500 bg-white dark:bg-surface-800 hover:bg-primary-50 dark:hover:bg-surface-700"
                 >
                   Sign up for free
                 </Link>
@@ -36,7 +36,7 @@ const CTA = () => {
               <div className="ml-3 inline-flex rounded-md shadow">
                 <Link
                   to="/courses"
-                  className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-500"
+                  className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-500 dark:bg-primary-700 dark:hover:bg-primary-600"
                 >
                   Explore courses
                 </Link>

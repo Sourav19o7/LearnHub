@@ -11,7 +11,7 @@ import CTA from '../components/home/CTA';
 
 const Home = () => {
   const [featuredCourses, setFeaturedCourses] = useState<Course[]>([]);
-
+  
   const { data: coursesData, isLoading } = useQuery(['featuredCourses'], async () => {
     // Fetch featured courses with pagination and filter
     const response = await api.get('/courses', {
@@ -25,30 +25,30 @@ const Home = () => {
     });
     return response.data;
   });
-
+  
   useEffect(() => {
     if (coursesData?.data) {
       setFeaturedCourses(coursesData.data);
     }
   }, [coursesData]);
-
+  
   return (
     <div>
       {/* Hero Section */}
       <Hero />
-
+      
       {/* Featured Courses Section */}
-      <section className="py-12 bg-white">
+      <section className="py-12 bg-white dark:bg-surface-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+            <h2 className="text-3xl font-extrabold text-surface-900 dark:text-white sm:text-4xl">
               Featured Courses
             </h2>
-            <p className="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">
+            <p className="mt-3 max-w-2xl mx-auto text-xl text-surface-500 dark:text-surface-400 sm:mt-4">
               Start your learning journey with our top courses
             </p>
           </div>
-
+          
           {isLoading ? (
             <div className="mt-12 flex justify-center">
               <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
@@ -60,7 +60,7 @@ const Home = () => {
                   <CourseCard key={course.id} course={course} />
                 ))}
               </div>
-
+              
               <div className="mt-12 text-center">
                 <Link
                   to="/courses"
@@ -73,13 +73,13 @@ const Home = () => {
           )}
         </div>
       </section>
-
+      
       {/* Features Section */}
       <FeatureSection />
-
+      
       {/* Testimonials Section */}
       <Testimonials />
-
+      
       {/* CTA Section */}
       <CTA />
     </div>

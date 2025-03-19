@@ -37,7 +37,7 @@ const Login = () => {
   };
 
   return (
-    <div className="animate-fade-in">
+    <div>
       <h2 className="mt-2 text-center text-3xl font-bold text-surface-900 dark:text-white">
         Sign in to your account
       </h2>
@@ -147,7 +147,7 @@ const Login = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="btn-filled w-full flex justify-center py-2 px-4 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full flex justify-center py-3 px-4 rounded-md shadow-premium-card bg-primary-600 hover:bg-primary-700 text-white font-medium transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? 'Signing in...' : 'Sign in'}
                 </button>

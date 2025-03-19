@@ -16,7 +16,7 @@ const AuthLayout = () => {
   }, [isAuthenticated, navigate]);
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-surface-50 dark:bg-surface-950 bg-texture-grain dark:bg-texture-grain-dark flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex justify-center">
           <Link to="/">
@@ -26,11 +26,11 @@ const AuthLayout = () => {
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+        <div className="bg-white dark:bg-surface-900 py-8 px-4 shadow-premium-card dark:shadow-dark-md sm:rounded-lg sm:px-10 bg-texture-grain dark:bg-texture-grain-dark">
           <Outlet />
         </div>
-        <div className="mt-6 text-center text-sm text-gray-600">
-          <Link to="/" className="font-medium text-primary-600 hover:text-primary-500">
+        <div className="mt-6 text-center text-sm text-surface-600 dark:text-surface-400">
+          <Link to="/" className="font-medium text-primary-600 hover:text-primary-500 dark:text-primary-400 dark:hover:text-primary-300">
             Back to Home
           </Link>
         </div>
