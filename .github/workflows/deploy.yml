@@ -86,5 +86,5 @@ jobs:
           application_name: LearnHub-backend
           environment_name: production-environment
           version_label: ${{ github.sha }}
-          region: ap=south-1
+          region: ap-south-1
           deployment_package: backend/deploy.zip
