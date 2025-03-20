@@ -14,10 +14,7 @@ export const getSession = async (): Promise<Session | null> => {
 
 // Get current user
 export const getCurrentUser = async (): Promise<User | null> => {
-  console.log('Getting current user...');
   const { data: { user }, error } = await supabase.auth.getUser();
-  console.log('Current User:', user);
-  console.log('Current Error:', error);
   if (error) {
     console.error('Error getting user:', error.message);
     return null;

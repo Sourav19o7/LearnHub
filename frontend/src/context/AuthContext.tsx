@@ -108,20 +108,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       console.error('Logout error:', error);
     }
   };
-
+  
   useEffect(() => {
     // Initial session check
     const checkSession = async () => {
       setIsLoading(true);
       try {
+
+        console.log("Checking Session")
+
+        // Get initial session (simplified as per Supabase docs)
         const { data: { session: currentSession } } = await supabase.auth.getSession();
         
-        console.log('Initial Session Check:', currentSession);
-        
-        if (currentSession?.user) {
+        console.log("Session Data : ", currentSession)
+
+        if (currentSession) {
           setSession(currentSession);
           setUser(currentSession.user);
           
+          // Fetch user profile if session exists
           try {
             const profileData = await getUserProfile();
             if (profileData) {
@@ -137,21 +142,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setIsLoading(false);
       }
     };
-
+  
+    // Run initial session check
     checkSession();
-
-    // Subscribe to auth changes
+  
+    // Set up auth state change listener (simplified as per Supabase docs)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, newSession) => {
-        console.log('Auth State Change Event:', event);
-        console.log('New Session:', newSession);
+      async (_event, session) => {
+        setSession(session);
+        setUser(session?.user ?? null);
         
-        setSession(newSession);
-        setUser(newSession?.user ?? null);
-        
-        if (newSession?.user) {
+        if (session?.user) {
+          // Fetch user profile on auth state change
           try {
-            console.log('New Session Profile:', newSession?.user);
             const profileData = await getUserProfile();
             if (profileData) {
               setProfile(profileData as UserProfile);
@@ -166,11 +169,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setIsLoading(false);
       }
     );
-
-    return () => {
-      subscription.unsubscribe();
-    };
+  
+    // Clean up subscription on component unmount
+    return () => subscription.unsubscribe();
   }, []);
+
 
 // Change this section at the end of your AuthContext.tsx
 const isAuthenticated = !!user && !!session;

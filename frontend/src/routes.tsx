@@ -51,9 +51,6 @@ const NotFound = lazy(() => import('./pages/NotFound'));
 
 
 const AppRoutes = () => {
-  const { profile } = useAuth();
-  console.log("Profile",profile);
-
   return (
     <Suspense fallback={<LoadingScreen />}>
       <Routes>
