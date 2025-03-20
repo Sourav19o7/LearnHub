@@ -15,6 +15,9 @@ import userRoutes from './routes/userRoutes';
 import enrollmentRoutes from './routes/enrollmentRoutes';
 import assignmentRoutes from './routes/assignmentRoutes';
 
+// Use environment variable for the frontend URL
+const allowedOrigins = [process.env.FRONTEND_URL || '*'];
+
 // Load environment variables
 dotenv.config();
 
@@ -46,7 +49,13 @@ function startServer() {
   // Middleware
   app.use(helmet()); // Security headers
   app.use(cors({
-    origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin) || allowedOrigins.includes('*')) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true
   }));
   app.use(express.json()); // Parse JSON bodies
