@@ -15,6 +15,8 @@ LearnHub is a comprehensive, scalable online learning platform where users can u
 - [Frontend](#frontend)
 - [Database](#database)
 - [Deployment](#deployment)
+  - [AWS Deployment](#aws-deployment)
+  - [CI/CD Pipeline](#cicd-pipeline)
 - [Authentication & Authorization](#authentication--authorization)
 - [Design System](#design-system)
 - [Contributing](#contributing)
@@ -29,7 +31,7 @@ LearnHub follows a modern architecture with these key components:
 - **Database**: PostgreSQL managed through Supabase
 - **Authentication**: JWT-based auth through Supabase Auth
 - **Storage**: File storage through Supabase Storage
-- **Deployment**: Backend on Render, Frontend on Vercel/Netlify
+- **Deployment**: AWS (S3, CloudFront, Elastic Beanstalk) with GitHub Actions CI/CD
 
 The architecture is designed for scalability, maintainability, and developer experience.
 
@@ -53,6 +55,13 @@ The architecture is designed for scalability, maintainability, and developer exp
 - Formik & Yup for form handling
 - Context API for state management
 - Lexend font family for improved readability
+
+### Infrastructure & DevOps
+- Amazon S3 for frontend hosting
+- Amazon CloudFront for content delivery
+- AWS Elastic Beanstalk for backend deployment
+- GitHub Actions for CI/CD
+- AWS IAM for secure access management
 
 ### Database & Services
 - PostgreSQL (via Supabase)
@@ -117,6 +126,9 @@ learning-platform/
 ├── supabase/                     # Supabase configuration
 │   └── migrations/               # Database migrations
 │
+├── .github/                      # GitHub configuration
+│   └── workflows/                # GitHub Actions workflow files
+│
 ├── docs/                         # Documentation
 ├── .gitignore                    # Git ignore file
 ├── README.md                     # Project documentation
@@ -130,6 +142,7 @@ learning-platform/
 - npm or yarn
 - Supabase account
 - Git
+- AWS account (for production deployment)
 
 ### Local Development Setup
 
@@ -250,18 +263,55 @@ Supabase RLS policies are implemented to ensure:
 
 ## Deployment
 
-### Backend Deployment (Render)
+### AWS Deployment
 
-1. Create a new Web Service on Render
-2. Connect to the GitHub repository
-3. Set the build command: `cd backend && npm install && npm run build`
-4. Set the start command: `cd backend && npm start`
-5. Configure environment variables
+LearnHub uses a modern AWS architecture for production deployment:
 
-### Frontend Deployment
+#### Frontend (S3 + CloudFront)
+- Static assets hosted in Amazon S3
+- Global content delivery through Amazon CloudFront
+- HTTPS encryption and edge caching
 
-1. Build the frontend: `cd frontend && npm run build`
-2. Deploy to Vercel or Netlify via their respective platforms or CLI tools
+#### Backend (Elastic Beanstalk)
+- Scalable Node.js environment on AWS Elastic Beanstalk
+- Automatic health checks and scaling
+- Environment configuration through EB CLI
+
+#### Setup Instructions
+
+1. **S3 & CloudFront Setup**:
+   - Create an S3 bucket for static hosting
+   - Configure bucket policy for public read access
+   - Create a CloudFront distribution pointing to the S3 bucket
+   - Set up proper cache behaviors and invalidation
+
+2. **Elastic Beanstalk Setup**:
+   - Initialize Elastic Beanstalk in the backend directory
+   - Create a production environment
+   - Configure environment variables
+   - Set up the required Procfile and deployment settings
+
+### CI/CD Pipeline
+
+LearnHub implements continuous integration and deployment using GitHub Actions:
+
+- Automatic deployment on push to main branch
+- Separate workflows for frontend and backend
+- Proper environment variable management
+- AWS credential security through GitHub Secrets
+
+The CI/CD workflow:
+1. Checks out code
+2. Sets up Node.js environment
+3. Installs dependencies
+4. Builds the application
+5. Deploys to AWS
+6. Invalidates CloudFront cache as needed
+
+To setup the CI/CD pipeline:
+1. Configure GitHub repository secrets for AWS credentials
+2. Ensure the `.github/workflows/deploy.yml` file is properly configured
+3. Push to the main branch to trigger deployment
 
 ## Authentication & Authorization
 
@@ -298,3 +348,15 @@ See [MATERIAL-DESIGN.md](MATERIAL-DESIGN.md) for detailed information on the des
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+```
+
+This updated README now includes:
+
+1. AWS deployment information in the Architecture Overview
+2. A new Infrastructure & DevOps section in the Technology Stack
+3. An expanded Deployment section with detailed AWS deployment instructions
+4. Information about the CI/CD pipeline with GitHub Actions
+5. AWS prerequisites in the Getting Started section
+6. Added the `.github/workflows` directory to the project structure
+
+The changes maintain the original style and formatting while integrating the new AWS deployment information seamlessly.
