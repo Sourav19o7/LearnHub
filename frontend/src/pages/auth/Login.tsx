@@ -21,7 +21,7 @@ const Login = () => {
   const handleSubmit = async (values: { email: string; password: string }) => {
     try {
       setIsSubmitting(true);
-      const { success, message, data } = await signIn(values.email, values.password);
+      const { success, message } = await signIn(values.email, values.password);
       
       if (success) {
         toast.success(message);

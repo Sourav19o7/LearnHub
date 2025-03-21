@@ -184,7 +184,7 @@ export const getUserProfile = async () => {
   }
 
   // First, try to fetch existing profile
-  const { data: existingProfile, error: fetchError } = await supabase
+  const { data: existingProfile } = await supabase
     .from('profiles')
     .select('*')
     .eq('id', user.id)
