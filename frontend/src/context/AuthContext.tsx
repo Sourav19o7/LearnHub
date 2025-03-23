@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 import { Session, User } from '@supabase/supabase-js';
 import supabase from '../lib/supabase';
 import { UserProfile, UserRole } from '../types';
+import { getUserProfile } from '../lib/auth'; // Import getUserProfile from auth.ts
 
 interface AuthContextType {
   session: Session | null;
@@ -46,27 +47,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  // Simplified profile fetching function
-  const fetchProfile = async (userId: string) => {
-    try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .single();
-
-      if (error) {
-        console.error('Error fetching profile:', error);
-        return null;
-      }
-
-      return data as UserProfile;
-    } catch (error) {
-      console.error('Error in fetchProfile:', error);
-      return null;
-    }
-  };
-
   useEffect(() => {
     // Initial session check (following the pattern of your working implementation)
     console.log('Calling Session');
@@ -77,11 +57,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (currentSession?.user) {
         setUser(currentSession.user);
         
-        // Fetch user profile
-        fetchProfile(currentSession.user.id).then(profileData => {
+        // Use getUserProfile instead of fetchProfile
+        getUserProfile().then(profileData => {
+          console.log('Initial profile data:', profileData);
           if (profileData) {
-            setProfile(profileData);
+            setProfile(profileData as UserProfile);
           }
+          setIsLoading(false);
+        }).catch(error => {
+          console.error('Error getting initial user profile:', error);
           setIsLoading(false);
         });
       } else {
@@ -98,10 +82,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (newSession?.user) {
           setUser(newSession.user);
           
-          // Fetch user profile on auth state change
-          const profileData = await fetchProfile(newSession.user.id);
-          if (profileData) {
-            setProfile(profileData);
+          // Use getUserProfile on auth state change
+          try {
+            const profileData = await getUserProfile();
+            console.log('Auth state change profile data:', profileData);
+            if (profileData) {
+              setProfile(profileData as UserProfile);
+            }
+          } catch (error) {
+            console.error('Error getting user profile on auth change:', error);
           }
         } else {
           setUser(null);

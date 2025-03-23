@@ -1,12 +1,6 @@
 import supabase from './supabase';
 import { Session, User } from '@supabase/supabase-js';
 import { UserRole } from '../types';
-import { 
-  PostgrestResponse, 
-  PostgrestSingleResponse, 
-  PostgrestMaybeSingleResponse,
-  PostgrestError
-} from '@supabase/postgrest-js';
 
 // Helper function to add timeout to promises with proper types
 const withTimeout = <T>(
@@ -314,6 +308,7 @@ export const updatePassword = async (
 };
 
 // Get user profile with automatic profile creation
+// This is a focused update to the getUserProfile function
 export const getUserProfile = async () => {
   try {
     const user = await getCurrentUser();
@@ -322,17 +317,34 @@ export const getUserProfile = async () => {
       console.error('No authenticated user found');
       return null;
     } else {
-      console.log('User found:', user);
+      console.log('User found:', user.id);
     }
 
-    // First, try to fetch existing profile
+    // First, check if the profiles table exists by trying to fetch any single profile
+    const tableCheckPromise = supabase
+      .from('profiles')
+      .select('*')
+      .limit(1);
+      
+    const tableCheckResponse = await tableCheckPromise;
+    console.log('Table check response:', tableCheckResponse);
+    
+    if (tableCheckResponse.error && tableCheckResponse.error.code === '42P01') {
+      console.error('Profiles table does not exist:', tableCheckResponse.error.message);
+      // Handle case where table doesn't exist - you might want to create it
+      return null;
+    }
+
+    // Now try to fetch the user's profile
     const profilePromise = supabase
       .from('profiles')
       .select('*')
       .eq('id', user.id)
       .single();
       
-    const profileResponse = await withTimeout(profilePromise, 10000, 'Profile fetch timed out');
+    const profileResponse = await profilePromise;
+    console.log('Profile fetch response:', profileResponse);
+    
     const existingProfile = profileResponse.data;
     const fetchError = profileResponse.error;
 
@@ -343,8 +355,11 @@ export const getUserProfile = async () => {
 
     // If profile exists, return it
     if (existingProfile) {
+      console.log('Existing profile found:', existingProfile);
       return existingProfile;
     }
+
+    console.log('No existing profile found, creating a new one');
 
     // If no profile, create one
     try {
@@ -367,21 +382,44 @@ export const getUserProfile = async () => {
         updated_at: new Date().toISOString()
       };
 
+      console.log('Attempting to create profile with:', newProfile);
+
       const createPromise = supabase
         .from('profiles')
         .insert(newProfile)
         .select()
         .single();
         
-      const createResponse = await withTimeout(createPromise, 10000, 'Profile creation timed out');
+      const createResponse = await createPromise;
+      console.log('Profile creation response:', createResponse);
+      
       const createdProfile = createResponse.data;
       const createError = createResponse.error;
 
       if (createError) {
         console.error('Error creating profile:', createError);
+        
+        // If the error is about missing columns, log column info
+        if (createError.code === '42703') { // Column does not exist
+          console.log('There might be a schema mismatch. Checking table columns...');
+          
+          const columnsPromise = supabase
+            .from('profiles')
+            .select('*')
+            .limit(1);
+            
+          const columnsResponse = await columnsPromise;
+          if (columnsResponse.data && columnsResponse.data.length > 0) {
+            console.log('Available columns:', Object.keys(columnsResponse.data[0]));
+          } else {
+            console.log('Could not determine available columns.');
+          }
+        }
+        
         return null;
       }
 
+      console.log('Profile created successfully:', createdProfile);
       return createdProfile;
     } catch (error: any) {
       console.error('Unexpected error creating profile:', error);

@@ -467,3 +467,129 @@
 2025-03-24 00:01:11:111 [33mwarn[39m: [33mNo token provided[39m
 2025-03-24 00:01:11:111 [33mwarn[39m: [33mNo token provided[39m
 2025-03-24 00:01:11:111 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:28:11:2811 [32minfo[39m: [32mInitializing Supabase connection...[39m
+2025-03-24 00:28:11:2811 [32minfo[39m: [32mInitializing Supabase client with URL: https://uvaqjtxtbgyq...[39m
+2025-03-24 00:28:11:2811 [32minfo[39m: [32mTesting database connection...[39m
+2025-03-24 00:28:11:2811 [32minfo[39m: [32mTesting connection to table: profiles[39m
+2025-03-24 00:28:12:2812 [32minfo[39m: [32mSuccessfully connected to table: profiles[39m
+2025-03-24 00:28:12:2812 [32minfo[39m: [32mTesting connection to table: courses[39m
+2025-03-24 00:28:12:2812 [32minfo[39m: [32mSuccessfully connected to table: courses[39m
+2025-03-24 00:28:12:2812 [32minfo[39m: [32mTesting connection to table: sections[39m
+2025-03-24 00:28:12:2812 [32minfo[39m: [32mSuccessfully connected to table: sections[39m
+2025-03-24 00:28:12:2812 [32minfo[39m: [32mTesting connection to table: lessons[39m
+2025-03-24 00:28:12:2812 [32minfo[39m: [32mSuccessfully connected to table: lessons[39m
+2025-03-24 00:28:12:2812 [32minfo[39m: [32mTesting connection to table: enrollments[39m
+2025-03-24 00:28:12:2812 [32minfo[39m: [32mSuccessfully connected to table: enrollments[39m
+2025-03-24 00:28:12:2812 [32minfo[39m: [32mTesting connection to table: assignments[39m
+2025-03-24 00:28:12:2812 [32minfo[39m: [32mSuccessfully connected to table: assignments[39m
+2025-03-24 00:28:12:2812 [32minfo[39m: [32mTesting connection to table: assignment_submissions[39m
+2025-03-24 00:28:12:2812 [32minfo[39m: [32mSuccessfully connected to table: assignment_submissions[39m
+2025-03-24 00:28:12:2812 [32minfo[39m: [32mTesting connection to table: course_reviews[39m
+2025-03-24 00:28:12:2812 [32minfo[39m: [32mSuccessfully connected to table: course_reviews[39m
+2025-03-24 00:28:12:2812 [32minfo[39m: [32mTesting connection to table: study_materials[39m
+2025-03-24 00:28:12:2812 [32minfo[39m: [32mSuccessfully connected to table: study_materials[39m
+2025-03-24 00:28:12:2812 [32minfo[39m: [32mTesting connection to table: lesson_progress[39m
+2025-03-24 00:28:12:2812 [32minfo[39m: [32mSuccessfully connected to table: lesson_progress[39m
+2025-03-24 00:28:12:2812 [32minfo[39m: [32mDatabase connection test successful for all 10 tables[39m
+2025-03-24 00:28:12:2812 [32minfo[39m: [32mSupabase client initialized successfully[39m
+2025-03-24 00:28:12:2812 [32minfo[39m: [32mSupabase connection established successfully.[39m
+2025-03-24 00:28:12:2812 [32minfo[39m: [32mServer running on port 4000 in development mode[39m
+2025-03-24 00:28:12:2812 [32minfo[39m: [32mHealth endpoint available at http://localhost:4000/api/health[39m
+2025-03-24 00:28:12:2812 [32minfo[39m: [32mDatabase health check available at http://localhost:4000/api/health/db[39m
+2025-03-24 00:28:35:2835 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:28:35:2835 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:28:35:2835 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:33:36:3336 [31merror[39m: [31mError fetching user profile: JSON object requested, multiple (or no) rows returned[39m
+2025-03-24 00:33:36:3336 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-24 00:33:36:3336 [31merror[39m: [31mError fetching user profile: JSON object requested, multiple (or no) rows returned[39m
+2025-03-24 00:33:36:3336 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-24 00:33:36:3336 [31merror[39m: [31mError fetching user profile: JSON object requested, multiple (or no) rows returned[39m
+2025-03-24 00:33:36:3336 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-24 00:34:26:3426 [31merror[39m: [31mError fetching user profile: JSON object requested, multiple (or no) rows returned[39m
+2025-03-24 00:34:26:3426 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-24 00:34:26:3426 [31merror[39m: [31mError fetching user profile: JSON object requested, multiple (or no) rows returned[39m
+2025-03-24 00:34:26:3426 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-24 00:34:26:3426 [31merror[39m: [31mError fetching user profile: JSON object requested, multiple (or no) rows returned[39m
+2025-03-24 00:34:26:3426 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-24 00:37:36:3736 [31merror[39m: [31mError fetching user profile: JSON object requested, multiple (or no) rows returned[39m
+2025-03-24 00:37:36:3736 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-24 00:37:36:3736 [31merror[39m: [31mError fetching user profile: JSON object requested, multiple (or no) rows returned[39m
+2025-03-24 00:37:36:3736 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-24 00:37:36:3736 [31merror[39m: [31mError fetching user profile: JSON object requested, multiple (or no) rows returned[39m
+2025-03-24 00:37:36:3736 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-24 00:39:44:3944 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:39:44:3944 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:39:44:3944 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:39:54:3954 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:39:54:3954 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:39:54:3954 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:40:05:405 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:40:05:405 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:40:05:405 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:40:15:4015 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:40:15:4015 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:40:15:4015 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:40:26:4026 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:40:26:4026 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:40:26:4026 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:40:36:4036 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:40:36:4036 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:40:36:4036 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:40:47:4047 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:40:47:4047 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:40:47:4047 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:40:58:4058 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:40:58:4058 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:40:58:4058 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:41:09:419 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-24 00:41:09:419 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-24 00:41:09:419 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-24 00:42:35:4235 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-24 00:42:35:4235 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-24 00:42:35:4235 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-24 00:44:14:4414 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-24 00:44:14:4414 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-24 00:44:14:4414 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-24 00:45:13:4513 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-24 00:45:13:4513 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-24 00:45:13:4513 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-24 00:45:16:4516 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-24 00:45:18:4518 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-24 00:47:00:470 [32minfo[39m: [32mInitializing Supabase connection...[39m
+2025-03-24 00:47:00:470 [32minfo[39m: [32mInitializing Supabase client with URL: https://uvaqjtxtbgyq...[39m
+2025-03-24 00:47:00:470 [32minfo[39m: [32mTesting database connection...[39m
+2025-03-24 00:47:00:470 [32minfo[39m: [32mTesting connection to table: profiles[39m
+2025-03-24 00:47:01:471 [32minfo[39m: [32mSuccessfully connected to table: profiles[39m
+2025-03-24 00:47:01:471 [32minfo[39m: [32mTesting connection to table: courses[39m
+2025-03-24 00:47:01:471 [32minfo[39m: [32mSuccessfully connected to table: courses[39m
+2025-03-24 00:47:01:471 [32minfo[39m: [32mTesting connection to table: sections[39m
+2025-03-24 00:47:01:471 [32minfo[39m: [32mSuccessfully connected to table: sections[39m
+2025-03-24 00:47:01:471 [32minfo[39m: [32mTesting connection to table: lessons[39m
+2025-03-24 00:47:01:471 [32minfo[39m: [32mSuccessfully connected to table: lessons[39m
+2025-03-24 00:47:01:471 [32minfo[39m: [32mTesting connection to table: enrollments[39m
+2025-03-24 00:47:01:471 [32minfo[39m: [32mSuccessfully connected to table: enrollments[39m
+2025-03-24 00:47:01:471 [32minfo[39m: [32mTesting connection to table: assignments[39m
+2025-03-24 00:47:01:471 [32minfo[39m: [32mSuccessfully connected to table: assignments[39m
+2025-03-24 00:47:01:471 [32minfo[39m: [32mTesting connection to table: assignment_submissions[39m
+2025-03-24 00:47:01:471 [32minfo[39m: [32mSuccessfully connected to table: assignment_submissions[39m
+2025-03-24 00:47:01:471 [32minfo[39m: [32mTesting connection to table: course_reviews[39m
+2025-03-24 00:47:01:471 [32minfo[39m: [32mSuccessfully connected to table: course_reviews[39m
+2025-03-24 00:47:01:471 [32minfo[39m: [32mTesting connection to table: study_materials[39m
+2025-03-24 00:47:01:471 [32minfo[39m: [32mSuccessfully connected to table: study_materials[39m
+2025-03-24 00:47:01:471 [32minfo[39m: [32mTesting connection to table: lesson_progress[39m
+2025-03-24 00:47:01:471 [32minfo[39m: [32mSuccessfully connected to table: lesson_progress[39m
+2025-03-24 00:47:01:471 [32minfo[39m: [32mDatabase connection test successful for all 10 tables[39m
+2025-03-24 00:47:01:471 [32minfo[39m: [32mSupabase client initialized successfully[39m
+2025-03-24 00:47:01:471 [32minfo[39m: [32mSupabase connection established successfully.[39m
+2025-03-24 00:47:01:471 [32minfo[39m: [32mServer running on port 4000 in development mode[39m
+2025-03-24 00:47:01:471 [32minfo[39m: [32mHealth endpoint available at http://localhost:4000/api/health[39m
+2025-03-24 00:47:01:471 [32minfo[39m: [32mDatabase health check available at http://localhost:4000/api/health/db[39m
+2025-03-24 00:47:12:4712 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:47:12:4712 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:47:12:4712 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:47:24:4724 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:47:24:4724 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:47:24:4724 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:47:35:4735 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-24 00:47:35:4735 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-24 00:47:35:4735 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
