@@ -53,7 +53,7 @@ const UserProfile = () => {
   const { data, isLoading, error } = useQuery(
     ['userProfile', user?.id],
     async () => {
-      const response = await api.get(`/user/profile`);
+      const response = await api.get(`/auth/profile`);
       return response.data;
     },
     {
@@ -64,7 +64,7 @@ const UserProfile = () => {
   // Update profile mutation
   const updateProfile = useMutation(
     async (values: ProfileFormValues) => {
-      const response = await api.put('/user/profile', values);
+      const response = await api.put('/auth/profile', values);
       return response.data;
     },
     {

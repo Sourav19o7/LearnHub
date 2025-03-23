@@ -5,6 +5,89 @@ import { getSupabase } from '../config/supabase';
 import { logger } from '../utils/logger';
 import { UserRole } from '../types';
 
+// @desc    Handle OAuth sign-in (Google, etc.)
+// @route   POST /api/auth/oauth/callback
+// @access  Public
+export const handleOAuthCallback = asyncHandler(async (req: Request, res: Response) => {
+  const { access_token, refresh_token } = req.body;
+  
+  if (!access_token) {
+    throw new ApiError(400, 'Missing access token');
+  }
+  
+  const supabase = getSupabase();
+  
+  // Verify the token and get user info
+  const { data: { user }, error: userError } = await supabase.auth.getUser(access_token);
+  
+  if (userError || !user) {
+    logger.error(`OAuth validation error: ${userError?.message || 'Invalid token'}`);
+    throw new ApiError(401, 'Invalid or expired token');
+  }
+  
+  // Check if profile exists
+  const { data: existingProfile, error: profileError } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', user.id)
+    .maybeSingle();
+  
+  if (profileError && profileError.code !== 'PGRST116') { // PGRST116 is "not found"
+    logger.error(`Profile check error: ${profileError.message}`);
+    throw new ApiError(500, 'Failed to check profile');
+  }
+  
+  let profile = existingProfile;
+  
+  // If no profile exists, create one
+  if (!profile) {
+    logger.info(`Creating profile for OAuth user: ${user.id}`);
+    
+    const newProfile = {
+      id: user.id,
+      email: user.email || '',
+      first_name: user.user_metadata?.first_name || 
+                 user.user_metadata?.name?.split(' ')[0] || 
+                 (user.email?.split('@')[0] || 'User'),
+      last_name: user.user_metadata?.last_name || 
+                (user.user_metadata?.name?.split(' ').slice(1).join(' ') || ''),
+      role: 'student', // Default role
+      avatar_url: user.user_metadata?.avatar_url || user.user_metadata?.picture || null,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    };
+    
+    const { data: createdProfile, error: createError } = await supabase
+      .from('profiles')
+      .insert(newProfile)
+      .select()
+      .single();
+    
+    if (createError) {
+      logger.error(`Failed to create profile: ${createError.message}`);
+      throw new ApiError(500, 'Failed to create user profile');
+    }
+    
+    profile = createdProfile;
+  }
+  
+  // Return user and profile data for the frontend
+  res.status(200).json({
+    success: true,
+    user: {
+      id: user.id,
+      email: user.email,
+      first_name: profile.first_name,
+      last_name: profile.last_name,
+      role: profile.role,
+      avatar_url: profile.avatar_url
+    },
+    token: access_token,
+    refreshToken: refresh_token || null
+  });
+});
+
+
 // @desc    Register a new user
 // @route   POST /api/auth/register
 // @access  Public
@@ -262,25 +345,89 @@ export const updateProfile = asyncHandler(async (req: Request, res: Response) =>
   // Prevent updating critical fields
   const { id, email, role, created_at, ...updateData } = req.body;
   
-  // Update profile
-  const { data, error } = await supabase
+  // Check if the profile exists first
+  const { data: profileCheck, error: checkError } = await supabase
+    .from('profiles')
+    .select('id')
+    .eq('id', userId);
+  
+  if (checkError) {
+    logger.error(`Error checking profile: ${checkError.message}`);
+    throw new ApiError(500, 'Failed to check profile existence');
+  }
+  
+  // If no profile exists for this user, create it first
+  if (!profileCheck || profileCheck.length === 0) {
+    logger.info(`No profile found for user ${userId}, creating new profile`);
+    
+    // Get user information from auth
+    const { data: userData, error: userError } = await supabase.auth.getUser();
+    
+    if (userError || !userData.user) {
+      logger.error(`Error getting user data: ${userError?.message || 'User not found'}`);
+      throw new ApiError(500, 'Failed to get user data');
+    }
+    
+    const user = userData.user;
+    
+    // Create a new profile
+    const newProfile = {
+      id: userId,
+      email: user.email || '',
+      first_name: user.user_metadata?.first_name || 
+                  user.user_metadata?.name?.split(' ')[0] || 
+                  (user.email?.split('@')[0] || 'User'),
+      last_name: user.user_metadata?.last_name || 
+                 (user.user_metadata?.name?.split(' ').slice(1).join(' ') || ''),
+      role: 'student', // Default role
+      avatar_url: user.user_metadata?.avatar_url || user.user_metadata?.picture || null,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      ...updateData // Include the update data
+    };
+    
+    const { data: insertedProfile, error: insertError } = await supabase
+      .from('profiles')
+      .insert(newProfile)
+      .select();
+    
+    if (insertError) {
+      logger.error(`Error creating profile: ${insertError.message}`);
+      throw new ApiError(500, 'Failed to create profile');
+    }
+    
+    return res.status(201).json({
+      success: true,
+      message: 'Profile created successfully',
+      data: insertedProfile[0]
+    });
+  }
+  
+  // Profile exists, so update it
+  logger.info(`Updating profile for user ${userId}`);
+  const { data: updatedProfile, error: updateError } = await supabase
     .from('profiles')
     .update({
       ...updateData,
       updated_at: new Date().toISOString()
     })
     .eq('id', userId)
-    .select()
-    .single();
+    .select();
   
-  if (error) {
-    logger.error(`Profile update error: ${error.message}`);
+  if (updateError) {
+    logger.error(`Profile update error: ${updateError.message}`);
     throw new ApiError(500, 'Failed to update profile');
   }
   
-  res.status(200).json({
+  if (!updatedProfile || updatedProfile.length === 0) {
+    logger.error('No profile was updated');
+    throw new ApiError(404, 'Profile not found');
+  }
+  
+  return res.status(200).json({
     success: true,
-    data
+    message: 'Profile updated successfully',
+    data: updatedProfile[0]
   });
 });
 

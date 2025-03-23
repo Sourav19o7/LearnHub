@@ -17,7 +17,6 @@ import {
   BookOpenIcon,
   UsersIcon,
   ChartBarIcon,
-  XMarkIcon,
   PencilIcon,
   CloudArrowUpIcon,
 } from '@heroicons/react/24/outline';
@@ -65,7 +64,7 @@ const InstructorProfile = () => {
   const { data, isLoading, error } = useQuery(
     ['userProfile', user?.id],
     async () => {
-      const response = await api.get(`/user/profile`);
+      const response = await api.get(`/auth/profile`);
       return response.data;
     },
     {
@@ -100,7 +99,7 @@ const InstructorProfile = () => {
         formData.append('avatar', avatar);
       }
       
-      const response = await api.put('/user/profile', formData, {
+      const response = await api.put('/auth/profile', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

@@ -1,6 +1,7 @@
 import express from 'express';
 import { protect } from '../middleware/authMiddleware';
 import { 
+  handleOAuthCallback,
   registerUser,
   loginUser,
   forgotPassword,
@@ -14,6 +15,7 @@ import {
 const router = express.Router();
 
 // Auth routes
+router.post('/oauth/callback', handleOAuthCallback);
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.post('/forgot-password', forgotPassword);
@@ -21,7 +23,7 @@ router.post('/reset-password', resetPassword);
 router.put('/password', protect, updatePassword);
 
 // Profile routes
-router.get('/user/profile', protect, getProfile);
+router.get('/profile', protect, getProfile);
 router.put('/profile', protect, updateProfile);
 router.get('/validate', protect, validateSession);
 

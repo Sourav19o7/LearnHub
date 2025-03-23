@@ -2,10 +2,12 @@ import supabase from './supabase';
 import { Session, User } from '@supabase/supabase-js';
 import { UserRole } from '../types';
 
+const API_TIMEOUT_MS = 1000; // Increased from 1000 to 5000 for better reliability
+
 // Helper function to add timeout to promises with proper types
 const withTimeout = <T>(
   asyncOperation: Promise<T> | { then(onfulfilled: (value: T) => any): any },
-  timeoutMs: number = 10000,
+  timeoutMs: number = API_TIMEOUT_MS,
   errorMessage: string = 'Request timed out'
 ): Promise<T> => {
   // Convert Supabase query builder to a proper promise
@@ -26,7 +28,7 @@ export const getSession = async (): Promise<Session | null> => {
   try {
     const { data: { session }, error } = await withTimeout(
       supabase.auth.getSession(),
-      10000,
+      API_TIMEOUT_MS,
       'Session fetch timed out'
     );
     
@@ -46,7 +48,7 @@ export const getCurrentUser = async (): Promise<User | null> => {
   try {
     const { data: { user }, error } = await withTimeout(
       supabase.auth.getUser(),
-      10000,
+      API_TIMEOUT_MS,
       'User fetch timed out'
     );
     
@@ -80,7 +82,7 @@ export const signUp = async (
           },
         },
       }),
-      10000,
+      API_TIMEOUT_MS,
       'Signup request timed out'
     );
 
@@ -111,14 +113,14 @@ export const signInWithGoogle = async (): Promise<{ success: boolean; message: s
       supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/dashboard`,
+          redirectTo: `${window.location.origin}/auth/callback`, // Changed to use a dedicated callback route
           queryParams: {
             access_type: 'offline',
             prompt: 'consent',
           },
         },
       }),
-      10000,
+      API_TIMEOUT_MS,
       'Google sign-in request timed out'
     );
 
@@ -144,12 +146,128 @@ export const signInWithGoogle = async (): Promise<{ success: boolean; message: s
   }
 };
 
+// Handle OAuth callback
+export const handleOAuthCallback = async (): Promise<{ success: boolean; message: string; user?: any; session?: Session }> => {
+  try {
+    // Get session after OAuth redirect
+    const { data, error } = await withTimeout(
+      supabase.auth.getSession(),
+      API_TIMEOUT_MS,
+      'Session fetch timed out after OAuth'
+    );
+    
+    if (error) {
+      console.error('OAuth callback error:', error);
+      return {
+        success: false,
+        message: `OAuth error: ${error.message}`,
+      };
+    }
+    
+    if (!data?.session) {
+      console.error('No session found in OAuth callback');
+      return {
+        success: false,
+        message: 'Authentication failed - no session found',
+      };
+    }
+
+    const session = data.session;
+    const user = session.user;
+    
+    // Ensure profile exists for this user
+    const profile = await ensureUserProfile(user);
+    
+    if (!profile) {
+      console.error('Failed to create or retrieve profile for OAuth user');
+      return {
+        success: false,
+        message: 'Failed to initialize user profile',
+      };
+    }
+    
+    return {
+      success: true,
+      message: 'Authentication successful',
+      user: {
+        ...user,
+        profile
+      },
+      session
+    };
+  } catch (error: any) {
+    console.error('Unexpected error in OAuth callback:', error);
+    return {
+      success: false,
+      message: error.message || 'An error occurred during authentication',
+    };
+  }
+};
+
+// Ensure a user profile exists (create if missing)
+export const ensureUserProfile = async (user: User) => {
+  if (!user) {
+    console.error('No user provided to ensureUserProfile');
+    return null;
+  }
+  
+  try {
+    // First check if profile exists
+    const { data: existingProfile, error: checkError } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', user.id)
+      .maybeSingle();
+    
+    if (checkError && checkError.code !== 'PGRST116') { // PGRST116 is "not found" error
+      console.error('Error checking profile existence:', checkError);
+      return null;
+    }
+    
+    // If profile exists, return it
+    if (existingProfile) {
+      return existingProfile;
+    }
+    
+    // Create new profile
+    const newProfile = {
+      id: user.id,
+      email: user.email || '',
+      first_name: user.user_metadata?.first_name || 
+        user.user_metadata?.name?.split(' ')[0] ||  
+        (user.email?.split('@')[0] || 'User'),
+      last_name: user.user_metadata?.last_name || 
+        (user.user_metadata?.name?.split(' ').slice(1).join(' ') || ''),
+      role: UserRole.STUDENT,
+      avatar_url: user.user_metadata?.avatar_url || user.user_metadata?.picture || null,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    };
+    
+    const { data: createdProfile, error: createError } = await supabase
+      .from('profiles')
+      .insert(newProfile)
+      .select()
+      .single();
+    
+    if (createError) {
+      console.error('Error creating profile in ensureUserProfile:', createError);
+      return null;
+    }
+    
+    return createdProfile;
+  } catch (error) {
+    console.error('Unexpected error in ensureUserProfile:', error);
+    return null;
+  }
+};
+
 // Handle redirect from OAuth providers (for Google sign-in)
 export const handleAuthRedirect = async (): Promise<{ success: boolean; message: string; data?: any }> => {
   try {
     const { data, error } = await withTimeout(
       supabase.auth.getSession(),
-      10000,
+      API_TIMEOUT_MS,
       'Auth redirect session fetch timed out'
     );
     
@@ -161,10 +279,16 @@ export const handleAuthRedirect = async (): Promise<{ success: boolean; message:
     }
     
     if (data?.session) {
+      // Ensure profile exists for this user
+      const profile = await ensureUserProfile(data.session.user);
+      
       return {
         success: true,
         message: 'Successfully signed in!',
-        data: data.session,
+        data: {
+          ...data.session,
+          profile
+        },
       };
     }
     
@@ -191,7 +315,7 @@ export const signIn = async (
         email,
         password,
       }),
-      10000,
+      API_TIMEOUT_MS,
       'Sign in request timed out'
     );
 
@@ -202,10 +326,16 @@ export const signIn = async (
       };
     }
 
+    // Ensure profile exists
+    const profile = await ensureUserProfile(data.user);
+
     return {
       success: true,
       message: 'Login successful!',
-      data,
+      data: {
+        ...data,
+        profile
+      },
     };
   } catch (error: any) {
     return {
@@ -220,7 +350,7 @@ export const signOut = async (): Promise<{ success: boolean; message: string }> 
   try {
     const { error } = await withTimeout(
       supabase.auth.signOut(),
-      10000,
+      API_TIMEOUT_MS,
       'Sign out request timed out'
     );
 
@@ -252,7 +382,7 @@ export const resetPassword = async (
       supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/reset-password`,
       }),
-      10000,
+      API_TIMEOUT_MS,
       'Password reset request timed out'
     );
 
@@ -284,7 +414,7 @@ export const updatePassword = async (
       supabase.auth.updateUser({
         password: newPassword,
       }),
-      10000,
+      API_TIMEOUT_MS,
       'Password update request timed out'
     );
 
@@ -308,7 +438,6 @@ export const updatePassword = async (
 };
 
 // Get user profile with automatic profile creation
-// This is a focused update to the getUserProfile function
 export const getUserProfile = async () => {
   try {
     const user = await getCurrentUser();
@@ -316,115 +445,10 @@ export const getUserProfile = async () => {
     if (!user) {
       console.error('No authenticated user found');
       return null;
-    } else {
-      console.log('User found:', user.id);
     }
-
-    // First, check if the profiles table exists by trying to fetch any single profile
-    const tableCheckPromise = supabase
-      .from('profiles')
-      .select('*')
-      .limit(1);
-      
-    const tableCheckResponse = await tableCheckPromise;
-    console.log('Table check response:', tableCheckResponse);
     
-    if (tableCheckResponse.error && tableCheckResponse.error.code === '42P01') {
-      console.error('Profiles table does not exist:', tableCheckResponse.error.message);
-      // Handle case where table doesn't exist - you might want to create it
-      return null;
-    }
-
-    // Now try to fetch the user's profile
-    const profilePromise = supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', user.id)
-      .single();
-      
-    const profileResponse = await profilePromise;
-    console.log('Profile fetch response:', profileResponse);
-    
-    const existingProfile = profileResponse.data;
-    const fetchError = profileResponse.error;
-
-    if (fetchError && fetchError.code !== 'PGRST116') { // PGRST116 is "not found" which is expected for new users
-      console.error('Error fetching profile:', fetchError);
-      return null;
-    }
-
-    // If profile exists, return it
-    if (existingProfile) {
-      console.log('Existing profile found:', existingProfile);
-      return existingProfile;
-    }
-
-    console.log('No existing profile found, creating a new one');
-
-    // If no profile, create one
-    try {
-      // Extract first and last name from user metadata or email
-      const first_name = user.user_metadata?.first_name || 
-        user.user_metadata?.name?.split(' ')[0] ||  // For Google auth, name is typically provided
-        (user.email?.split('@')[0] || 'User');
-        
-      const last_name = user.user_metadata?.last_name || 
-        (user.user_metadata?.name?.split(' ').slice(1).join(' ') || '');  // For Google auth, getting last name
-
-      const newProfile = {
-        id: user.id,
-        email: user.email || '',
-        first_name,
-        last_name,
-        role: UserRole.STUDENT, // Default role
-        avatar_url: user.user_metadata?.avatar_url || user.user_metadata?.picture || null, // Google provides 'picture'
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
-      };
-
-      console.log('Attempting to create profile with:', newProfile);
-
-      const createPromise = supabase
-        .from('profiles')
-        .insert(newProfile)
-        .select()
-        .single();
-        
-      const createResponse = await createPromise;
-      console.log('Profile creation response:', createResponse);
-      
-      const createdProfile = createResponse.data;
-      const createError = createResponse.error;
-
-      if (createError) {
-        console.error('Error creating profile:', createError);
-        
-        // If the error is about missing columns, log column info
-        if (createError.code === '42703') { // Column does not exist
-          console.log('There might be a schema mismatch. Checking table columns...');
-          
-          const columnsPromise = supabase
-            .from('profiles')
-            .select('*')
-            .limit(1);
-            
-          const columnsResponse = await columnsPromise;
-          if (columnsResponse.data && columnsResponse.data.length > 0) {
-            console.log('Available columns:', Object.keys(columnsResponse.data[0]));
-          } else {
-            console.log('Could not determine available columns.');
-          }
-        }
-        
-        return null;
-      }
-
-      console.log('Profile created successfully:', createdProfile);
-      return createdProfile;
-    } catch (error: any) {
-      console.error('Unexpected error creating profile:', error);
-      return null;
-    }
+    // Use the ensureUserProfile helper function
+    return await ensureUserProfile(user);
   } catch (error: any) {
     console.error('Error in getUserProfile:', error.message);
     return null;
@@ -437,6 +461,15 @@ export const updateUserProfile = async (profile: any) => {
     const user = await getCurrentUser();
     if (!user) return { success: false, message: 'Not authenticated' };
 
+    // First ensure the profile exists
+    const existingProfile = await ensureUserProfile(user);
+    if (!existingProfile) {
+      return {
+        success: false,
+        message: 'Failed to retrieve or create user profile',
+      };
+    }
+
     const updatePromise = supabase
       .from('profiles')
       .update({
@@ -447,14 +480,15 @@ export const updateUserProfile = async (profile: any) => {
       .select()
       .single();
       
-    const updateResponse = await withTimeout(updatePromise, 10000, 'Profile update timed out');
+    const updateResponse = await withTimeout(updatePromise, API_TIMEOUT_MS, 'Profile update timed out');
     const data = updateResponse.data;
     const error = updateResponse.error;
 
     if (error) {
+      console.error('Error updating profile:', error);
       return {
         success: false,
-        message: error.message,
+        message: `Error updating profile: ${error.message}`,
       };
     }
 
@@ -464,6 +498,7 @@ export const updateUserProfile = async (profile: any) => {
       data,
     };
   } catch (error: any) {
+    console.error('Unexpected error in updateUserProfile:', error);
     return {
       success: false,
       message: error.message || 'An error occurred during profile update',

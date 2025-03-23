@@ -20,3 +20,11 @@
 2025-03-24 00:37:36:3736 [31merror[39m: [31mError fetching user profile: JSON object requested, multiple (or no) rows returned[39m
 2025-03-24 00:37:36:3736 [31merror[39m: [31mError fetching user profile: JSON object requested, multiple (or no) rows returned[39m
 2025-03-24 00:37:36:3736 [31merror[39m: [31mError fetching user profile: JSON object requested, multiple (or no) rows returned[39m
+2025-03-24 00:54:24:5424 [31merror[39m: [31mProfile update error: Could not find the 'education' column of 'profiles' in the schema cache[39m
+2025-03-24 00:56:42:5642 [31merror[39m: [31mProfile update error: Could not find the 'interests' column of 'profiles' in the schema cache[39m
+2025-03-24 00:57:37:5737 [31merror[39m: [31mProfile update error: Could not find the 'location' column of 'profiles' in the schema cache[39m
+2025-03-24 00:58:23:5823 [31merror[39m: [31mProfile update error: Could not find the 'location' column of 'profiles' in the schema cache[39m
+2025-03-24 00:59:35:5935 [31merror[39m: [31mProfile update error: Could not find the 'occupation' column of 'profiles' in the schema cache[39m
+2025-03-24 01:00:12:012 [31merror[39m: [31mProfile update error: JSON object requested, multiple (or no) rows returned[39m
+2025-03-24 01:04:00:40 [31merror[39m: [31mNo profile was updated[39m
+2025-03-24 01:04:48:448 [31merror[39m: [31mNo profile was updated[39m
