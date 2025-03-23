@@ -5,6 +5,8 @@ const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY || '';
 
 if (!supabaseUrl || !supabaseAnonKey) {
   console.error('Supabase URL and/or anon key not provided');
+} else {
+  console.log("Supbase ")
 }
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);

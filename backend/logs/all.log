@@ -269,3 +269,201 @@
 2025-03-20 02:30:04:304 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
 2025-03-20 02:30:05:305 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
 2025-03-20 02:30:05:305 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 01:09:04:94 [32minfo[39m: [32mInitializing Supabase connection...[39m
+2025-03-21 01:09:04:94 [32minfo[39m: [32mInitializing Supabase client with URL: https://uvaqjtxtbgyq...[39m
+2025-03-21 01:09:04:94 [32minfo[39m: [32mTesting database connection...[39m
+2025-03-21 01:09:04:94 [32minfo[39m: [32mTesting connection to table: profiles[39m
+2025-03-21 01:09:05:95 [32minfo[39m: [32mSuccessfully connected to table: profiles[39m
+2025-03-21 01:09:05:95 [32minfo[39m: [32mTesting connection to table: courses[39m
+2025-03-21 01:09:05:95 [32minfo[39m: [32mSuccessfully connected to table: courses[39m
+2025-03-21 01:09:05:95 [32minfo[39m: [32mTesting connection to table: sections[39m
+2025-03-21 01:09:05:95 [32minfo[39m: [32mSuccessfully connected to table: sections[39m
+2025-03-21 01:09:05:95 [32minfo[39m: [32mTesting connection to table: lessons[39m
+2025-03-21 01:09:05:95 [32minfo[39m: [32mSuccessfully connected to table: lessons[39m
+2025-03-21 01:09:05:95 [32minfo[39m: [32mTesting connection to table: enrollments[39m
+2025-03-21 01:09:05:95 [32minfo[39m: [32mSuccessfully connected to table: enrollments[39m
+2025-03-21 01:09:05:95 [32minfo[39m: [32mTesting connection to table: assignments[39m
+2025-03-21 01:09:05:95 [32minfo[39m: [32mSuccessfully connected to table: assignments[39m
+2025-03-21 01:09:05:95 [32minfo[39m: [32mTesting connection to table: assignment_submissions[39m
+2025-03-21 01:09:05:95 [32minfo[39m: [32mSuccessfully connected to table: assignment_submissions[39m
+2025-03-21 01:09:05:95 [32minfo[39m: [32mTesting connection to table: course_reviews[39m
+2025-03-21 01:09:05:95 [32minfo[39m: [32mSuccessfully connected to table: course_reviews[39m
+2025-03-21 01:09:05:95 [32minfo[39m: [32mTesting connection to table: study_materials[39m
+2025-03-21 01:09:05:95 [32minfo[39m: [32mSuccessfully connected to table: study_materials[39m
+2025-03-21 01:09:05:95 [32minfo[39m: [32mTesting connection to table: lesson_progress[39m
+2025-03-21 01:09:05:95 [32minfo[39m: [32mSuccessfully connected to table: lesson_progress[39m
+2025-03-21 01:09:05:95 [32minfo[39m: [32mDatabase connection test successful for all 10 tables[39m
+2025-03-21 01:09:05:95 [32minfo[39m: [32mSupabase client initialized successfully[39m
+2025-03-21 01:09:05:95 [32minfo[39m: [32mSupabase connection established successfully.[39m
+2025-03-21 01:09:05:95 [32minfo[39m: [32mServer running on port 4000 in development mode[39m
+2025-03-21 01:09:05:95 [32minfo[39m: [32mHealth endpoint available at http://localhost:4000/api/health[39m
+2025-03-21 01:09:05:95 [32minfo[39m: [32mDatabase health check available at http://localhost:4000/api/health/db[39m
+2025-03-21 01:28:12:2812 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 01:28:12:2812 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 01:28:12:2812 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 01:28:26:2826 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 01:28:27:2827 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 01:28:27:2827 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 01:28:34:2834 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 01:28:34:2834 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 01:28:34:2834 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 01:28:40:2840 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 01:28:40:2840 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 01:28:40:2840 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 01:28:42:2842 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 01:28:43:2843 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 01:28:46:2846 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 01:28:46:2846 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 01:28:46:2846 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 01:50:43:5043 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 01:50:43:5043 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 01:50:43:5043 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 01:51:10:5110 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 01:51:10:5110 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 01:51:10:5110 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 02:10:29:1029 [32minfo[39m: [32mInitializing Supabase connection...[39m
+2025-03-21 02:10:29:1029 [32minfo[39m: [32mInitializing Supabase client with URL: https://uvaqjtxtbgyq...[39m
+2025-03-21 02:10:29:1029 [32minfo[39m: [32mTesting database connection...[39m
+2025-03-21 02:10:29:1029 [32minfo[39m: [32mTesting connection to table: profiles[39m
+2025-03-21 02:10:30:1030 [32minfo[39m: [32mSuccessfully connected to table: profiles[39m
+2025-03-21 02:10:30:1030 [32minfo[39m: [32mTesting connection to table: courses[39m
+2025-03-21 02:10:30:1030 [32minfo[39m: [32mSuccessfully connected to table: courses[39m
+2025-03-21 02:10:30:1030 [32minfo[39m: [32mTesting connection to table: sections[39m
+2025-03-21 02:10:30:1030 [32minfo[39m: [32mSuccessfully connected to table: sections[39m
+2025-03-21 02:10:30:1030 [32minfo[39m: [32mTesting connection to table: lessons[39m
+2025-03-21 02:10:30:1030 [32minfo[39m: [32mSuccessfully connected to table: lessons[39m
+2025-03-21 02:10:30:1030 [32minfo[39m: [32mTesting connection to table: enrollments[39m
+2025-03-21 02:10:30:1030 [32minfo[39m: [32mSuccessfully connected to table: enrollments[39m
+2025-03-21 02:10:30:1030 [32minfo[39m: [32mTesting connection to table: assignments[39m
+2025-03-21 02:10:30:1030 [32minfo[39m: [32mSuccessfully connected to table: assignments[39m
+2025-03-21 02:10:30:1030 [32minfo[39m: [32mTesting connection to table: assignment_submissions[39m
+2025-03-21 02:10:30:1030 [32minfo[39m: [32mSuccessfully connected to table: assignment_submissions[39m
+2025-03-21 02:10:30:1030 [32minfo[39m: [32mTesting connection to table: course_reviews[39m
+2025-03-21 02:10:30:1030 [32minfo[39m: [32mSuccessfully connected to table: course_reviews[39m
+2025-03-21 02:10:30:1030 [32minfo[39m: [32mTesting connection to table: study_materials[39m
+2025-03-21 02:10:30:1030 [32minfo[39m: [32mSuccessfully connected to table: study_materials[39m
+2025-03-21 02:10:30:1030 [32minfo[39m: [32mTesting connection to table: lesson_progress[39m
+2025-03-21 02:10:30:1030 [32minfo[39m: [32mSuccessfully connected to table: lesson_progress[39m
+2025-03-21 02:10:30:1030 [32minfo[39m: [32mDatabase connection test successful for all 10 tables[39m
+2025-03-21 02:10:30:1030 [32minfo[39m: [32mSupabase client initialized successfully[39m
+2025-03-21 02:10:30:1030 [32minfo[39m: [32mSupabase connection established successfully.[39m
+2025-03-21 02:10:30:1030 [32minfo[39m: [32mServer running on port 4000 in development mode[39m
+2025-03-21 02:10:30:1030 [32minfo[39m: [32mHealth endpoint available at http://localhost:4000/api/health[39m
+2025-03-21 02:10:30:1030 [32minfo[39m: [32mDatabase health check available at http://localhost:4000/api/health/db[39m
+2025-03-21 11:21:05:215 [32minfo[39m: [32mInitializing Supabase connection...[39m
+2025-03-21 11:21:05:215 [32minfo[39m: [32mInitializing Supabase client with URL: https://uvaqjtxtbgyq...[39m
+2025-03-21 11:21:05:215 [32minfo[39m: [32mTesting database connection...[39m
+2025-03-21 11:21:05:215 [32minfo[39m: [32mTesting connection to table: profiles[39m
+2025-03-21 11:21:06:216 [32minfo[39m: [32mSuccessfully connected to table: profiles[39m
+2025-03-21 11:21:06:216 [32minfo[39m: [32mTesting connection to table: courses[39m
+2025-03-21 11:21:06:216 [32minfo[39m: [32mSuccessfully connected to table: courses[39m
+2025-03-21 11:21:06:216 [32minfo[39m: [32mTesting connection to table: sections[39m
+2025-03-21 11:21:06:216 [32minfo[39m: [32mSuccessfully connected to table: sections[39m
+2025-03-21 11:21:06:216 [32minfo[39m: [32mTesting connection to table: lessons[39m
+2025-03-21 11:21:06:216 [32minfo[39m: [32mSuccessfully connected to table: lessons[39m
+2025-03-21 11:21:06:216 [32minfo[39m: [32mTesting connection to table: enrollments[39m
+2025-03-21 11:21:06:216 [32minfo[39m: [32mSuccessfully connected to table: enrollments[39m
+2025-03-21 11:21:06:216 [32minfo[39m: [32mTesting connection to table: assignments[39m
+2025-03-21 11:21:06:216 [32minfo[39m: [32mSuccessfully connected to table: assignments[39m
+2025-03-21 11:21:06:216 [32minfo[39m: [32mTesting connection to table: assignment_submissions[39m
+2025-03-21 11:21:06:216 [32minfo[39m: [32mSuccessfully connected to table: assignment_submissions[39m
+2025-03-21 11:21:06:216 [32minfo[39m: [32mTesting connection to table: course_reviews[39m
+2025-03-21 11:21:06:216 [32minfo[39m: [32mSuccessfully connected to table: course_reviews[39m
+2025-03-21 11:21:06:216 [32minfo[39m: [32mTesting connection to table: study_materials[39m
+2025-03-21 11:21:06:216 [32minfo[39m: [32mSuccessfully connected to table: study_materials[39m
+2025-03-21 11:21:06:216 [32minfo[39m: [32mTesting connection to table: lesson_progress[39m
+2025-03-21 11:21:06:216 [32minfo[39m: [32mSuccessfully connected to table: lesson_progress[39m
+2025-03-21 11:21:06:216 [32minfo[39m: [32mDatabase connection test successful for all 10 tables[39m
+2025-03-21 11:21:06:216 [32minfo[39m: [32mSupabase client initialized successfully[39m
+2025-03-21 11:21:06:216 [32minfo[39m: [32mSupabase connection established successfully.[39m
+2025-03-21 11:21:06:216 [32minfo[39m: [32mServer running on port 4000 in development mode[39m
+2025-03-21 11:21:06:216 [32minfo[39m: [32mHealth endpoint available at http://localhost:4000/api/health[39m
+2025-03-21 11:21:06:216 [32minfo[39m: [32mDatabase health check available at http://localhost:4000/api/health/db[39m
+2025-03-21 11:24:03:243 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 11:24:03:243 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 11:24:03:243 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 11:25:07:257 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 11:25:07:257 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 11:25:07:257 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 11:25:18:2518 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 11:25:18:2518 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 11:25:18:2518 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 11:25:30:2530 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 11:25:30:2530 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 11:25:30:2530 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 11:27:46:2746 [32minfo[39m: [32mInitializing Supabase connection...[39m
+2025-03-21 11:27:46:2746 [32minfo[39m: [32mInitializing Supabase client with URL: https://uvaqjtxtbgyq...[39m
+2025-03-21 11:27:46:2746 [32minfo[39m: [32mTesting database connection...[39m
+2025-03-21 11:27:46:2746 [32minfo[39m: [32mTesting connection to table: profiles[39m
+2025-03-21 11:27:46:2746 [32minfo[39m: [32mSuccessfully connected to table: profiles[39m
+2025-03-21 11:27:46:2746 [32minfo[39m: [32mTesting connection to table: courses[39m
+2025-03-21 11:27:46:2746 [32minfo[39m: [32mSuccessfully connected to table: courses[39m
+2025-03-21 11:27:46:2746 [32minfo[39m: [32mTesting connection to table: sections[39m
+2025-03-21 11:27:46:2746 [32minfo[39m: [32mSuccessfully connected to table: sections[39m
+2025-03-21 11:27:46:2746 [32minfo[39m: [32mTesting connection to table: lessons[39m
+2025-03-21 11:27:46:2746 [32minfo[39m: [32mSuccessfully connected to table: lessons[39m
+2025-03-21 11:27:46:2746 [32minfo[39m: [32mTesting connection to table: enrollments[39m
+2025-03-21 11:27:46:2746 [32minfo[39m: [32mSuccessfully connected to table: enrollments[39m
+2025-03-21 11:27:46:2746 [32minfo[39m: [32mTesting connection to table: assignments[39m
+2025-03-21 11:27:46:2746 [32minfo[39m: [32mSuccessfully connected to table: assignments[39m
+2025-03-21 11:27:46:2746 [32minfo[39m: [32mTesting connection to table: assignment_submissions[39m
+2025-03-21 11:27:46:2746 [32minfo[39m: [32mSuccessfully connected to table: assignment_submissions[39m
+2025-03-21 11:27:46:2746 [32minfo[39m: [32mTesting connection to table: course_reviews[39m
+2025-03-21 11:27:47:2747 [32minfo[39m: [32mSuccessfully connected to table: course_reviews[39m
+2025-03-21 11:27:47:2747 [32minfo[39m: [32mTesting connection to table: study_materials[39m
+2025-03-21 11:27:47:2747 [32minfo[39m: [32mSuccessfully connected to table: study_materials[39m
+2025-03-21 11:27:47:2747 [32minfo[39m: [32mTesting connection to table: lesson_progress[39m
+2025-03-21 11:27:47:2747 [32minfo[39m: [32mSuccessfully connected to table: lesson_progress[39m
+2025-03-21 11:27:47:2747 [32minfo[39m: [32mDatabase connection test successful for all 10 tables[39m
+2025-03-21 11:27:47:2747 [32minfo[39m: [32mSupabase client initialized successfully[39m
+2025-03-21 11:27:47:2747 [32minfo[39m: [32mSupabase connection established successfully.[39m
+2025-03-21 11:27:47:2747 [32minfo[39m: [32mServer running on port 4000 in development mode[39m
+2025-03-21 11:27:47:2747 [32minfo[39m: [32mHealth endpoint available at http://localhost:4000/api/health[39m
+2025-03-21 11:27:47:2747 [32minfo[39m: [32mDatabase health check available at http://localhost:4000/api/health/db[39m
+2025-03-21 11:46:04:464 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 11:46:04:464 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-21 11:46:04:464 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-23 23:23:55:2355 [32minfo[39m: [32mInitializing Supabase connection...[39m
+2025-03-23 23:23:55:2355 [32minfo[39m: [32mInitializing Supabase client with URL: https://uvaqjtxtbgyq...[39m
+2025-03-23 23:23:55:2355 [32minfo[39m: [32mTesting database connection...[39m
+2025-03-23 23:23:55:2355 [32minfo[39m: [32mTesting connection to table: profiles[39m
+2025-03-23 23:23:56:2356 [32minfo[39m: [32mSuccessfully connected to table: profiles[39m
+2025-03-23 23:23:56:2356 [32minfo[39m: [32mTesting connection to table: courses[39m
+2025-03-23 23:23:56:2356 [32minfo[39m: [32mSuccessfully connected to table: courses[39m
+2025-03-23 23:23:56:2356 [32minfo[39m: [32mTesting connection to table: sections[39m
+2025-03-23 23:23:57:2357 [32minfo[39m: [32mSuccessfully connected to table: sections[39m
+2025-03-23 23:23:57:2357 [32minfo[39m: [32mTesting connection to table: lessons[39m
+2025-03-23 23:23:57:2357 [32minfo[39m: [32mSuccessfully connected to table: lessons[39m
+2025-03-23 23:23:57:2357 [32minfo[39m: [32mTesting connection to table: enrollments[39m
+2025-03-23 23:23:57:2357 [32minfo[39m: [32mSuccessfully connected to table: enrollments[39m
+2025-03-23 23:23:57:2357 [32minfo[39m: [32mTesting connection to table: assignments[39m
+2025-03-23 23:23:57:2357 [32minfo[39m: [32mSuccessfully connected to table: assignments[39m
+2025-03-23 23:23:57:2357 [32minfo[39m: [32mTesting connection to table: assignment_submissions[39m
+2025-03-23 23:23:57:2357 [32minfo[39m: [32mSuccessfully connected to table: assignment_submissions[39m
+2025-03-23 23:23:57:2357 [32minfo[39m: [32mTesting connection to table: course_reviews[39m
+2025-03-23 23:23:57:2357 [32minfo[39m: [32mSuccessfully connected to table: course_reviews[39m
+2025-03-23 23:23:57:2357 [32minfo[39m: [32mTesting connection to table: study_materials[39m
+2025-03-23 23:23:57:2357 [32minfo[39m: [32mSuccessfully connected to table: study_materials[39m
+2025-03-23 23:23:57:2357 [32minfo[39m: [32mTesting connection to table: lesson_progress[39m
+2025-03-23 23:23:57:2357 [32minfo[39m: [32mSuccessfully connected to table: lesson_progress[39m
+2025-03-23 23:23:57:2357 [32minfo[39m: [32mDatabase connection test successful for all 10 tables[39m
+2025-03-23 23:23:57:2357 [32minfo[39m: [32mSupabase client initialized successfully[39m
+2025-03-23 23:23:57:2357 [32minfo[39m: [32mSupabase connection established successfully.[39m
+2025-03-23 23:23:57:2357 [32minfo[39m: [32mServer running on port 4000 in development mode[39m
+2025-03-23 23:23:57:2357 [32minfo[39m: [32mHealth endpoint available at http://localhost:4000/api/health[39m
+2025-03-23 23:23:57:2357 [32minfo[39m: [32mDatabase health check available at http://localhost:4000/api/health/db[39m
+2025-03-23 23:46:18:4618 [31merror[39m: [31mError fetching user profile: JSON object requested, multiple (or no) rows returned[39m
+2025-03-23 23:46:18:4618 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-23 23:46:18:4618 [31merror[39m: [31mError fetching user profile: JSON object requested, multiple (or no) rows returned[39m
+2025-03-23 23:46:18:4618 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-23 23:46:18:4618 [31merror[39m: [31mError fetching user profile: JSON object requested, multiple (or no) rows returned[39m
+2025-03-23 23:46:18:4618 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-23 23:53:24:5324 [31merror[39m: [31mError fetching user profile: JSON object requested, multiple (or no) rows returned[39m
+2025-03-23 23:53:24:5324 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-23 23:53:24:5324 [31merror[39m: [31mError fetching user profile: JSON object requested, multiple (or no) rows returned[39m
+2025-03-23 23:53:24:5324 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-23 23:53:24:5324 [31merror[39m: [31mError fetching user profile: JSON object requested, multiple (or no) rows returned[39m
+2025-03-23 23:53:24:5324 [32minfo[39m: [32mUser authenticated: c55d25c5-88ef-4f08-8cfd-a7828d3b3b2d[39m
+2025-03-24 00:01:11:111 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:01:11:111 [33mwarn[39m: [33mNo token provided[39m
+2025-03-24 00:01:11:111 [33mwarn[39m: [33mNo token provided[39m

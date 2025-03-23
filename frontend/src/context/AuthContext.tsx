@@ -2,7 +2,6 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 import { Session, User } from '@supabase/supabase-js';
 import supabase from '../lib/supabase';
 import { UserProfile, UserRole } from '../types';
-import { getUserProfile } from '../lib/auth';
 
 interface AuthContextType {
   session: Session | null;
@@ -13,9 +12,7 @@ interface AuthContextType {
   isStudent: boolean;
   isInstructor: boolean;
   isAdmin: boolean;
-  refreshProfile: () => Promise<UserProfile | null>;
   logout: () => Promise<void>;
-  debugSession: () => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -27,9 +24,7 @@ const AuthContext = createContext<AuthContextType>({
   isStudent: false,
   isInstructor: false,
   isAdmin: false,
-  refreshProfile: async () => null,
   logout: async () => {},
-  debugSession: () => {},
 });
 
 export function useAuth() {
@@ -42,148 +37,91 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Comprehensive session debugging function
-  const debugSession = () => {
-    console.group('🔐 Supabase Session Debug');
-    
-    // Session details
-    console.log('Full Session Object:', session);
-    
-    if (session) {
-      console.group('Session Details');
-      console.log('Access Token:', session.access_token);
-      console.log('Refresh Token:', session.refresh_token);
-      console.log('Expires At:', session.expires_at ? new Date(session.expires_at * 1000).toLocaleString() : 'N/A');
-      console.log('Token Type:', session.token_type);
-      console.groupEnd();
-    }
-    
-    // User details
-    console.group('User Details');
-    console.log('User Object:', user);
-    if (user) {
-      console.log('User ID:', user.id);
-      console.log('User Email:', user.email);
-      console.log('User Metadata:', user.user_metadata);
-      console.log('App Metadata:', user.app_metadata);
-    }
-    console.groupEnd();
-    
-    // Profile details
-    console.group('Profile Details');
-    console.log('User Profile:', profile);
-    if (profile) {
-      console.log('Role:', profile.role);
-      console.log('Name:', `${profile.first_name} ${profile.last_name}`);
-    }
-    console.groupEnd();
-    
-    console.groupEnd();
-  };
-
-  const refreshProfile = async (): Promise<UserProfile | null> => {
-    console.log('Refreshing profile');
-    if (!user) return null;
-
-    try {
-      const profileData = await getUserProfile();
-      console.log('Profile data:', profileData);
-      if (profileData) {
-        setProfile(profileData as UserProfile);
-        return profileData as UserProfile;
-      }
-      return null;
-    } catch (error) {
-      console.error('Error refreshing profile:', error);
-      return null;
-    }
-  };
-
+  // Simplified logout function
   const logout = async () => {
     try {
-      console.log('Logging out...');
       await supabase.auth.signOut();
-      console.log('Logout successful');
     } catch (error) {
       console.error('Logout error:', error);
     }
   };
-  
+
+  // Simplified profile fetching function
+  const fetchProfile = async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single();
+
+      if (error) {
+        console.error('Error fetching profile:', error);
+        return null;
+      }
+
+      return data as UserProfile;
+    } catch (error) {
+      console.error('Error in fetchProfile:', error);
+      return null;
+    }
+  };
+
   useEffect(() => {
-    // Initial session check
-    const checkSession = async () => {
-      setIsLoading(true);
-      try {
-
-        console.log("Checking Session")
-
-        // Get initial session (simplified as per Supabase docs)
-        const { data: { session: currentSession } } = await supabase.auth.getSession();
+    // Initial session check (following the pattern of your working implementation)
+    console.log('Calling Session');
+    supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
+      console.log('Session Data:', currentSession);
+      setSession(currentSession);
+      
+      if (currentSession?.user) {
+        setUser(currentSession.user);
         
-        console.log("Session Data : ", currentSession)
-
-        if (currentSession) {
-          setSession(currentSession);
-          setUser(currentSession.user);
-          
-          // Fetch user profile if session exists
-          try {
-            const profileData = await getUserProfile();
-            if (profileData) {
-              setProfile(profileData as UserProfile);
-            }
-          } catch (profileError) {
-            console.error('Error fetching profile:', profileError);
+        // Fetch user profile
+        fetchProfile(currentSession.user.id).then(profileData => {
+          if (profileData) {
+            setProfile(profileData);
           }
-        }
-      } catch (error) {
-        console.error('Error checking auth session:', error);
-      } finally {
+          setIsLoading(false);
+        });
+      } else {
         setIsLoading(false);
       }
-    };
-  
-    // Run initial session check
-    checkSession();
-  
-    // Set up auth state change listener (simplified as per Supabase docs)
+    });
+
+    // Set up auth state change listener (following your working implementation)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
+      async (event, newSession) => {
+        console.log('Auth State Changed:', event, newSession);
+        setSession(newSession);
         
-        if (session?.user) {
+        if (newSession?.user) {
+          setUser(newSession.user);
+          
           // Fetch user profile on auth state change
-          try {
-            const profileData = await getUserProfile();
-            if (profileData) {
-              setProfile(profileData as UserProfile);
-            }
-          } catch (profileError) {
-            console.error('Error fetching profile on auth state change:', profileError);
+          const profileData = await fetchProfile(newSession.user.id);
+          if (profileData) {
+            setProfile(profileData);
           }
         } else {
+          setUser(null);
           setProfile(null);
         }
         
         setIsLoading(false);
       }
     );
-  
+
     // Clean up subscription on component unmount
     return () => subscription.unsubscribe();
   }, []);
 
-
-// Change this section at the end of your AuthContext.tsx
-const isAuthenticated = !!user && !!session;
-
-// Add more flexible role checking
-const userRole = profile?.role || '';
-const isAdmin = userRole.toLowerCase() === UserRole.ADMIN.toLowerCase();
-const isInstructor = userRole.toLowerCase() === UserRole.INSTRUCTOR.toLowerCase();
-// If authenticated and not admin or instructor, default to student
-const isStudent = isAuthenticated && !isAdmin && !isInstructor;
+  // Simple role checking
+  const isAuthenticated = !!user && !!session;
+  const userRole = profile?.role || '';
+  const isAdmin = userRole.toLowerCase() === UserRole.ADMIN.toLowerCase();
+  const isInstructor = userRole.toLowerCase() === UserRole.INSTRUCTOR.toLowerCase();
+  const isStudent = isAuthenticated && !isAdmin && !isInstructor;
 
   const value = {
     session,
@@ -194,9 +132,7 @@ const isStudent = isAuthenticated && !isAdmin && !isInstructor;
     isStudent,
     isInstructor,
     isAdmin,
-    refreshProfile,
-    logout,
-    debugSession,
+    logout
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
