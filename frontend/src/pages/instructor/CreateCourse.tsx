@@ -93,7 +93,8 @@ const CreateCourse = () => {
 
   const handleSubmit = async (values: CourseFormValues, { setSubmitting }: any) => {
     try {
-      // First create the course
+      console.log("Title", values.title)
+      // First create the basic course without the nested sections/lessons
       const formData = new FormData();
       formData.append('title', values.title);
       formData.append('description', values.description);
@@ -107,22 +108,34 @@ const CreateCourse = () => {
         formData.append('cover_image', values.cover_image);
       }
 
+      // Create the course first
       const courseResponse = await api.post('/courses', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-
+  
+      if (!courseResponse.data.success) {
+        throw new Error('Failed to create course');
+      }
+  
+      console.log("Course Response", courseResponse)
       const courseId = courseResponse.data.data.id;
 
-      // Then create sections and lessons
+      console.log("Course Id", courseId)
+  
+      // Then create each section and its lessons
       for (const section of values.sections) {
         const sectionResponse = await api.post(`/courses/${courseId}/sections`, {
           title: section.title,
         });
-
+  
+        if (!sectionResponse.data.success) {
+          throw new Error('Failed to create section');
+        }
+  
         const sectionId = sectionResponse.data.data.id;
-
+  
         // Create lessons for this section
         for (const lesson of section.lessons) {
           await api.post(`/courses/${courseId}/sections/${sectionId}/lessons`, {
@@ -133,7 +146,7 @@ const CreateCourse = () => {
           });
         }
       }
-
+  
       toast.success('Course created successfully!');
       navigate('/instructor/courses');
     } catch (error) {

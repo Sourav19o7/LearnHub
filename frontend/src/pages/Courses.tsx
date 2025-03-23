@@ -4,7 +4,6 @@ import { useQuery } from '@tanstack/react-query';
 import api from '../lib/api';
 import { Course, FilterParams, PaginationParams } from '../types';
 import CourseCard from '../components/course/CourseCard';
-import LoadingScreen from '../components/common/LoadingScreen';
 
 const Courses = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -21,7 +20,7 @@ const Courses = () => {
     sortOrder: (searchParams.get('sortOrder') as 'asc' | 'desc') || 'desc',
   });
 
-  const { data, isLoading, error } = useQuery(
+  const { data,  error } = useQuery(
     ['courses', filter, pagination],
     async () => {
       const params = {
@@ -66,8 +65,6 @@ const Courses = () => {
   const handlePageChange = (newPage: number) => {
     setPagination(prev => ({ ...prev, page: newPage }));
   };
-
-  if (isLoading) return <LoadingScreen />;
 
   if (error) {
     return (

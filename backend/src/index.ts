@@ -15,11 +15,13 @@ import userRoutes from './routes/userRoutes';
 import enrollmentRoutes from './routes/enrollmentRoutes';
 import assignmentRoutes from './routes/assignmentRoutes';
 
-// Use environment variable for the frontend URL
-const allowedOrigins = [process.env.FRONTEND_URL || '*'];
-
 // Load environment variables
 dotenv.config();
+
+// Use environment variable for the frontend URL
+const allowedOrigins = process.env.FRONTEND_URL 
+  ? [process.env.FRONTEND_URL] 
+  : ['http://localhost:3000', 'http://127.0.0.1:3000', '*'];
 
 // Initialize app
 const app = express();
@@ -27,6 +29,33 @@ const PORT = process.env.PORT || 4000;
 
 // Setup middleware first in case we need to log errors during initialization
 app.use(morgan('dev')); // Request logging
+
+// Log all incoming requests for debugging
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  next();
+});
+
+// Enhanced CORS configuration
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin) || allowedOrigins.includes('*')) {
+      callback(null, true);
+    } else {
+      console.log(`CORS blocked request from origin: ${origin}`);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+  maxAge: 86400 // Cache preflight requests for 24 hours
+}));
+
+// Handle preflight requests explicitly
+app.options('*', (req, res) => {
+  res.status(204).end();
+});
 
 // Initialize Supabase with better error handling
 (async () => {
@@ -46,20 +75,17 @@ app.use(morgan('dev')); // Request logging
 })();
 
 function startServer() {
-  // Middleware
-  app.use(helmet()); // Security headers
-  app.use(cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin) || allowedOrigins.includes('*')) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-    credentials: true
+  // Security middleware
+  app.use(helmet({ 
+    crossOriginResourcePolicy: false // Allow cross-origin resource sharing
   }));
-  app.use(express.json()); // Parse JSON bodies
-  app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
+
+  // Body parsing middleware - for regular JSON and URL-encoded data
+  app.use(express.json({ limit: '50mb' })); // Parse JSON bodies with increased limit
+  app.use(express.urlencoded({ extended: true, limit: '50mb' })); // Parse URL-encoded bodies with increased limit
+
+  // Don't apply formidable globally as it can interfere with other middleware
+  // Instead, apply it selectively in your routes
 
   // Add diagnostic endpoint
   app.get('/api/health', (req, res) => {

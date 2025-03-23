@@ -28,3 +28,35 @@
 2025-03-24 01:00:12:012 [31merror[39m: [31mProfile update error: JSON object requested, multiple (or no) rows returned[39m
 2025-03-24 01:04:00:40 [31merror[39m: [31mNo profile was updated[39m
 2025-03-24 01:04:48:448 [31merror[39m: [31mNo profile was updated[39m
+2025-03-24 02:32:44:3244 [31merror[39m: [31mError creating course: new row violates row-level security policy for table "courses"[39m
+2025-03-24 02:34:02:342 [31merror[39m: [31mError creating course: new row violates row-level security policy for table "courses"[39m
+2025-03-24 02:35:10:3510 [31merror[39m: [31mError creating course: new row violates row-level security policy for table "courses"[39m
+2025-03-24 02:38:31:3831 [31merror[39m: [31mError creating course: new row violates row-level security policy for table "courses"[39m
+2025-03-24 02:41:37:4137 [31merror[39m: [31mError creating course: new row violates row-level security policy for table "courses"[39m
+2025-03-24 02:47:00:470 [31merror[39m: [31mError creating section: undefined[39m
+2025-03-24 02:48:42:4842 [31merror[39m: [31mError creating section: undefined[39m
+2025-03-24 02:49:48:4948 [31merror[39m: [31mError creating section: undefined[39m
+2025-03-24 02:54:48:5448 [31merror[39m: [31mError creating section: undefined[39m
+2025-03-24 03:43:51:4351 [31merror[39m: [31mUnhandled Error: Not allowed by CORS[39m
+2025-03-24 03:43:51:4351 [31merror[39m: [31mError: Not allowed by CORS[39m
+[31m    at origin (C:\Users\soura\Projects\LearnHub\backend\src\index.ts:47:16)[39m
+[31m    at C:\Users\soura\Projects\LearnHub\backend\node_modules\cors\lib\index.js:219:13[39m
+[31m    at optionsCallback (C:\Users\soura\Projects\LearnHub\backend\node_modules\cors\lib\index.js:199:9)[39m
+[31m    at corsMiddleware (C:\Users\soura\Projects\LearnHub\backend\node_modules\cors\lib\index.js:204:7)[39m
+[31m    at Layer.handle [as handle_request] (C:\Users\soura\Projects\LearnHub\backend\node_modules\express\lib\router\layer.js:95:5)[39m
+[31m    at trim_prefix (C:\Users\soura\Projects\LearnHub\backend\node_modules\express\lib\router\index.js:328:13)[39m
+[31m    at C:\Users\soura\Projects\LearnHub\backend\node_modules\express\lib\router\index.js:286:9[39m
+[31m    at Function.process_params (C:\Users\soura\Projects\LearnHub\backend\node_modules\express\lib\router\index.js:346:12)[39m
+[31m    at next (C:\Users\soura\Projects\LearnHub\backend\node_modules\express\lib\router\index.js:280:10)[39m
+[31m    at C:\Users\soura\Projects\LearnHub\backend\src\index.ts:37:3[39m
+2025-03-24 04:14:29:1429 [31merror[39m: [31mError creating section: undefined[39m
+2025-03-24 04:28:42:2842 [31merror[39m: [31mError fetching section: relation "public.course_sections" does not exist[39m
+2025-03-24 04:29:15:2915 [31merror[39m: [31mError creating lesson: undefined[39m
+2025-03-24 04:31:18:3118 [31merror[39m: [31mError creating lesson: Could not find the 'course_id' column of 'lessons' in the schema cache[39m
+2025-03-24 04:33:03:333 [31merror[39m: [31mError creating lesson: Could not find the 'created_by' column of 'lessons' in the schema cache[39m
+2025-03-24 04:34:36:3436 [31merror[39m: [31mError creating lesson: Could not find the 'description' column of 'lessons' in the schema cache[39m
+2025-03-24 04:35:12:3512 [31merror[39m: [31mError creating lesson: Could not find the 'order' column of 'lessons' in the schema cache[39m
+2025-03-24 04:36:20:3620 [31merror[39m: [31mError creating lesson: null value in column "content" of relation "lessons" violates not-null constraint[39m
+2025-03-24 04:38:49:3849 [31merror[39m: [31mError creating lesson: null value in column "order_index" of relation "lessons" violates not-null constraint[39m
+2025-03-24 04:39:23:3923 [31merror[39m: [31mError creating lesson content: undefined[39m
+2025-03-24 04:39:23:3923 [31merror[39m: [31mError fetching complete lesson: Could not find a relationship between 'lessons' and 'lesson_contents' in the schema cache[39m

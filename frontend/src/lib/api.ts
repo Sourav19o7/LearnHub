@@ -33,6 +33,9 @@ api.interceptors.request.use(
       // For debugging only - remove in production
       if (process.env.NODE_ENV === 'development') {
         console.log(`API Request to: ${config.url}`);
+        console.log('Full request URL:', API_URL + config.url);
+        console.log('Request headers:', config.headers);
+        console.log('Request data:', config.data);
       }
       
       return config;
@@ -53,18 +56,34 @@ api.interceptors.response.use(
     // For debugging only - remove in production
     if (process.env.NODE_ENV === 'development') {
       console.log(`API Response from ${response.config.url}: Status ${response.status}`);
+      console.log('Response data:', response.data);
     }
     return response;
   },
   async (error) => {
     const originalRequest = error.config;
     
-    // For debugging
-    console.error(`API Error: ${error.response?.status} on ${originalRequest.url}`, 
+    // Enhanced error logging
+    console.error(`API Error: ${error.response?.status} on ${originalRequest?.url}`, 
       error.response?.data?.message || error.message);
     
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      console.error('Error response data:', error.response.data);
+      console.error('Error response status:', error.response.status);
+      console.error('Error response headers:', error.response.headers);
+    } else if (error.request) {
+      // The request was made but no response was received
+      console.error('Error request:', error.request);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.error('Error message:', error.message);
+    }
+    console.error('Error config:', error.config);
+    
     // If the error is due to an expired token and we haven't retried yet
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (error.response?.status === 401 && !originalRequest?._retry) {
       originalRequest._retry = true;
       
       try {

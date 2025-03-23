@@ -59,7 +59,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       profileFetchInProgress.current = true;
       const profileData = await getUserProfile();
-      console.log('Profile data fetched:', profileData);
       
       if (profileData) {
         setProfile(profileData as UserProfile);

@@ -41,19 +41,6 @@ export enum UserRole {
     updated_at: string;
   }
   
-  export interface Lesson {
-    id: string;
-    section_id: string;
-    title: string;
-    content: string;
-    video_url?: string;
-    order_index: number;
-    duration_minutes?: number;
-    is_free_preview: boolean;
-    created_at: string;
-    updated_at: string;
-  }
-  
   export interface Assignment {
     id: string;
     course_id: string;
@@ -128,4 +115,26 @@ export enum UserRole {
     price_min?: number;
     price_max?: number;
     search?: string;
+  }
+
+  export interface Lesson {
+    id: string;
+    course_id: string;  // Add this field
+    section_id: string;
+    title: string;
+    video_url?: string;
+    order: number;      // Rename from order_index
+    duration_minutes?: number;
+    is_preview: boolean; // Rename from is_free_preview
+    created_at: string;
+    updated_at?: string;
+  }
+  
+  // Add this new interface for lesson content
+  export interface LessonContent {
+    id: string;
+    lesson_id: string;
+    content: string;
+    created_at: string;
+    updated_at?: string;
   }
