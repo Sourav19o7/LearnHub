@@ -86,64 +86,106 @@ export const getMyCourses = asyncHandler(async (req: Request, res: Response) => 
 // @route   GET /api/courses/instructor
 // @access  Private (Instructor only)
 export const getInstructorCourses = asyncHandler(async (req: Request, res: Response) => {
-  const userId = req.user?.id;
-  
-  if (!userId) {
-    throw new ApiError(401, 'User not authenticated');
+  try {
+    const userId = req.user?.id;
+    
+    console.log('getInstructorCourses called with userId:', userId);
+    console.log('Request query parameters:', req.query);
+    
+    if (!userId) {
+      console.log('Authentication error: User ID missing in request');
+      throw new ApiError(401, 'User not authenticated');
+    }
+    
+    // Extract pagination parameters
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const sortBy = (req.query.sortBy as string) || 'created_at';
+    const sortOrder = (req.query.sortOrder as 'asc' | 'desc') || 'desc';
+    
+    console.log(`Pagination: page=${page}, limit=${limit}, sortBy=${sortBy}, sortOrder=${sortOrder}`);
+    
+    const supabase = getSupabase();
+    
+    // Start building the query
+    let query = supabase
+      .from('courses')
+      .select('*', { count: 'exact' })
+      .eq('instructor_id', userId);
+    
+    console.log(`Building query with instructor_id: ${userId}`);
+    
+    // Apply filters from query parameters
+    const category = req.query.category as string;
+    const search = req.query.search as string;
+    const isPublishedParam = req.query.is_published;
+    
+    console.log(`Filter parameters - category: ${category}, search: ${search}, is_published: ${isPublishedParam}`);
+    
+    if (category) {
+      query = query.eq('category', category);
+      console.log(`Filtering by category: ${category}`);
+    }
+    
+    if (search) {
+      query = query.or(`title.ilike.%${search}%,description.ilike.%${search}%`);
+      console.log(`Searching for: "${search}"`);
+    }
+    
+    if (isPublishedParam !== undefined) {
+      const isPublished = isPublishedParam === 'true';
+      query = query.eq('is_published', isPublished);
+      console.log(`Filtering by is_published: ${isPublished}`);
+    }
+    
+    // Apply sorting
+    query = query.order(sortBy, { ascending: sortOrder === 'asc' });
+    
+    // Apply pagination
+    const from = (page - 1) * limit;
+    const to = from + limit - 1;
+    
+    console.log(`Pagination range: ${from} to ${to}`);
+    
+    // Execute query with pagination
+    const { data, error, count } = await query.range(from, to);
+    
+    if (error) {
+      console.error(`Error fetching instructor courses: ${error.message}`, error);
+      logger.error(`Error fetching instructor courses: ${error.message}`);
+      throw new ApiError(500, `Failed to fetch instructor courses: ${error.message}`);
+    }
+    
+    console.log(`Query returned ${data?.length || 0} courses out of ${count || 0} total`);
+    
+    // For debugging, let's query for any courses at all from this instructor
+    const { data: allCourses, error: allCoursesError } = await supabase
+      .from('courses')
+      .select('id, title, instructor_id')
+      .eq('instructor_id', userId);
+    
+    if (allCoursesError) {
+      console.error('Error in verification query:', allCoursesError);
+    } else {
+      console.log(`Verification query found ${allCourses.length} courses for instructor ${userId}`);
+      console.log('Course IDs:', allCourses.map(c => c.id).join(', '));
+    }
+    
+    const total = count || 0;
+    const totalPages = Math.ceil(total / limit);
+    
+    res.status(200).json({
+      success: true,
+      count: data?.length || 0,
+      total,
+      totalPages,
+      currentPage: page,
+      data: data || []
+    });
+  } catch (error) {
+    console.error('Error in getInstructorCourses:', error);
+    throw error;
   }
-  
-  // Extract pagination parameters
-  const page = parseInt(req.query.page as string) || 1;
-  const limit = parseInt(req.query.limit as string) || 10;
-  const sortBy = (req.query.sortBy as string) || 'created_at';
-  const sortOrder = (req.query.sortOrder as 'asc' | 'desc') || 'desc';
-  
-  const supabase = getSupabase();
-  
-  // Start building the query
-  let query = supabase
-    .from('courses')
-    .select('*', { count: 'exact' })
-    .eq('instructor_id', userId);
-  
-  // Apply filters from query parameters
-  const category = req.query.category as string;
-  const isPublished = req.query.is_published === 'true';
-  
-  if (category) {
-    query = query.eq('category', category);
-  }
-  
-  if (isPublished !== undefined) {
-    query = query.eq('is_published', isPublished);
-  }
-  
-  // Apply sorting
-  query = query.order(sortBy, { ascending: sortOrder === 'asc' });
-  
-  // Apply pagination
-  const from = (page - 1) * limit;
-  const to = from + limit - 1;
-  
-  // Execute query with pagination
-  const { data, error, count } = await query.range(from, to);
-  
-  if (error) {
-    logger.error(`Error fetching instructor courses: ${error.message}`);
-    throw new ApiError(500, `Failed to fetch instructor courses: ${error.message}`);
-  }
-  
-  const total = count || 0;
-  const totalPages = Math.ceil(total / limit);
-  
-  res.status(200).json({
-    success: true,
-    count: data.length,
-    total,
-    totalPages,
-    currentPage: page,
-    data
-  });
 });
 
 // @desc    Create a new course
@@ -757,7 +799,7 @@ export const getCourseSections = asyncHandler(async (req: Request, res: Response
     .from('sections')
     .select('*')
     .eq('course_id', courseId)
-    .order('order', { ascending: true });
+    .order('order_index', { ascending: true });
   
   if (error) {
     logger.error(`Error fetching course sections: ${error.message}`);
@@ -2381,5 +2423,131 @@ export const completeLesson = asyncHandler(async (req: Request, res: Response) =
   res.status(200).json({
     success: true,
     message: 'Lesson marked as completed'
+  });
+});
+
+// @desc    Get lessons for a specific section
+// @route   GET /api/courses/:courseId/sections/:sectionId/lessons
+// @access  Private
+export const getSectionLessons = asyncHandler(async (req: Request, res: Response) => {
+  const { courseId, sectionId } = req.params;
+  const userId = req.user?.id;
+  
+  const supabase = getSupabase();
+  
+  // First, check course visibility
+  const { data: course, error: courseError } = await supabase
+    .from('courses')
+    .select('is_published, instructor_id')
+    .eq('id', courseId)
+    .single();
+  
+  if (courseError) {
+    if (courseError.code === 'PGRST116') {
+      throw new ApiError(404, 'Course not found');
+    }
+    
+    logger.error(`Error fetching course: ${courseError.message}`);
+    throw new ApiError(500, 'Failed to fetch course');
+  }
+  
+  // Check if section exists and belongs to this course
+  const { data: section, error: sectionError } = await supabase
+    .from('sections')
+    .select('id')
+    .eq('id', sectionId)
+    .eq('course_id', courseId)
+    .single();
+  
+  if (sectionError) {
+    if (sectionError.code === 'PGRST116') {
+      throw new ApiError(404, 'Section not found');
+    }
+    
+    logger.error(`Error fetching section: ${sectionError.message}`);
+    throw new ApiError(500, 'Failed to fetch section');
+  }
+  
+  // Check user access (enrolled student, instructor, or admin)
+  const userRole = req.user?.role;
+  const isInstructorOrAdmin = userId && 
+    (course.instructor_id === userId || userRole === UserRole.ADMIN);
+  
+  // Check if user is enrolled (if not instructor/admin)
+  let isEnrolled = false;
+  if (userId && !isInstructorOrAdmin) {
+    const { data: enrollment, error: enrollmentError } = await supabase
+      .from('enrollments')
+      .select('id')
+      .eq('course_id', courseId)
+      .eq('user_id', userId)
+      .maybeSingle();
+    
+    isEnrolled = !!enrollment;
+  }
+  
+  // If not published and not instructor/admin, deny access
+  if (!course.is_published && !isInstructorOrAdmin) {
+    throw new ApiError(403, 'Course is not published');
+  }
+  
+  // If course is published but user is not enrolled or instructor/admin, deny access
+  if (course.is_published && !isInstructorOrAdmin && !isEnrolled) {
+    throw new ApiError(403, 'You need to enroll in this course to access its content');
+  }
+  
+  // Fetch lessons for this section - NOTE: content is directly in the lessons table
+  const { data: lessons, error } = await supabase
+    .from('lessons')
+    .select('*')
+    .eq('section_id', sectionId)
+    .eq('course_id', courseId)
+    .order('order', { ascending: true });
+  
+  if (error) {
+    logger.error(`Error fetching section lessons: ${error.message}`);
+    throw new ApiError(500, 'Failed to fetch section lessons');
+  }
+  
+  // If user is enrolled, add progress information to each lesson
+  if (userId && isEnrolled) {
+    // Fetch lesson progress for this user
+    const { data: progressData, error: progressError } = await supabase
+      .from('lesson_progress')
+      .select('*')
+      .eq('user_id', userId)
+      .in('lesson_id', lessons.map(lesson => lesson.id));
+    
+    if (!progressError && progressData) {
+      // Create a map for quick progress lookups
+      const progressMap = new Map();
+      progressData.forEach(progress => {
+        progressMap.set(progress.lesson_id, progress);
+      });
+      
+      // Add progress data to each lesson
+      lessons.forEach(lesson => {
+        const progress = progressMap.get(lesson.id);
+        if (progress) {
+          lesson.progress = {
+            started: true,
+            completed: progress.completed,
+            started_at: progress.started_at,
+            completed_at: progress.completed_at
+          };
+        } else {
+          lesson.progress = {
+            started: false,
+            completed: false
+          };
+        }
+      });
+    }
+  }
+  
+  res.status(200).json({
+    success: true,
+    count: lessons.length,
+    data: lessons
   });
 });

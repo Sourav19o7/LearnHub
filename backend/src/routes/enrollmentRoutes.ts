@@ -6,12 +6,13 @@ import {
   getCourseEnrollments,
   updateEnrollmentProgress,
   completeEnrollment,
-  unenrollFromCourse
+  unenrollFromCourse,
+  getCourseProgress // You'll need to implement this function
 } from '../controllers/enrollmentController';
 
 const router = express.Router();
 
-// Enrollment routes
+// Existing enrollment routes
 router.route('/')
   .get(protect, getUserEnrollments)
   .post(protect, enrollInCourse);
@@ -25,5 +26,9 @@ router.route('/:id/progress')
 
 router.route('/:id/complete')
   .put(protect, completeEnrollment);
+
+// Add this new route for getting course progress
+router.route('/progress/:courseId')
+  .get(protect, getCourseProgress);
 
 export default router;

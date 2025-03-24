@@ -35,7 +35,7 @@ const CourseManagement = () => {
         status: filter !== 'all' ? filter : undefined,
       };
       
-      const response = await api.get('/instructor/courses', { params });
+      const response = await api.get('/courses/instructor', { params });
       return response.data;
     }
   );

@@ -3,10 +3,16 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import api from '../../lib/api';
 import LoadingScreen from '../../components/common/LoadingScreen';
-import { CheckCircleIcon, LockClosedIcon } from '@heroicons/react/24/outline';
+import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import { Course, Section, Lesson } from '../../types';
 import { toast } from 'react-hot-toast';
 
+interface DetailedProgressItem {
+  lesson_id: string;
+  title?: string;
+  completed: boolean;
+  completed_at: string | null;
+}
 const CourseContent = () => {
   const { courseId, lessonId } = useParams<{ courseId: string; lessonId?: string }>();
   const navigate = useNavigate();
@@ -15,6 +21,7 @@ const CourseContent = () => {
   const [completedLessons, setCompletedLessons] = useState<string[]>([]);
   const [progressPercent, setProgressPercent] = useState(0);
   const [isLoadingCompletion, setIsLoadingCompletion] = useState(false);
+  const [sectionLessons, setSectionLessons] = useState<Record<string, Lesson[]>>({});
 
   // Fetch course details
   const { data: courseData, isLoading: isLoadingCourse } = useQuery(
@@ -25,7 +32,7 @@ const CourseContent = () => {
     }
   );
 
-  // Fetch course sections and lessons
+  // Fetch course sections
   const { data: sectionsData, isLoading: isLoadingSections } = useQuery(
     ['course-sections', courseId],
     async () => {
@@ -45,60 +52,100 @@ const CourseContent = () => {
       return response.data;
     },
     {
-      enabled: !!courseId
+      enabled: !!courseId,
+      // It's okay if this fails for non-enrolled users
+      onError: () => {
+        console.log('Not enrolled or progress API not available');
+      }
     }
   );
+
+  // Fetch lessons for a specific section when it's opened
+  const fetchSectionLessons = async (sectionId: string) => {
+    try {
+      // Only fetch if we don't already have this section's lessons
+      if (!sectionLessons[sectionId]) {
+        const response = await api.get(`/courses/${courseId}/sections/${sectionId}/lessons`);
+        setSectionLessons(prev => ({
+          ...prev,
+          [sectionId]: response.data.data
+        }));
+        return response.data.data;
+      }
+      return sectionLessons[sectionId];
+    } catch (error) {
+      console.error(`Error fetching lessons for section ${sectionId}:`, error);
+      toast.error('Failed to load lessons for this section');
+      return [];
+    }
+  };
 
   const isLoading = isLoadingCourse || isLoadingSections || isLoadingProgress;
   const course: Course = courseData?.data;
   const sections: Section[] = sectionsData?.data || [];
 
-  // Find current lesson based on URL param or first lesson
+  // When a section is toggled, fetch its lessons if needed
   useEffect(() => {
-    if (!sections || sections.length === 0) return;
+    if (activeSection) {
+      fetchSectionLessons(activeSection);
+    }
+  }, [activeSection]);
 
-    let foundLesson = null;
-    let firstLessonInCourse = null;
-
-    for (const section of sections) {
-      if (!firstLessonInCourse && section.lessons && section.lessons.length > 0) {
-        firstLessonInCourse = section.lessons[0];
-      }
-
-      if (lessonId && section.lessons) {
-        const lesson = section.lessons.find(l => l.id === lessonId);
-        if (lesson) {
-          foundLesson = lesson;
-          setActiveSection(section.id);
-          break;
+  // Find current lesson based on URL param
+  useEffect(() => {
+    const loadCurrentLesson = async () => {
+      if (!sections || sections.length === 0) return;
+      
+      // If we have a lessonId, we need to find which section it belongs to
+      if (lessonId) {
+        for (const section of sections) {
+          // If we haven't fetched this section's lessons yet, do it now
+          const lessons = sectionLessons[section.id] || await fetchSectionLessons(section.id);
+          
+          const lesson = lessons.find(l => l.id === lessonId);
+          if (lesson) {
+            setCurrentLesson(lesson);
+            setActiveSection(section.id);
+            return;
+          }
+        }
+        
+        // If we get here, the lesson wasn't found in any section
+        navigate(`/dashboard/courses/${courseId}`);
+      } else {
+        // No lessonId specified, so find the first lesson
+        for (const section of sections) {
+          const lessons = sectionLessons[section.id] || await fetchSectionLessons(section.id);
+          
+          if (lessons && lessons.length > 0) {
+            setCurrentLesson(lessons[0]);
+            setActiveSection(section.id);
+            // navigate(`/dashboard/courses/${courseId}/lessons/${lessons[0].id}`, { replace: true });
+            return;
+          }
         }
       }
-    }
-
-    if (lessonId && !foundLesson) {
-      // If lessonId is provided but not found, redirect to course page
-      navigate(`/dashboard/courses/${courseId}`);
-      return;
-    }
-
-    // If no lesson is specified in URL, use the first lesson or stay on current
-    setCurrentLesson(foundLesson || firstLessonInCourse);
+    };
     
-    // If no lessonId in URL but we found a lesson, update the URL
-    if (!lessonId && firstLessonInCourse) {
-      navigate(`/dashboard/courses/${courseId}/lessons/${firstLessonInCourse.id}`, { replace: true });
-    }
-  }, [sections, lessonId, courseId, navigate]);
+    loadCurrentLesson();
+  }, [sections, lessonId, courseId, navigate, sectionLessons]);
 
   // Update progress when progressData changes
   useEffect(() => {
     if (progressData?.data) {
-      const { completed_lessons, total_lessons, progress_percentage } = progressData.data;
-      setCompletedLessons(completed_lessons || []);
+      const { detailed_progress, progress_percentage } = progressData.data;
+      
+      // Extract completed lesson IDs from detailed progress
+      const completedLessonIds = detailed_progress
+        ? detailed_progress
+            .filter((item: DetailedProgressItem) => item.completed)
+            .map((item: DetailedProgressItem) => item.lesson_id)
+        : [];
+        
+      setCompletedLessons(completedLessonIds);
       setProgressPercent(progress_percentage || 0);
     }
   }, [progressData]);
-
   // Update progress by marking current lesson as completed
   const markLessonAsCompleted = async () => {
     if (!currentLesson) return;
@@ -106,6 +153,7 @@ const CourseContent = () => {
     try {
       setIsLoadingCompletion(true);
       
+      // Adjust this endpoint to match your API
       const response = await api.post(`/enrollments/progress/${courseId}/lessons/${currentLesson.id}`);
       
       if (response.data.success) {
@@ -117,14 +165,20 @@ const CourseContent = () => {
           return [...prev, currentLesson.id];
         });
         
-        // Calculate new progress percentage
-        const totalLessons = sections.reduce((count, section) => 
-          count + (section.lessons?.length || 0), 0);
+        // Calculate new progress percentage based on all lessons across all sections
+        let totalLessonsCount = 0;
+        for (const sectionId in sectionLessons) {
+          totalLessonsCount += sectionLessons[sectionId].length;
+        }
         
         const newCompletedCount = completedLessons.length + 
           (completedLessons.includes(currentLesson.id) ? 0 : 1);
           
-        setProgressPercent(Math.round((newCompletedCount / totalLessons) * 100));
+        const newPercentage = totalLessonsCount > 0 
+          ? Math.round((newCompletedCount / totalLessonsCount) * 100)
+          : 0;
+          
+        setProgressPercent(newPercentage);
       }
     } catch (error) {
       console.error('Error updating progress:', error);
@@ -136,28 +190,31 @@ const CourseContent = () => {
 
   // Go to next lesson
   const goToNextLesson = () => {
-    let foundCurrentLesson = false;
-    let nextLesson = null;
-
-    for (const section of sections) {
-      if (!section.lessons || section.lessons.length === 0) continue;
-
-      for (const lesson of section.lessons) {
-        if (foundCurrentLesson) {
-          nextLesson = lesson;
-          break;
-        }
-        
-        if (lesson.id === currentLesson?.id) {
-          foundCurrentLesson = true;
-        }
+    if (!currentLesson) return;
+    
+    // Find all lessons across all sections in the correct order
+    const allLessons: { sectionId: string, lesson: Lesson }[] = [];
+    
+    sections.forEach(section => {
+      const lessons = sectionLessons[section.id] || [];
+      lessons.forEach(lesson => {
+        allLessons.push({ sectionId: section.id, lesson });
+      });
+    });
+    
+    // Find the current lesson's index
+    const currentIndex = allLessons.findIndex(item => item.lesson.id === currentLesson.id);
+    
+    if (currentIndex >= 0 && currentIndex < allLessons.length - 1) {
+      const nextItem = allLessons[currentIndex + 1];
+      
+      // If the next lesson is in a different section, expand that section
+      if (nextItem.sectionId !== activeSection) {
+        setActiveSection(nextItem.sectionId);
       }
       
-      if (nextLesson) break;
-    }
-
-    if (nextLesson) {
-      navigate(`/dashboard/courses/${courseId}/lessons/${nextLesson.id}`);
+      // Navigate to the next lesson
+      navigate(`/dashboard/courses/${courseId}/lessons/${nextItem.lesson.id}`);
     } else {
       // If no next lesson, we've reached the end of the course
       toast.success('Congratulations! You\'ve reached the end of this course.');
@@ -251,27 +308,38 @@ const CourseContent = () => {
                       />
                     </svg>
                   </button>
-                  {activeSection === section.id && section.lessons && (
+                  {activeSection === section.id && (
                     <ul className="border-t border-surface-200 dark:border-surface-700 divide-y divide-surface-200 dark:divide-surface-700">
-                      {section.lessons.map((lesson) => (
-                        <li key={lesson.id}>
-                          <Link
-                            to={`/dashboard/courses/${courseId}/lessons/${lesson.id}`}
-                            className={`block p-3 flex items-center ${
-                              currentLesson?.id === lesson.id
-                                ? 'bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400'
-                                : 'hover:bg-surface-50 dark:hover:bg-surface-800 text-surface-700 dark:text-surface-300'
-                            }`}
-                          >
-                            {completedLessons.includes(lesson.id) ? (
-                              <CheckCircleIcon className="h-5 w-5 text-success-500 dark:text-success-400 mr-2 flex-shrink-0" />
-                            ) : (
-                              <div className="h-5 w-5 border-2 border-surface-300 dark:border-surface-600 rounded-full mr-2 flex-shrink-0" />
-                            )}
-                            <span className="text-sm">{lesson.title}</span>
-                          </Link>
+                      {/* Show loading indicator while fetching section lessons */}
+                      {!sectionLessons[section.id] ? (
+                        <li className="p-3 text-center text-sm text-surface-500 dark:text-surface-400">
+                          Loading lessons...
                         </li>
-                      ))}
+                      ) : sectionLessons[section.id].length === 0 ? (
+                        <li className="p-3 text-center text-sm text-surface-500 dark:text-surface-400">
+                          No lessons in this section
+                        </li>
+                      ) : (
+                        sectionLessons[section.id].map((lesson) => (
+                          <li key={lesson.id}>
+                            <Link
+                              to={`/dashboard/courses/${courseId}/lessons/${lesson.id}`}
+                              className={`block p-3 flex items-center ${
+                                currentLesson?.id === lesson.id
+                                  ? 'bg-primary-50 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400'
+                                  : 'hover:bg-surface-50 dark:hover:bg-surface-800 text-surface-700 dark:text-surface-300'
+                              }`}
+                            >
+                              {completedLessons.includes(lesson.id) ? (
+                                <CheckCircleIcon className="h-5 w-5 text-success-500 dark:text-success-400 mr-2 flex-shrink-0" />
+                              ) : (
+                                <div className="h-5 w-5 border-2 border-surface-300 dark:border-surface-600 rounded-full mr-2 flex-shrink-0" />
+                              )}
+                              <span className="text-sm">{lesson.title}</span>
+                            </Link>
+                          </li>
+                        ))
+                      )}
                     </ul>
                   )}
                 </div>

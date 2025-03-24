@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import api from '../../lib/api';
 import LoadingScreen from '../../components/common/LoadingScreen';
@@ -8,7 +8,6 @@ import {
   UserCircleIcon,
   EnvelopeIcon,
   ClockIcon,
-  CheckCircleIcon,
   ArrowUpCircleIcon,
   ArrowDownCircleIcon,
 } from '@heroicons/react/24/outline';

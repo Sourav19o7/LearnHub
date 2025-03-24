@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
@@ -13,7 +13,6 @@ import {
   TrashIcon,
   UserIcon,
   ClockIcon,
-  CheckCircleIcon,
   DocumentTextIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline';

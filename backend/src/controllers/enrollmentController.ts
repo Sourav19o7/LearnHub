@@ -333,3 +333,109 @@ export const unenrollFromCourse = asyncHandler(async (req: Request, res: Respons
     message: 'Successfully unenrolled from course'
   });
 });
+
+// @desc    Get progress for a specific course enrollment
+// @route   GET /api/enrollments/progress/:courseId
+// @access  Private
+export const getCourseProgress = asyncHandler(async (req: Request, res: Response) => {
+  const { courseId } = req.params;
+  const userId = req.user?.id;
+  
+  if (!userId) {
+    throw new ApiError(401, 'User not authenticated');
+  }
+  
+  const supabase = getSupabase();
+  
+  // First, check if the user is enrolled in this course
+  const { data: enrollment, error: enrollmentError } = await supabase
+    .from('enrollments')
+    .select('*')
+    .eq('user_id', userId)
+    .eq('course_id', courseId)
+    .single();
+  
+  if (enrollmentError) {
+    if (enrollmentError.code === 'PGRST116') {
+      throw new ApiError(404, 'You are not enrolled in this course');
+    }
+    
+    logger.error(`Error fetching enrollment: ${enrollmentError.message}`);
+    throw new ApiError(500, 'Failed to fetch enrollment information');
+  }
+  
+  // Get lessons for this course to calculate detailed progress
+  const { data: lessons, error: lessonsError } = await supabase
+    .from('lessons')
+    .select('id, title')
+    .eq('course_id', courseId)
+    .order('order', { ascending: true });
+  
+  if (lessonsError) {
+    logger.error(`Error fetching lessons: ${lessonsError.message}`);
+    throw new ApiError(500, 'Failed to fetch course lessons');
+  }
+  
+  // Get lesson progress for this user - using user_id instead of enrollment_id
+  const { data: lessonProgress, error: progressError } = await supabase
+    .from('lesson_progress')
+    .select('*')
+    .eq('user_id', userId); // Changed from enrollment_id to user_id
+  
+  if (progressError) {
+    logger.error(`Error fetching lesson progress: ${progressError.message}`);
+    throw new ApiError(500, 'Failed to fetch lesson progress');
+  }
+  
+  // Filter lesson progress to only include this course's lessons
+  const lessonIds = lessons?.map(lesson => lesson.id) || [];
+  const courseProgress = lessonProgress?.filter(progress => lessonIds.includes(progress.lesson_id)) || [];
+  
+  // Create a map of completed lessons
+  const completedLessons = new Map();
+  courseProgress.forEach(progress => {
+    if (progress.completed) {
+      completedLessons.set(progress.lesson_id, progress);
+    }
+  });
+  
+  // Calculate progress metrics
+  const totalLessons = lessons?.length || 0;
+  const completedCount = completedLessons.size;
+  const progressPercentage = totalLessons > 0 
+    ? Math.round((completedCount / totalLessons) * 100) 
+    : 0;
+  
+  // Prepare detailed lesson progress data
+  const detailedProgress = lessons?.map(lesson => ({
+    lesson_id: lesson.id,
+    title: lesson.title,
+    completed: completedLessons.has(lesson.id),
+    completed_at: completedLessons.get(lesson.id)?.completed_at || null
+  })) || [];
+  
+  // Update enrollment progress percentage if it has changed
+  if (progressPercentage !== enrollment.progress_percentage) {
+    await supabase
+      .from('enrollments')
+      .update({
+        progress_percentage: progressPercentage,
+        last_accessed_at: new Date().toISOString()
+      })
+      .eq('id', enrollment.id);
+  }
+  
+  res.status(200).json({
+    success: true,
+    data: {
+      enrollment_id: enrollment.id,
+      enrolled_at: enrollment.enrolled_at,
+      last_accessed_at: enrollment.last_accessed_at,
+      completed_at: enrollment.completed_at,
+      progress_percentage: progressPercentage,
+      completed_lessons: completedCount,
+      total_lessons: totalLessons,
+      detailed_progress: detailedProgress
+    }
+  });
+});

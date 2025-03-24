@@ -29,6 +29,7 @@ import {
   updateLesson,
   deleteLesson,
   completeLesson,
+  getSectionLessons,
   
   // Other existing routes
   getCourseAssignments,
@@ -85,6 +86,7 @@ router.route('/:id/lessons')
 
 // Nested routes for section-based lessons (enforcing the hierarchy)
 router.route('/:courseId/sections/:sectionId/lessons')
+.get(protect, getSectionLessons)
   .post(protect, isInstructor, createLesson);
 
 router.route('/:courseId/sections/:sectionId/lessons/:lessonId')
